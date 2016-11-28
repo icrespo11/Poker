@@ -49,7 +49,7 @@ namespace Capstone.Web.Controllers
                 Session["user"] = user;
                 user.IsTaken = false;
 
-                return View("Success");
+                return RedirectToAction("Index", "Home");
 
             }
             else
@@ -79,12 +79,13 @@ namespace Capstone.Web.Controllers
             }
             user.LoginFail = false;
             Session["user"] = user;
-            return View("Success");
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Logout()
         {
             Session.Abandon();
+            
             return RedirectToAction("Index", "Home");
         }
     }

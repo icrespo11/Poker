@@ -12,6 +12,7 @@ namespace Capstone.Web.Models
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Required")]
+        [RegularExpression(@"(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$", ErrorMessage = "Your password must contain a symbol, an upper case letter and a number and be at least 8 characters.")]
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Required")]

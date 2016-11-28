@@ -27,7 +27,7 @@ namespace Capstone.Web.Dal_s
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
             }
-            catch (SqlException e)
+            catch (SqlException)
             {
                 throw;
             }
