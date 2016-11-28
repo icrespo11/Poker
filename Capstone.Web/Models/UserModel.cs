@@ -22,7 +22,7 @@ namespace Capstone.Web.Models
         public int HighestMoney { get; set; }
         public bool IsOnline { get; set; }
         public string Privilege { get; set; }
-
-        
+        public bool IsTaken { get; set; }
+        public bool LoginFail { get; set; }
     }
 }

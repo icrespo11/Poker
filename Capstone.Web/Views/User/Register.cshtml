@@ -9,22 +9,27 @@
 @using (Html.BeginForm("Register", "User", FormMethod.Post))
 {
     <div>
-        @Html.LabelFor(m=> m.Username)
+        @{
+            if (Model.IsTaken)
+            {
+                <p>Username is unavailable. Please select a different one.</p>
+            }
+        }
+    </div>
+    <div>
+        @Html.LabelFor(m => m.Username)
         @Html.TextBoxFor(m => m.Username, new { placeHolder = "Username" })
-        @Html.ValidationMessageFor(m=> m.Username)
+        @Html.ValidationMessageFor(m => m.Username)
     </div>
     <div>
         @Html.LabelFor(m => m.Password)
-        @Html.TextBoxFor(m => m.Password, new { placeHolder = "Password" })
+        @Html.PasswordFor(m => m.Password, new { placeHolder = "Password" })
         @Html.ValidationMessageFor(m => m.Password)
     </div>
     <div>
         @Html.LabelFor(m => m.ConfirmPassword)
-        @Html.TextBoxFor(m => m.ConfirmPassword, new { placeHolder = "Confirm Password" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { placeHolder = "Confirm Password" })
         @Html.ValidationMessageFor(m => m.ConfirmPassword)
     </div>
     <button>Create Account</button>
-}
-
-
-
+            }
