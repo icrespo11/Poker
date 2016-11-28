@@ -11,7 +11,7 @@ namespace Capstone.Web.Dal_s
     {
         bool Register(UserModel user);
         List<string> GetAllUsernames();
-        UserModel Login(string username, string password);
+        UserModel Login(string username);
 
     }
 }

@@ -71,7 +71,7 @@ namespace Capstone.Web.Dal_s
             }
         }
 
-        public UserModel Login(string username, string  password)
+        public UserModel Login(string username)
         {
             UserModel user = null;
 
@@ -81,9 +81,8 @@ namespace Capstone.Web.Dal_s
 
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("SELECT TOP 1 * FROM users WHERE username = @username AND password = @password;", conn);
+                    SqlCommand cmd = new SqlCommand("SELECT TOP 1 * FROM users WHERE username = @username;", conn);
                     cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -95,6 +94,8 @@ namespace Capstone.Web.Dal_s
                             CurrentMoney = Convert.ToInt32(reader["current_money"]),
                             IsOnline = true,
                             Privilege = Convert.ToString(reader["privilege"]),
+                            Salt = Convert.ToString(reader["salt"]),
+                            Password  = Convert.ToString(reader["password"]),
                         };
                     }
                 }

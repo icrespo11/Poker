@@ -73,10 +73,7 @@ namespace Capstone.Web.Controllers
         public ActionResult Login(UserModel user)
         {
             UserSqlDal dal = new UserSqlDal();
-
-
-
-            user = dal.Login(user.Username, user.Password);
+            UserModel existingUser = dal.Login(user.Username);
 
             if (user == null)
             {
@@ -84,10 +81,17 @@ namespace Capstone.Web.Controllers
                 user.LoginFail = true;
                 return View("Login", user);
             }
-            user.LoginFail = false;
-            user.IsOnline = true;
-            Session["user"] = user;
-            return RedirectToAction("Index", "Home");
+
+            HashProvider provider = new HashProvider();
+
+            if (provider.VerifyPasswordMatch(existingUser.Password, user.Password, existingUser.Salt))
+            {
+                user.LoginFail = false;
+                user.IsOnline = true;
+                Session["user"] = user;
+                return RedirectToAction("Index", "Home");
+            }
+            return View("Login", user);
         }
 
         public ActionResult Logout()
