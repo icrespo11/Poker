@@ -73,6 +73,9 @@ namespace Capstone.Web.Tests.DALTest
             newUser.Privilege = "duck";
             newUser.IsTaken = false;
             newUser.LoginFail = false;
+            //add salt that matches their formatting
+            //TEST THIS TOMORROW
+            newUser.Salt = "UBROKEIT";
 
             UserSqlDal dal = new UserSqlDal();
             bool confirm = dal.Register(newUser);
@@ -94,7 +97,7 @@ namespace Capstone.Web.Tests.DALTest
                     u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
                     u.HighestMoney = Convert.ToInt32(reader["highest_money"]);
                     u.Privilege = Convert.ToString(reader["privilege"]);
-                    u.IsOnline = Convert.ToBoolean(reader["is_online"]);
+                    u.IsOnline = Convert.ToBoolean(reader["is_online"]);                  
 
                     allUsers.Add(u);
                 }
