@@ -10,7 +10,7 @@ namespace Capstone.Web.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
-
+    using Dal_s;
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -61,6 +61,7 @@ namespace Capstone.Web.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<IUserSqlDal>().To<UserSqlDal>();
         }        
     }
 }

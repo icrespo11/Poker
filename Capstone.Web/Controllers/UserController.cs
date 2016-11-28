@@ -10,6 +10,13 @@ namespace Capstone.Web.Controllers
 {
     public class UserController: Controller
     {
+        private readonly IUserSqlDal dal;
+
+        public UserController(IUserSqlDal dal)
+        {
+            this.dal = dal;
+        }
+
         public ActionResult Register()
         {
             return View("Register", new UserModel());
