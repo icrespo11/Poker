@@ -122,6 +122,9 @@
     <Compile Include="Models\DeckOfCards.cs" />
     <Compile Include="Models\HoldEmCommunityCards.cs" />
     <Compile Include="Models\HoldEmHand.cs" />
+    <Compile Include="Models\PlayTexasHoldEm.cs" />
+    <Compile Include="Models\Seat.cs" />
+    <Compile Include="Models\Table.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -130,6 +133,7 @@
     <Content Include="packages.config" />
     <Content Include="Views\Shared\Layout.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\Game\Rules.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -139,7 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Game\" />
     <Folder Include="Views\Home\" />
   </ItemGroup>
   <PropertyGroup>
