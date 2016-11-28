@@ -130,6 +130,10 @@
     <Content Include="packages.config" />
     <Content Include="Views\Shared\Layout.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
+    <Content Include="Views\User\Success.cshtml" />
+    <Content Include="Views\User\Fail.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -140,7 +144,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Game\" />
-    <Folder Include="Views\Home\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

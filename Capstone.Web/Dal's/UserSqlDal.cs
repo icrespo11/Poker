@@ -10,9 +10,9 @@ namespace Capstone.Web.Dal_s
 {
     public class UserSqlDal
     {
-        static string connectionString = @".\SQLEXPRESS;Initial Catalog=poker;Persist Security Info=True;User ID=te_student;Password=techelevator";
+        static string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=poker;Persist Security Info=True;User ID=te_student;Password=techelevator";
 
-        public static bool Register(UserModel user)
+        public bool Register(UserModel user)
         {
             int rowsAffected = 0;
             try
@@ -21,20 +21,17 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("Insert into users (username, password, current_chips, highest_money, privilege, is_online) Values (@username, @password, 1000, 1000, 'GameHost', 1)", conn);
+                    SqlCommand cmd = new SqlCommand("Insert into users (username, password, current_money, highest_money, privilege, is_online) Values (@username, @password, 1000, 1000, 'GameHost', 1)", conn);
                     cmd.Parameters.AddWithValue("@username", user.Username);
                     cmd.Parameters.AddWithValue("@password", user.Password);
                     rowsAffected = cmd.ExecuteNonQuery();
-
-                    
-
-
                 }
             }
-            catch (SqlException)
+            catch (SqlException e)
             {
                 throw;
             }
+
             if (rowsAffected > 0)
             {
                 return true;
@@ -44,5 +41,71 @@ namespace Capstone.Web.Dal_s
                 return false;
             }
         }
+
+        public List<string> GetAllUsernames()
+        {
+            List<string> output = new List<string>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT username from users;", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Add(Convert.ToString(reader["username"]));
+                    }
+                }
+                catch (SqlException)
+                {
+
+                    throw;
+                }
+
+                return output;
+            }
+        }
+
+        public UserModel Login(string username, string  password)
+        {
+            UserModel user = null;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT TOP 1 * FROM users WHERE username = @username AND password = @password;", conn);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        user = new UserModel
+                        {
+                            Username = Convert.ToString(reader["username"]),
+                            CurrentMoney = Convert.ToInt32(reader["current_money"]),
+                            IsOnline = true,
+                            Privilege = Convert.ToString(reader["privilege"]),
+                        };
+                    }
+                }
+                catch (SqlException)
+                {
+
+                    throw;
+                }
+
+                return user;
+            }
+        }
+
     }
 }
