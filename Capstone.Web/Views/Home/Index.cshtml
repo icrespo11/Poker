@@ -3,7 +3,10 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Layout.cshtml";
 }
+<section>
 
-<a href=@Url.Action("Login", "User")>Login</a>
-<a href=@Url.Action("Register", "User")>Register</a>
-@Html.ActionLink("Log out", "Logout","User")
+    <a href=@Url.Action("Login", "User")>Login</a>
+    <a href=@Url.Action("Register", "User")>Register</a>
+    @Html.ActionLink("Log out", "Logout", "User")
+
+</section>
