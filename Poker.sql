@@ -10,6 +10,8 @@ current_money integer Not Null,
 highest_money integer Not Null,
 privilege varchar(200) Not Null,
 is_online bit Not Null Default 0,
+salt varchar(10) Not Null Default 1234567890,
+
 constraint pk_users_username Primary Key(username)
 );
 

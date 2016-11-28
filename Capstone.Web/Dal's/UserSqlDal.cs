@@ -21,9 +21,10 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("Insert into users (username, password, current_money, highest_money, privilege, is_online) Values (@username, @password, 1000, 1000, 'GameHost', 1)", conn);
+                    SqlCommand cmd = new SqlCommand("Insert into users (username, password, current_money, highest_money, privilege, is_online, salt) Values (@username, @password, 1000, 1000, 'GameHost', 1, @salt)", conn);
                     cmd.Parameters.AddWithValue("@username", user.Username);
                     cmd.Parameters.AddWithValue("@password", user.Password);
+                    cmd.Parameters.AddWithValue("@salt", user.Salt);
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
             }

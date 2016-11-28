@@ -114,6 +114,7 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Crypto\HashProvider.cs" />
     <Compile Include="Dal%27s\IUserSqlDal.cs" />
     <Compile Include="Dal%27s\UserSqlDal.cs" />
     <Compile Include="Global.asax.cs">
@@ -135,8 +136,6 @@
     <Content Include="Views\Shared\Layout.cshtml" />
     <Content Include="Views\User\Register.cshtml" />
     <Content Include="Views\Game\Rules.cshtml" />
-    <Content Include="Views\User\Success.cshtml" />
-    <Content Include="Views\User\Fail.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="Web.Debug.config">

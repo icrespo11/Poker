@@ -1,4 +1,5 @@
-﻿using Capstone.Web.Dal_s;
+﻿using Capstone.Web.Crypto;
+using Capstone.Web.Dal_s;
 using Capstone.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,10 @@ namespace Capstone.Web.Controllers
                     }
                 }
 
+                var hashProvider = new HashProvider();
+                user.Password = hashProvider.HashPassword(user.Password);
+                user.Salt = hashProvider.SaltValue;
+
                 dal.Register(user);
                 Session["user"] = user;
                 user.IsTaken = false;
@@ -69,6 +74,8 @@ namespace Capstone.Web.Controllers
         {
             UserSqlDal dal = new UserSqlDal();
 
+
+
             user = dal.Login(user.Username, user.Password);
 
             if (user == null)
@@ -78,12 +85,16 @@ namespace Capstone.Web.Controllers
                 return View("Login", user);
             }
             user.LoginFail = false;
+            user.IsOnline = true;
             Session["user"] = user;
             return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Logout()
         {
+            UserModel user = new UserModel();
+            user = (UserModel)Session["user"];
+            user.IsOnline = false;
             Session.Abandon();
             
             return RedirectToAction("Index", "Home");

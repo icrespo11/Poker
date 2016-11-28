@@ -25,5 +25,6 @@ namespace Capstone.Web.Models
         public string Privilege { get; set; }
         public bool IsTaken { get; set; }
         public bool LoginFail { get; set; }
+        public string Salt { get; set; }
     }
 }
