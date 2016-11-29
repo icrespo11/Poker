@@ -120,13 +120,23 @@ namespace Capstone.Web.Controllers
         public ActionResult GetAuthenticatedUser()
         {
             UserModel model = (UserModel)Session["user"];
-
+            
             if (IsAuthenticated)
             {
                 model = dal.Login(model.Username);
             }
 
             return PartialView("_NavBar", model);
+        }
+
+        //top 10 most current chips
+
+        public ActionResult TopScores()
+        {
+            UserSqlDal dal = new UserSqlDal();
+            Dictionary<String, int> TopScores = dal.GetAllUsernamesWithChipsSortedByChipCount();
+
+            return View("TopScores", TopScores);
         }
     }
 }

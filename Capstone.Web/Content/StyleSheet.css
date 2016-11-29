@@ -34,12 +34,17 @@ nav{
     background-color: #353230;
     position:fixed;
     display:block;
-    margin-top:0%;
-    text-align:right;
+   
 }
 
-nav ul{
+#nav-login{
     display:inline-block;
+    margin-left: 66em;
+}
+
+#nav-logout{
+    display:inline-block;
+    margin-left: 60em;
 }
 
 nav #userInfo{
@@ -47,16 +52,14 @@ nav #userInfo{
     color:white;
     font-weight:bold;
     font-size:1.2em;
-    margin-right:36em;
     display:inline;
-    padding-right:10em;
+    padding-left: 0.5em;
 }
 
 nav li{
     list-style-type: none;
     display: inline-block;
-    margin-right:2em;
-    padding:.5%;
+    padding: 1em;
 }
 
 nav a{
@@ -80,7 +83,7 @@ section {
     position:fixed;
     width:80%;
     margin:10%;
-    margin-top:6%;
+    margin-top:4em;
     height:31em;
     display:block;
 }
