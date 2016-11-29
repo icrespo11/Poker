@@ -12,6 +12,11 @@
     <title>Layout</title>
 </head>
 <body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            @Html.Action("GetAuthenticatedUser", "User")
+        </div>
+    </nav>
     <div> 
         @RenderBody()
     </div>
