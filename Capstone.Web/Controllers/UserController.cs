@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Capstone.Web.Controllers
 {
-    public class UserController: Controller
+    public class UserController : Controller
     {
         private readonly IUserSqlDal dal;
 
@@ -98,9 +98,13 @@ namespace Capstone.Web.Controllers
         {
             UserModel user = new UserModel();
             user = (UserModel)Session["user"];
-            user.IsOnline = false;
-            Session.Abandon();
-            
+
+            if (user != null)
+            {
+                user.IsOnline = false;
+                Session.Abandon();
+            }
+
             return RedirectToAction("Index", "Home");
         }
     }

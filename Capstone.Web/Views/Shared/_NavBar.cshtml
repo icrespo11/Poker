@@ -1,0 +1,22 @@
+﻿@model Capstone.Web.Models.UserModel
+@if (Model == null)
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "User") </li>
+        <li>@Html.ActionLink("Log In", "Login", "User")</li>
+    </ul>
+}
+else
+{
+    <ul class="nav navbar-nav">
+        <li>@Model.Username</li>
+        <li>@Model.CurrentMoney.ToString("C")</li>
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Log Out", "Logout", "User")</li>
+    </ul>
+}
+
+<h2>_NavBar</h2>
+
