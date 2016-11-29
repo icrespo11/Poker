@@ -8,10 +8,12 @@
 }
 else
 {
-    <ul id="userInfo">
-        <li>@Model.Username</li>
-        <li>@Model.CurrentMoney.ToString("C")</li>
-    </ul>
+    <div id="userInfo">
+        <ul id="userInfoList">
+            <li>@Model.Username</li>
+            <li>@Model.CurrentMoney.ToString("C")</li>
+        </ul>
+    </div>
 
     <ul id="nav-logout">
         <li>@Html.ActionLink("Log Out", "Logout", "User")</li>

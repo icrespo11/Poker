@@ -18,7 +18,6 @@ body{
 }
 
 #background img{
-    position:absolute;
     top:0;
     left:0;
     right:0;
@@ -26,6 +25,7 @@ body{
     margin:auto;
     min-width:50%;
     min-height:50%;
+    position:absolute;
 }
 
 nav{
@@ -34,32 +34,37 @@ nav{
     background-color: #353230;
     position:fixed;
     display:block;
-   
+    text-align: right;
 }
 
 #nav-login{
     display:inline-block;
-    margin-left: 66em;
+    padding: 0.2em;
 }
 
 #nav-logout{
     display:inline-block;
-    margin-left: 60em;
 }
 
 nav #userInfo{
+    display: inline-block;
+    text-align: left;
+    width: auto;
+}
+
+nav #userInfoList{
     text-align:left;
     color:white;
     font-weight:bold;
     font-size:1.2em;
     display:inline;
-    padding-left: 0.5em;
 }
 
 nav li{
     list-style-type: none;
     display: inline-block;
     padding: 1em;
+    padding-right: 1.5em;
 }
 
 nav a{
@@ -78,14 +83,11 @@ section {
     background-color: #277714;
     border: 0em solid black;
     border-radius: 1em;
-    min-height: 20em;
     padding: 1%;
     position:fixed;
     width:80%;
-    margin:10%;
-    margin-top:4em;
-    height:31em;
+    margin-left:9%;
+    margin-top:5em;
+    height:75%;
     display:block;
 }
-
-
