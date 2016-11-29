@@ -11,6 +11,8 @@ namespace Capstone.Web.Models
 
         public int Pot { get; set; }
 
+        public DeckOfCards Deck { get; set; }
+
         //Or use Community card class?
         public List<Card> CommunityCards;
 

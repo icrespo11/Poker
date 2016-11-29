@@ -9,9 +9,9 @@ namespace Capstone.Web.Controllers
     public class GameController : Controller
     {
         // GET: Game
-        public ActionResult Index()
+        public ActionResult Game()
         {
-            return View();
+            return View("Rules");
         }
     }
 }
