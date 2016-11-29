@@ -107,5 +107,26 @@ namespace Capstone.Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        public bool IsAuthenticated
+        {
+            get
+            {
+                return Session["user"] != null;
+            }
+        }
+
+        [ChildActionOnly]
+        public ActionResult GetAuthenticatedUser()
+        {
+            UserModel model = (UserModel)Session["user"];
+
+            if (IsAuthenticated)
+            {
+                model = dal.Login(model.Username);
+            }
+
+            return View("_NavBar", model);
+        }
     }
 }
