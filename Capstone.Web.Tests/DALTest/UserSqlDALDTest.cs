@@ -30,9 +30,9 @@ namespace Capstone.Web.Tests.DALTest
                 cmd.ExecuteNonQuery();
 
                 cmd = new SqlCommand("INSERT INTO users VALUES" +
-                    "('Brian', 'pwd', 500, 2000, 'admin', 0), " +
-                    "('Bob', 'pwd2', 50000, 50020, 'admin', 1), " +
-                    "('Boo', 'Hoo', 1000, 1000, 'player', 0) "
+                    "('Brian', 'pwd', 500, 2000, 'admin', 0, 'LOL__WUT'), " +
+                    "('Bob', 'pwd2', 50000, 50020, 'admin', 1, '8675309z'), " +
+                    "('Boo', 'Hoo', 1000, 1000, 'player', 0, 'omg-hash') "
                     , conn);
                 //cmd = new SqlCommand("INSERT INTO users VALUES((" +
                 //     "'Brian', 'pwd', 500, 2000, 'admin', 0);", conn);
@@ -97,8 +97,8 @@ namespace Capstone.Web.Tests.DALTest
                     u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
                     u.HighestMoney = Convert.ToInt32(reader["highest_money"]);
                     u.Privilege = Convert.ToString(reader["privilege"]);
-                    u.IsOnline = Convert.ToBoolean(reader["is_online"]);                  
-
+                    u.IsOnline = Convert.ToBoolean(reader["is_online"]);
+                    u.Salt = Convert.ToString(reader["salt"]);
                     allUsers.Add(u);
                 }
 
@@ -107,6 +107,7 @@ namespace Capstone.Web.Tests.DALTest
                 Assert.AreEqual("Boa", allUsers[3].Username);
                 Assert.AreEqual("aaa", allUsers[3].Password);
                 Assert.AreEqual(50000, allUsers[2].CurrentMoney);
+                Assert.AreEqual("omg-hash", allUsers[1].Salt);
             }
 
         }
@@ -115,19 +116,21 @@ namespace Capstone.Web.Tests.DALTest
         public void TestLoginSuccess()
         {
             UserSqlDal dal = new UserSqlDal();
-            UserModel a = dal.Login("Bob", "pwd2");
+            UserModel a = dal.Login("Bob");
 
             Assert.AreEqual(50000, a.CurrentMoney);
             Assert.AreEqual("admin", a.Privilege);
+            Assert.AreEqual("pwd2", a.Password);
         }
 
+        //this kinda made more sense when we were checking password in the DAL
         [TestMethod]
         public void TestLoginFail()
         {
             UserSqlDal dal = new UserSqlDal();
-            UserModel a = dal.Login("Bob", "pwd3");
-            UserModel b = dal.Login("arglefargle", "3");
-            UserModel c = dal.Login("Bo", "Hoo");
+            UserModel a = dal.Login("Boa");
+            UserModel b = dal.Login("arglefargle");
+            UserModel c = dal.Login("Bo");
             Assert.IsNull(a);
             Assert.IsNull(b);
             Assert.IsNull(c);
