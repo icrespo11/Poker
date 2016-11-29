@@ -1,0 +1,30 @@
+﻿@model Dictionary<String, int>
+@{
+    ViewBag.Title = "TopScores";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int counter = 0;
+}
+<section>
+    <h2>TOP PLAYERS</h2>
+
+    <table>
+        <tr>
+            <td>Rank</td>
+            <td>Name</td>
+            <td>Current Chips</td>
+        </tr>
+
+        @foreach (var kvp in Model)
+        {
+            counter++;
+            <tr>
+                <td>@counter)</td>
+                <td>@kvp.Key</td>
+                <td>@kvp.Value</td>
+            </tr>
+        }
+    </table>
+
+</section>
+
+

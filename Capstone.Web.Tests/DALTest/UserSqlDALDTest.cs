@@ -59,6 +59,18 @@ namespace Capstone.Web.Tests.DALTest
             CollectionAssert.Contains(output, "Boo");
             CollectionAssert.DoesNotContain(output, "Boa");
         }
+        [TestMethod]
+        public void TestGetTop10UserNamesWithChipCounts()
+        {
+            UserSqlDal dal = new UserSqlDal();
+            Dictionary<string, int> output = dal.GetAllUsernamesWithChipsSortedByChipCount();
+            Assert.AreEqual(3, output.Count);
+            //CollectionAssert.Contains(output, "Boo");
+            Assert.AreEqual(50000, output["Bob"]);
+            Assert.AreEqual(500, output["Brian"]);
+            CollectionAssert.DoesNotContain(output.Keys, "Boa");
+        }
+
 
         [TestMethod]
         public void TestAddUser()

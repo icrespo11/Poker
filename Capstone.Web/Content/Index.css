@@ -1,0 +1,23 @@
+﻿#jackHead {
+    height: 15em;
+    width: auto;
+    float:right;
+}
+#welcomeMessage {
+    font-size: 5em;
+}
+.indexPageDiv {
+    /*background-color:whitesmoke;*/
+    border-radius:1em;
+    padding-top:1em;
+    padding-bottom: 1em;
+    width: 24em;
+    border:solid 1px;
+    border-color:gold;
+    
+
+}
+.welcomeAnchor {
+    text-decoration: none;
+    color: gold;
+}

@@ -3,8 +3,31 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<link href="~/Content/Index.css" rel="stylesheet" />
+
 <section>
 
-<p>Welcome to Poker Night</p>
+<p id="welcomeMessage">Welcome to Poker Night!</p>
+<img id="jackHead" src="~/Content/img/blackjack-303154_960_720.png" /> 
+
+    <div class="indexPageDiv">
+        <p>Sign Up and Play Now!</p>
+        <a class="welcomeAnchor" href="~/User/Register"> Click Here!</a>
+    </div>
+
+    <div class="indexPageDiv">
+        <p>Already a Member? Log In and Play!</p>
+        <a class="welcomeAnchor" href="~/User/Login"> Click Here!</a>
+    </div>
+
+    <div class="indexPageDiv">
+        <p>Don't Know How To Play Hold'em?</p>
+        <a class="welcomeAnchor" href="~/Game/Rules"> Click Here To See The Rules!</a>
+    </div>
+    <div class="indexPageDiv">
+        <p>Want To See The Leaderboard?</p>
+        <a class="welcomeAnchor" href="~/User/TopScores"> Click Here!</a>
+    </div>
+
 
 </section>
