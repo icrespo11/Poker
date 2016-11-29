@@ -23,5 +23,7 @@ namespace Capstone.Web.Models
         public int BigBlind { get; set; }
 
         public int Ante { get; set; }
+
+        public int MaxBuyIn { get; set; }
     }
 }
