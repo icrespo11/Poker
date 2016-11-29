@@ -1,5 +1,9 @@
-﻿section {
-    background-color: white;
+﻿body{
+    background-color: #353230;
+}
+
+section {
+    background-color: #277714;
     border: 0.2em solid black;
     border-radius: 1em;
     min-height: 20em;

@@ -126,7 +126,7 @@ namespace Capstone.Web.Controllers
                 model = dal.Login(model.Username);
             }
 
-            return View("_NavBar", model);
+            return PartialView("_NavBar", model);
         }
     }
 }
