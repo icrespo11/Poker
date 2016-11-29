@@ -27,5 +27,8 @@ namespace Capstone.Web.Models
         public int Ante { get; set; }
 
         public int MaxBuyIn { get; set; }
+
+        public int StateCounter { get; set; }
+
     }
 }

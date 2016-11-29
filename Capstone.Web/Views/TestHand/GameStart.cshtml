@@ -1,7 +1,42 @@
-﻿
+﻿@model Capstone.Web.Models.Table
 @{
     ViewBag.Title = "GameStart";
+    List<Capstone.Web.Models.Seat> seatList = Model.Seats;
 }
+<section>
+    <h2>Player Hands</h2>
+    
+        @foreach (var seat in seatList)
+        {
+            <p>@seat.UserName</p>
 
-<h2>GameStart</h2>
+            if (seat.Hand.MyHand != null)
+            {
+                foreach (var card in seat.Hand.MyHand)
+                {
+                    <p>@card.Suit @card.Number</p>
+                }
+            }
 
+        }
+    <h2>Community Cards</h2>
+    
+    
+    @foreach (var card in Model.CommunityCards)
+    {
+        <p>@card.Suit @card.Number</p>
+    }
+
+
+    @if (Model.StateCounter > 4)
+    {
+        <p>Hand Is Over</p>
+    }
+    @using (Html.BeginForm("GameStart", "TestHand", FormMethod.Post))
+    {
+        @Html.Hidden("id", 1)
+        <button>Advance</button>
+    }
+    
+    
+</section>
