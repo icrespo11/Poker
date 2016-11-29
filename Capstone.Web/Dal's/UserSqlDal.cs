@@ -71,6 +71,35 @@ namespace Capstone.Web.Dal_s
             }
         }
 
+        //need to test this one
+        public Dictionary<string, int> GetAllUsernamesWithChipsSortedByChipCount()
+        {
+            Dictionary<string, int> output = new Dictionary<string, int>();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT TOP 10 username, current_money from users ORDER BY current_money DESC;", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        output.Add(Convert.ToString(reader["username"]), Convert.ToInt32(reader["current_money"]));
+                    }
+                }
+                catch (SqlException)
+                {
+
+                    throw;
+                }
+
+                return output;
+            }
+        }
+
         public UserModel Login(string username)
         {
             UserModel user = null;

@@ -14,7 +14,7 @@
             {
                 foreach (var card in seat.Hand.MyHand)
                 {
-                    <p>@card.ConvertedNumber @card.SuitLetter </p>
+                    <p>@card.Suit @card.Number</p>
                 }
             }
 
@@ -24,7 +24,7 @@
     
     @foreach (var card in Model.CommunityCards)
     {
-        <p>@card.ConvertedNumber @card.SuitLetter  </p>
+        <p>@card.Suit @card.Number</p>
     }
 
 

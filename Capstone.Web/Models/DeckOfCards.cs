@@ -19,19 +19,47 @@ namespace Capstone.Web.Models
                 Card c = new Card();
                 c.Number = i;
                 c.Suit = "Spades";
+                c.SuitLetter = "♠";
                 cardList.Add(c);
                 c = new Card();
                 c.Number = i;
                 c.Suit = "Hearts";
+                c.SuitLetter = "♡";
                 cardList.Add(c);
                 c = new Card();
                 c.Number = i;
                 c.Suit = "Clubs";
+                c.SuitLetter = "♣";
                 cardList.Add(c);
                 c = new Card();
                 c.Number = i;
                 c.Suit = "Diamonds";
+                c.SuitLetter = "♢";
                 cardList.Add(c);
+            }
+
+            for (int j = 0; j < 52; j++)
+            {
+                if (cardList[j].Number == 1)
+                {
+                    cardList[j].ConvertedNumber = "A";
+                }
+                else if (cardList[j].Number == 11)
+                {
+                    cardList[j].ConvertedNumber = "J";
+                }
+                else if (cardList[j].Number == 12)
+                {
+                    cardList[j].ConvertedNumber = "Q";
+                }
+                else if (cardList[j].Number == 13)
+                {
+                    cardList[j].ConvertedNumber = "K";
+                }
+                else
+                {
+                    cardList[j].ConvertedNumber = cardList[j].Number.ToString();
+                }
             }
             //call shuffle here?
         }
