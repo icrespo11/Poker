@@ -1,7 +1,7 @@
 ﻿@model Capstone.Web.Models.UserModel
 @if (Model == null)
 {
-    <ul>
+    <ul id="nav-login">
         <li>@Html.ActionLink("Register", "Register", "User") </li>
         <li>@Html.ActionLink("Log In", "Login", "User")</li>
     </ul>
@@ -13,7 +13,7 @@ else
         <li>@Model.CurrentMoney.ToString("C")</li>
     </ul>
 
-    <ul>
+    <ul id="nav-logout">
         <li>@Html.ActionLink("Log Out", "Logout", "User")</li>
     </ul>
 }
