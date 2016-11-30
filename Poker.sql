@@ -1,7 +1,9 @@
 create database poker;
 
 
+drop table table_players;
 drop table users;
+drop table poker_table;
 
 create table users (
 username varchar(200) Not Null,
@@ -15,6 +17,27 @@ salt varchar(200) Not Null,
 constraint pk_users_username Primary Key(username)
 );
 
+
+create table poker_table (
+table_ID integer identity Not Null,
+host varchar(200) Not Null,
+name varchar(200) Not Null,
+min_bet integer Not Null,
+max_bet integer Not Null,
+ante integer Not Null,
+
+constraint pk_poker_table_table_id Primary Key(table_ID),
+constraint fk_poker_table_users_host_username Foreign Key(host) References users(username),
+);
+
+create table table_players (
+table_ID integer Not Null,
+player varchar(200) Not Null,
+
+constraint pk_table_players_player_table_id Primary Key(table_ID, player),
+constraint fk_table_players_poker_table_table_id Foreign Key(table_ID) References poker_table(table_ID),
+constraint fk_table_players_users_players_username Foreign Key(player) References users(username),
+);
 
 --insert into users values ('BrianCobb', 'password', 1000, 1000, 'admin', 0, 'dddddddd');
 --insert into users values ('Dan', 'password', 1000, 1000, 'admin', 0, 'cccccccc');

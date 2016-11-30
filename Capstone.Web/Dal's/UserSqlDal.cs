@@ -10,7 +10,7 @@ namespace Capstone.Web.Dal_s
 {
     public class UserSqlDal : IUserSqlDal
     {
-        static string connectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=poker;Persist Security Info=True;User ID=te_student;Password=techelevator";
+        static string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=poker;Persist Security Info=True;User ID=te_student;Password=techelevator";
 
         public bool Register(UserModel user)
         {

@@ -30,5 +30,10 @@ namespace Capstone.Web.Models
 
         public int StateCounter { get; set; }
 
+        public int TableID { get; set; }
+
+        public string TableHost { get; set; }
+
+        public string Name { get; set; }
     }
 }
