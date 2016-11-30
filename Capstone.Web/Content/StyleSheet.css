@@ -121,3 +121,27 @@ section {
     color:gold;
     text-shadow: -3px 3px 2px black; 
 }
+
+
+.inputDiv{
+    margin:.2em;
+    margin-bottom:.3em;
+}
+
+.inputBox{
+    width:18em;
+}
+
+.inputBox input{
+    float:left;
+    margin-right:.5em;
+}
+
+.field-validation-error{
+    color:#920606;
+    font-weight: bold;
+}
+
+.errorMessage{
+    margin-top: .3em;
+}
