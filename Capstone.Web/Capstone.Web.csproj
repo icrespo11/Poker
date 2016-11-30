@@ -155,7 +155,9 @@
     <Compile Include="Controllers\TestHandController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Crypto\HashProvider.cs" />
+    <Compile Include="Dal%27s\ITableDal.cs" />
     <Compile Include="Dal%27s\IUserSqlDal.cs" />
+    <Compile Include="Dal%27s\TableSqlDal.cs" />
     <Compile Include="Dal%27s\UserSqlDal.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
