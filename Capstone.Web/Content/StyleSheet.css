@@ -1,82 +1,82 @@
 ﻿* {
-    margin:0;
-    padding:0;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-    margin:0;
+body {
+    margin: 0;
     font-family: sans-serif;
 }
 
-#background{
-    position:fixed;
-    top:-50%;
-    left:-50%;
-    width:200%;
-    height:200%;
-    z-index:-1;
+#background {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    z-index: -1;
 }
 
-#background img{
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    margin:auto;
-    min-width:50%;
-    min-height:50%;
-    position:absolute;
-}
+    #background img {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        min-width: 50%;
+        min-height: 50%;
+        position: absolute;
+    }
 
-nav{
-    width:100%;
-    height:auto;
+nav {
+    width: 100%;
+    height: auto;
     background-color: #353230;
-    position:fixed;
-    display:block;
+    position: fixed;
+    display: block;
     text-align: right;
 }
 
-#nav-login{
-    display:inline-block;
+#nav-login {
+    display: inline-block;
     padding: 0.2em;
 }
 
-#nav-logout{
-    display:inline-block;
+#nav-logout {
+    display: inline-block;
 }
 
-nav #userInfo{
+nav #userInfo {
     display: inline-block;
     text-align: left;
     width: auto;
 }
 
-nav #userInfoList{
-    text-align:left;
-    color:white;
-    font-weight:bold;
-    font-size:1.2em;
-    display:inline;
+nav #userInfoList {
+    text-align: left;
+    color: white;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: inline;
 }
 
-nav li{
+nav li {
     list-style-type: none;
     display: inline-block;
     padding: 1em;
     padding-right: 1.5em;
 }
 
-nav a{
-    color:white;
+nav a {
+    color: white;
     text-decoration: none;
     font-weight: bold;
-    font-size:1.2em;
+    font-size: 1.2em;
 }
 
-nav a:hover{
-    text-shadow: 0 0 3px white;
-}
+    nav a:hover {
+        text-shadow: 0 0 3px white;
+    }
 
 
 section {
@@ -84,10 +84,40 @@ section {
     border: 0em solid black;
     border-radius: 1em;
     padding: 1%;
-    position:fixed;
-    width:80%;
-    margin-left:9%;
-    margin-top:5em;
-    height:75%;
-    display:block;
+    position: fixed;
+    width: 80%;
+    margin-left: 9%;
+    margin-top: 5em;
+    height: 75%;
+    display: block;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+    ::-webkit-scrollbar:horizontal {
+        overflow: hidden;
+    }
+
+/*::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+}*/
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+/*Rules Styling*/
+#cardHierarchy li {
+    list-style-type: none;
+}
+
+.rulesHeading{
+    color:gold;
+    text-shadow: -3px 3px 2px black; 
 }
