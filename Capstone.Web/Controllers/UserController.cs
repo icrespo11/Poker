@@ -83,13 +83,15 @@ namespace Capstone.Web.Controllers
 
             HashProvider provider = new HashProvider();
 
-            if (provider.VerifyPasswordMatch(existingUser.Password, user.LoginPassword, existingUser.Salt))
+            if (user.LoginPassword != null && provider.VerifyPasswordMatch(existingUser.Password, user.LoginPassword, existingUser.Salt))
             {
                 user.LoginFail = false;
                 user.IsOnline = true;
                 Session["user"] = user;
                 return RedirectToAction("Index", "Home");
             }
+
+            user.LoginFail = true;
             return View("Login", user);
         }
 
@@ -119,7 +121,7 @@ namespace Capstone.Web.Controllers
         public ActionResult GetAuthenticatedUser()
         {
             UserModel model = (UserModel)Session["user"];
-            
+
             if (IsAuthenticated)
             {
                 model = dal.Login(model.Username);
