@@ -75,16 +75,15 @@ namespace Capstone.Web.Controllers
             UserSqlDal dal = new UserSqlDal();
             UserModel existingUser = dal.Login(user.Username);
 
-            if (user == null)
+            if (existingUser == null)
             {
-                user = new UserModel();
                 user.LoginFail = true;
                 return View("Login", user);
             }
 
             HashProvider provider = new HashProvider();
 
-            if (provider.VerifyPasswordMatch(existingUser.Password, user.Password, existingUser.Salt))
+            if (provider.VerifyPasswordMatch(existingUser.Password, user.LoginPassword, existingUser.Salt))
             {
                 user.LoginFail = false;
                 user.IsOnline = true;

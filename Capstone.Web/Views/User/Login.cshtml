@@ -7,28 +7,28 @@
 
 <section>
 
-<h2>Login</h2>
+    <h2>Login</h2>
 
-@using (Html.BeginForm("Login", "User", FormMethod.Post))
-{
-    <div>
-        @{
-            if (Model.LoginFail)
-            {
-                <p>Username or password is invalid.</p>
+    @using (Html.BeginForm("Login", "User", FormMethod.Post))
+    {
+        <div class="errorMessage field-validation-error">
+            @{
+                if (Model.LoginFail)
+                {
+                    <p>Username or password is invalid.</p>
+                }
             }
-        }
-    </div>
+        </div>
 
-    <div>
-        @Html.LabelFor(m => m.Username)
-        @Html.TextBoxFor(m => m.Username)
-    </div>
-    <div>
-        @Html.LabelFor(m => m.Password)
-        @Html.PasswordFor(m => m.Password)
-    </div>
-    <button>Login</button>
-            }
+        <div class="inputBox">
+            @Html.LabelFor(m => m.Username)
+            @Html.TextBoxFor(m => m.Username)
+        </div>
+        <div class="inputBox">
+            @Html.LabelFor(m => m.LoginPassword, "Password")
+            @Html.PasswordFor(m => m.LoginPassword)
+        </div>
+        <button>Login</button>
+    }
 
 </section>

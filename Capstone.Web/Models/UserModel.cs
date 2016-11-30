@@ -19,6 +19,7 @@ namespace Capstone.Web.Models
         [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Passwords Do Not Match!")]
         public string ConfirmPassword { get; set; }
 
+        public string LoginPassword { get; set; }
         public int CurrentMoney { get; set; }
         public int HighestMoney { get; set; }
         public bool IsOnline { get; set; }

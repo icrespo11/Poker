@@ -10,28 +10,34 @@
 
     @using (Html.BeginForm("Register", "User", FormMethod.Post))
     {
-        <div>
-            @{
-                if (Model.IsTaken)
-                {
-                    <p>Username is unavailable. Please select a different one.</p>
+
+        <div class="inputDiv">
+            <div class="inputBox">
+                @Html.LabelFor(m => m.Username)
+                @Html.TextBoxFor(m => m.Username, new { placeHolder = "Username" })
+            </div>
+            <div class="errorMessage field-validation-error">
+                @{
+                    if (Model.IsTaken)
+                    {
+                        <p>Username is unavailable. Please select a different one.</p>
+                    }
                 }
-            }
+            </div>
         </div>
-        <div>
-            @Html.LabelFor(m => m.Username)
-            @Html.TextBoxFor(m => m.Username, new { placeHolder = "Username" })
-            @Html.ValidationMessageFor(m => m.Username)
+        <div class="inputDiv">
+            <div class="inputBox">
+                @Html.LabelFor(m => m.Password)
+                @Html.PasswordFor(m => m.Password, new { placeHolder = "Password" })
+            </div>
+            <div class="errorMessage">@Html.ValidationMessageFor(m => m.Password, null, new { @class = "errorMessage" })</div>
         </div>
-        <div>
-            @Html.LabelFor(m => m.Password)
-            @Html.PasswordFor(m => m.Password, new { placeHolder = "Password" })
-            @Html.ValidationMessageFor(m => m.Password)
-        </div>
-        <div>
-            @Html.LabelFor(m => m.ConfirmPassword)
-            @Html.PasswordFor(m => m.ConfirmPassword, new { placeHolder = "Confirm Password" })
-            @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        <div class="inputDiv">
+            <div class="inputBox">
+                @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password")
+                @Html.PasswordFor(m => m.ConfirmPassword, new { placeHolder = "Confirm Password" })
+            </div>
+            <div class="errorMessage">@Html.ValidationMessageFor(m => m.ConfirmPassword, null, new { @class = "errorMessage" })</div>
         </div>
         <button>Create Account</button>
                 }
