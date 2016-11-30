@@ -112,6 +112,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\blackjack-303154_960_720.png" />
     <Content Include="Content\img\chips.jpg" />
+    <Content Include="Content\img\img-noise-361x370 %281%29.png" />
     <Content Include="Content\Leaderboard.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Content\StyleSheet.css" />
