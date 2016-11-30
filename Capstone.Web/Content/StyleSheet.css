@@ -121,20 +121,24 @@ section {
 #indexDivs{
     display: inline-block;
     max-width: 49.5%;
-    vertical-align:top;
+    margin: 1em;
+    margin-top: 0em;
 }
 
 
 #jackHead {
     height: auto;
-    width: 100%;
     display: inline-block;
-    max-width: 49.5%;
-
+    max-width: 26em;
+    margin:1em;
+    margin-top: 0em;
+    vertical-align: bottom;
 }
 
 #welcomeMessage {
     font-size: 5em;
+    color: gold;
+    text-shadow: -5px 3px 10px black;
 }
 
 .indexPageDiv {

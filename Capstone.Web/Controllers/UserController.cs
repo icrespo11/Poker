@@ -88,7 +88,7 @@ namespace Capstone.Web.Controllers
                 user.LoginFail = false;
                 user.IsOnline = true;
                 Session["user"] = user;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("LoggedInLanding", "Home");
             }
 
             user.LoginFail = true;
