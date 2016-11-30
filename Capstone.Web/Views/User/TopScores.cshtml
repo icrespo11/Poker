@@ -4,10 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int counter = 0;
 }
-<section>
-    <h2>TOP PLAYERS</h2>
+<section id="leaderBoardSection">
+    <link href="~/Content/Leaderboard.css" rel="stylesheet" />
+    <h1 class="topScoresHeading">TOP PLAYERS</h1>
 
-    <table>
+    <table id="leaderTable">
         <tr>
             <td>Rank</td>
             <td>Name</td>
@@ -20,7 +21,7 @@
             <tr>
                 <td>@counter)</td>
                 <td>@kvp.Key</td>
-                <td>@kvp.Value</td>
+                <td>@kvp.Value.ToString("C")</td>
             </tr>
         }
     </table>

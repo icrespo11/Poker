@@ -1,23 +1,25 @@
-﻿#jackHead {
-    height: 15em;
-    width: auto;
-    float:right;
-}
-#welcomeMessage {
+﻿#welcomeMessage {
     font-size: 5em;
 }
+
 .indexPageDiv {
-    /*background-color:whitesmoke;*/
     border-radius:1em;
     padding-top:1em;
     padding-bottom: 1em;
     width: 24em;
     border:solid 1px;
     border-color:gold;
-    
-
+    margin-top: 1em;
+    text-align: center;
 }
+
 .welcomeAnchor {
     text-decoration: none;
     color: gold;
+}
+
+#jackHead {
+    height: 15em;
+    width: auto;
+    float: right;
 }
