@@ -19,7 +19,7 @@ constraint pk_users_username Primary Key(username)
 
 
 create table poker_table (
-table_ID integer identity Not Null,
+table_id integer identity Not Null,
 host varchar(200) Not Null,
 name varchar(200) Not Null,
 min_bet integer Not Null,
@@ -31,13 +31,27 @@ constraint fk_poker_table_users_host_username Foreign Key(host) References users
 );
 
 create table table_players (
-table_ID integer Not Null,
+table_id integer Not Null,
 player varchar(200) Not Null,
 
 constraint pk_table_players_player_table_id Primary Key(table_ID, player),
 constraint fk_table_players_poker_table_table_id Foreign Key(table_ID) References poker_table(table_ID),
 constraint fk_table_players_users_players_username Foreign Key(player) References users(username),
 );
+
+
+create table hand (
+hand_id integer Not Null,
+player varchar(200) Not Null,
+table_id integer Not Null,
+card_number integer Not Null,
+card_suit varchar(8) Not Null,
+
+constraint pk_hand_hand_id_card_number_card_suit Primary Key (hand_id, card_number, card_suit),
+constraint fk_hand_users_player_username Foreign Key (player) References users (username),
+constraint fk_hand_poker_table_table_id Foreign Key (table_id) References poker_table (table_id),
+);
+
 
 insert into users values ('BrianCobb', 'password', 1000, 1000, 'admin', 0, 'dddddddd');
 insert into users values ('Dan', 'password', 1000, 1000, 'admin', 0, 'cccccccc');
@@ -47,7 +61,7 @@ insert into users values ('ThatCrazyCow', 'password', 5000, 5000, 'admin', 0, 'a
 insert into users values ('IWentBroke', 'password', 1, 1000, 'admin', 0, 'RickAstl');
 
 insert into poker_table (host, name, min_bet, max_bet, ante) VALUES
-('Dan', 'DanTheManWithTheMasterPlan', 10, 20, 10),
+('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10),
 ('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50);
 
 insert into table_players (table_ID, player) VALUES 

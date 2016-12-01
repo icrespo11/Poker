@@ -37,30 +37,7 @@ namespace Capstone.Web.Models
                 c.SuitLetter = "♢";
                 cardList.Add(c);
             }
-
-            for (int j = 0; j < 52; j++)
-            {
-                if (cardList[j].Number == 1)
-                {
-                    cardList[j].ConvertedNumber = "A";
-                }
-                else if (cardList[j].Number == 11)
-                {
-                    cardList[j].ConvertedNumber = "J";
-                }
-                else if (cardList[j].Number == 12)
-                {
-                    cardList[j].ConvertedNumber = "Q";
-                }
-                else if (cardList[j].Number == 13)
-                {
-                    cardList[j].ConvertedNumber = "K";
-                }
-                else
-                {
-                    cardList[j].ConvertedNumber = cardList[j].Number.ToString();
-                }
-            }
+            GetSuitAndLetterValues();
             //call shuffle here?
         }
 
@@ -86,5 +63,48 @@ namespace Capstone.Web.Models
             return output;
         }
 
+        public void GetSuitAndLetterValues()
+        {
+            for (int j = 0; j < 52; j++)
+            {
+                if (cardList[j].Number == 1)
+                {
+                    cardList[j].ConvertedNumber = "A";
+                }
+                else if (cardList[j].Number == 11)
+                {
+                    cardList[j].ConvertedNumber = "J";
+                }
+                else if (cardList[j].Number == 12)
+                {
+                    cardList[j].ConvertedNumber = "Q";
+                }
+                else if (cardList[j].Number == 13)
+                {
+                    cardList[j].ConvertedNumber = "K";
+                }
+                else
+                {
+                    cardList[j].ConvertedNumber = cardList[j].Number.ToString();
+                }
+
+                if (cardList[j].Suit.ToLower() == "spades")
+                {
+                    cardList[j].SuitLetter = "♠";
+                }
+                else if (cardList[j].Suit.ToLower() == "hearts")
+                {
+                    cardList[j].SuitLetter = "♡";
+                }
+                else if (cardList[j].Suit.ToLower() == "diamonds")
+                {
+                    cardList[j].SuitLetter = "♢";
+                }
+                else if (cardList[j].Suit.ToLower() == "clubs")
+                {
+                    cardList[j].SuitLetter = "♣";
+                }
+            }
+        }
     }
 }
