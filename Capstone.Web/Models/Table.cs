@@ -9,20 +9,21 @@ namespace Capstone.Web.Models
     {
         public List<Seat> Seats;
 
+        public int DealerPosition { get; set; }
+
         public int Pot { get; set; }
 
         public DeckOfCards Deck { get; set; }
 
-        //Or use Community card class?
-        public List<Card> CommunityCards;
+        //public List<Card> CommunityCards;
 
         public int MaxBet { get; set; }
 
         public int MinBet { get; set; }
 
-        public int SmallBlind { get; set; }
+        //public int SmallBlind { get; set; }
 
-        public int BigBlind { get; set; }
+        //public int BigBlind { get; set; }
 
         public int Ante { get; set; }
 
@@ -35,5 +36,19 @@ namespace Capstone.Web.Models
         public string TableHost { get; set; }
 
         public string Name { get; set; }
+
+        public void changeDealer()
+        {
+            do
+            {
+                DealerPosition++;
+
+                if (Seats.Count < DealerPosition)
+                {
+                    DealerPosition = 0;
+                }
+            }
+            while (Seats[DealerPosition].Occupied == false);
+        }
     }
 }
