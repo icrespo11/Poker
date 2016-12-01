@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Caching;
 using System.Web.Mvc;
 
-
+/*
 namespace Capstone.Web.Controllers
 {
     public class TestHandController : Controller
@@ -93,3 +93,4 @@ namespace Capstone.Web.Controllers
         }
     }
 }
+*/
