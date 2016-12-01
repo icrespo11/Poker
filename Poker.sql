@@ -1,9 +1,10 @@
-create database poker;
-
-
+drop table hand_cards;
+drop table hand_actions;
 drop table table_players;
-drop table users;
+drop table hand;
 drop table poker_table;
+drop table users;
+
 
 create table users (
 username varchar(200) Not Null,
@@ -41,17 +42,38 @@ constraint fk_table_players_users_players_username Foreign Key(player) Reference
 
 
 create table hand (
-hand_id integer Not Null,
-player varchar(200) Not Null,
+hand_id integer identity Not Null,
 table_id integer Not Null,
-card_number integer Not Null,
-card_suit varchar(8) Not Null,
 
-constraint pk_hand_hand_id_card_number_card_suit Primary Key (hand_id, card_number, card_suit),
-constraint fk_hand_users_player_username Foreign Key (player) References users (username),
-constraint fk_hand_poker_table_table_id Foreign Key (table_id) References poker_table (table_id),
+constraint pk_hand_hand_id Primary Key (hand_id),
+constraint fk_hand_poker_table_table_id Foreign Key (table_id) References poker_table(table_id)
 );
 
+
+create table hand_cards (
+hand_id integer Not Null,
+player varchar(200) Not Null,
+seat_number integer Not Null,
+card_number integer Not Null,
+card_suit varchar(8) Not Null,
+discarded bit Not Null,
+
+constraint pk_hand_cards_hand_id_card_number_card_suit Primary Key (hand_id, card_number, card_suit),
+constraint fk_hand_cards_users_player_username Foreign Key (player) References users (username),
+constraint fk_hand_cards_player_hand_hand_id Foreign Key (hand_id) References hand (hand_id),
+);
+
+
+create table hand_actions (
+hand_id integer Not Null,
+player varchar(200) Not Null,
+action varchar(50) Not Null,
+round integer Not Null,
+
+constraint pk_hand_actions_hand_id_player_round Primary Key (hand_id, player, round),
+constraint fk_hand_actions_hand_hand_id Foreign Key (hand_id) References hand (hand_id),
+constraint fk_hand_actions_users_player Foreign Key (player) References users (username),
+);
 
 insert into users values ('BrianCobb', 'password', 1000, 1000, 'admin', 0, 'dddddddd');
 insert into users values ('Dan', 'password', 1000, 1000, 'admin', 0, 'cccccccc');
