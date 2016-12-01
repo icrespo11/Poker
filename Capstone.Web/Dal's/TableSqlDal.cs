@@ -153,5 +153,38 @@ namespace Capstone.Web.Dal_s
             }
             return output;
         }
+
+        public List<Card> GetAllCardsForPlayer(string username)
+        {
+            List<Card> output = new List<Card>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT card_number, card_suit FROM hand_cards WHERE player = @player;", conn);
+                    cmd.Parameters.AddWithValue("@player", username);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Card c = new Card();
+
+                        c.Number = Convert.ToInt32(reader["card_number"]);
+                        c.Suit = Convert.ToString(reader["card_suit"]);
+
+                        output.Add(c);
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return output;
+        }
     }
 }

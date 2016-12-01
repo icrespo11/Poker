@@ -40,6 +40,8 @@ namespace Capstone.Web.Controllers
                 model.Seats.Add(s);
             }
 
+
+
             return View("JoinedTable", model);
         }
 
@@ -60,26 +62,34 @@ namespace Capstone.Web.Controllers
 
         public ActionResult HandSetup(Table model)
         {
-            model.Deck = new DeckOfCards();
-            model.Deck.Shuffle();
 
-            int dealAmount = 0;
+            TableSqlDal dal = new TableSqlDal();
+            model = dal.FindTable(1);
+
+            List<UserModel> players = dal.GetAllPlayersAtTable(1);
 
 
-
-            while (dealAmount < 5)
+            foreach (UserModel player in players)
             {
-                foreach (var seat in model.Seats)
-                {
-                    if (seat.Occupied == true && seat.Active == true)
-                    {
-                        Card c = model.Deck.DrawACard();
-                           
-                        seat.Hand.MyHand.Add(c);
-                    }
-                }
-                dealAmount++;
+                Seat s = new Seat();
+                s.Username = player.Username;
+                s.TableBalance = player.CurrentMoney;
+
+                s.Hand = new Hand();
+
+                s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
+
+                model.Seats.Add(s);
             }
+
+            for (int i = model.Seats.Count; i < 5; i++)
+            {
+                Seat s = new Seat();
+                s.Username = "Available";
+                model.Seats.Add(s);
+            }
+
+
 
             return View("HandSetup", model);
         }

@@ -52,6 +52,7 @@ namespace Capstone.Web.Controllers
 
                 dal.Register(user);
                 Session["user"] = user;
+                Session["username"] = user.Username;
                 user.IsTaken = false;
 
                 return RedirectToAction("Index", "Home");
@@ -88,6 +89,7 @@ namespace Capstone.Web.Controllers
                 user.LoginFail = false;
                 user.IsOnline = true;
                 Session["user"] = user;
+                Session["username"] = user.Username;
                 return RedirectToAction("LoggedInLanding", "Home");
             }
 

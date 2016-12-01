@@ -7,7 +7,7 @@
 
 <section>
     <h2>@Model.Name</h2>
-    
+
     <div id="otherPlayersFields">
         @foreach (var seat in Model.Seats)
         {
@@ -28,10 +28,16 @@
             <div id="currentUserPlayField">
                 <p>@seat.Username</p>
                 <p>@seat.TableBalance.ToString("C")</p>
+                @foreach (var card in seat.Hand.MyHand)
+                {
+                    <div>
+                        <p>@card.Number @card.Suit</p>
+                    </div>
+                }
             </div>
         }
     }
-    
+
     @using (Html.BeginForm("HandSetup", "Game", FormMethod.Get))
     {
         <button>Advance</button>
