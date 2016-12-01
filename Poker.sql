@@ -39,9 +39,21 @@ constraint fk_table_players_poker_table_table_id Foreign Key(table_ID) Reference
 constraint fk_table_players_users_players_username Foreign Key(player) References users(username),
 );
 
---insert into users values ('BrianCobb', 'password', 1000, 1000, 'admin', 0, 'dddddddd');
---insert into users values ('Dan', 'password', 1000, 1000, 'admin', 0, 'cccccccc');
---insert into users values ('Isaac', 'password', 1000, 1000, 'admin', 0, 'bbbbbbbb');
---insert into users values ('Roberto', 'password', 1000, 1000, 'admin', 0, 'aaaaaaaa'); 
---insert into users values ('ThatCrazyCow', 'password', 5000, 5000, 'admin', 0, 'arryarrg');
---insert into users values ('IWentBroke', 'password', 1, 1000, 'admin', 0, 'RickAstl');
+insert into users values ('BrianCobb', 'password', 1000, 1000, 'admin', 0, 'dddddddd');
+insert into users values ('Dan', 'password', 1000, 1000, 'admin', 0, 'cccccccc');
+insert into users values ('Isaac', 'password', 1000, 1000, 'admin', 0, 'bbbbbbbb');
+insert into users values ('Roberto', 'password', 1000, 1000, 'admin', 0, 'aaaaaaaa'); 
+insert into users values ('ThatCrazyCow', 'password', 5000, 5000, 'admin', 0, 'arryarrg');
+insert into users values ('IWentBroke', 'password', 1, 1000, 'admin', 0, 'RickAstl');
+
+insert into poker_table (host, name, min_bet, max_bet, ante) VALUES
+('Dan', 'DanTheManWithTheMasterPlan', 10, 20, 10),
+('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50);
+
+insert into table_players (table_ID, player) VALUES 
+(1, 'Dan'), (1, 'Isaac'), (1, 'IWentBroke'),
+(2, 'ThatCrazyCow'), (2, 'BrianCobb');
+
+SELECT * FROM users;
+SELECT * FROM poker_table;
+SELECT * FROM table_players;
