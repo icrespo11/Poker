@@ -7,7 +7,7 @@ namespace Capstone.Web.Models
 {
     public class Table
     {
-        public List<Seat> Seats;
+        public List<Seat> Seats =  new List<Seat>();
 
         public int DealerPosition { get; set; }
 

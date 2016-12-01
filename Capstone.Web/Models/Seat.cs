@@ -16,9 +16,9 @@ namespace Capstone.Web.Models
         //this stuff might be a player class
         public int TableBalance { get; set; }
 
-        public string UserName { get; set; }
+        public string Username { get; set; }
 
-        public bool Active { get; set; }
+        public bool Active { get; set; } 
 
         public List<Card> Discards { get; set; }
     }

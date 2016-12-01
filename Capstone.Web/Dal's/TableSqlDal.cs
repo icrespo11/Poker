@@ -46,6 +46,40 @@ namespace Capstone.Web.Dal_s
             return t;
         }
 
+        public List<UserModel> GetAllPlayersAtTable(int tableID)
+        {
+            List<UserModel> output = new List<UserModel>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT table_players.player, users.current_money FROM table_players INNER JOIN users ON users.username = table_players.player WHERE table_id = @tableID;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        UserModel u = new UserModel();
+
+                        u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
+                        u.Username = Convert.ToString(reader["player"]);
+
+                        output.Add(u);
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return output;
+        }
+
         public bool CreateTable(Table table, UserModel user)
         {
             int rowsAffected = 0;

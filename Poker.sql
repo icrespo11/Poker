@@ -75,20 +75,28 @@ constraint fk_hand_actions_hand_hand_id Foreign Key (hand_id) References hand (h
 constraint fk_hand_actions_users_player Foreign Key (player) References users (username),
 );
 
-insert into users values ('BrianCobb', 'password', 1000, 1000, 'admin', 0, 'dddddddd');
-insert into users values ('Dan', 'password', 1000, 1000, 'admin', 0, 'cccccccc');
-insert into users values ('Isaac', 'password', 1000, 1000, 'admin', 0, 'bbbbbbbb');
-insert into users values ('Roberto', 'password', 1000, 1000, 'admin', 0, 'aaaaaaaa'); 
-insert into users values ('ThatCrazyCow', 'password', 5000, 5000, 'admin', 0, 'arryarrg');
-insert into users values ('IWentBroke', 'password', 1, 1000, 'admin', 0, 'RickAstl');
+insert into users values ('Brian', 'aWj+MjmYxgDJJs+nZ0I0UT/HXuo=', 1000, 1000, 'admin', 0, 'jX1cFHUweSs=');
+insert into users values ('Dan', '1YHheZjlGm4OX6OwR6juPpk+DVA=', 1000, 1000, 'admin', 0, 'GWg3QKuxpCc=');
+insert into users values ('Isaac', '+6ZmQLH549dDQLpRCe2gUzNJbLU=', 1000, 1000, 'admin', 0, 'PLxvjrzmYSY=');
+insert into users values ('Roberto', '8UIpfDlbW6WP0t/0Uz2P4jp6EO8=', 1000, 1000, 'admin', 0, '9STlYHzStS8='); 
+insert into users values ('ThatCrazyCow', 'LA0WSOFTrk+XK74D751oDcFe4fY=', 5000, 5000, 'admin', 0, 'd8xtGBE936c=');
 
 insert into poker_table (host, name, min_bet, max_bet, ante) VALUES
 ('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10),
 ('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50);
 
 insert into table_players (table_ID, player) VALUES 
-(1, 'Dan'), (1, 'Isaac'), (1, 'IWentBroke'),
-(2, 'ThatCrazyCow'), (2, 'BrianCobb');
+(1, 'Dan'), (1, 'Isaac'),
+(2, 'ThatCrazyCow'), (2, 'Brian');
+
+insert into hand (table_id) values (1);
+insert into hand (table_id) values (2);
+
+insert into hand_cards values 
+(1, 'Dan', 1, 2, 'hearts', 0), (1, 'Dan', 1, 11, 'diamonds', 0), (1, 'Dan', 1, 6, 'hearts', 0), 
+(1, 'Dan', 1, 8, 'clubs', 0), (1, 'Dan', 1, 1, 'diamonds', 0), (1, 'Isaac', 1, 9, 'hearts', 0),
+(1, 'Isaac', 1, 2, 'spades', 0), (1, 'Isaac', 1, 10, 'diamonds', 0), (1, 'Isaac', 1, 13, 'diamonds', 0),
+(1, 'Isaac', 1, 4, 'diamonds', 0);
 
 SELECT * FROM users;
 SELECT * FROM poker_table;

@@ -1,4 +1,5 @@
-﻿using Capstone.Web.Models;
+﻿using Capstone.Web.Dal_s;
+using Capstone.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,33 @@ namespace Capstone.Web.Controllers
         public ActionResult Rules()
         {
             return View("Rules");
+        }
+
+        public ActionResult JoinedTable(Table model)
+        {           
+            TableSqlDal dal = new TableSqlDal();
+            model = dal.FindTable(1);
+
+            List<UserModel> players = dal.GetAllPlayersAtTable(1);
+
+
+            foreach (UserModel player in players)
+            {
+                Seat s = new Seat();
+                s.Username = player.Username;
+                s.TableBalance = player.CurrentMoney;
+
+                model.Seats.Add(s);
+            }
+
+            for (int i = model.Seats.Count; i < 5; i++)
+            {
+                Seat s = new Seat();
+                s.Username = "Available";
+                model.Seats.Add(s);
+            }
+
+            return View("JoinedTable", model);
         }
 
         public ActionResult ConfirmAnte(Table model)
