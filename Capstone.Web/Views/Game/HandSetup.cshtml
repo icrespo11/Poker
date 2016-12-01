@@ -30,8 +30,8 @@
                 <p>@seat.TableBalance.ToString("C")</p>
                 @foreach (var card in seat.Hand.MyHand)
                 {
-                    <div>
-                        <p>@card.Number @card.Suit</p>
+                    <div class="playingCard">
+                        <p>@card.ConvertedNumber @card.SuitLetter</p>
                     </div>
                 }
             </div>

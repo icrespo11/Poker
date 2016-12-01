@@ -23,7 +23,6 @@ namespace Capstone.Web.Controllers
 
             List<UserModel> players = dal.GetAllPlayersAtTable(1);
 
-
             foreach (UserModel player in players)
             {
                 Seat s = new Seat();
@@ -39,9 +38,6 @@ namespace Capstone.Web.Controllers
                 s.Username = "Available";
                 model.Seats.Add(s);
             }
-
-
-
             return View("JoinedTable", model);
         }
 
@@ -56,18 +52,15 @@ namespace Capstone.Web.Controllers
                     model.Pot += model.Ante;
                 }
             }
-
             return View("ConfirmAnte", model);
         }
 
         public ActionResult HandSetup(Table model)
         {
-
             TableSqlDal dal = new TableSqlDal();
             model = dal.FindTable(1);
 
             List<UserModel> players = dal.GetAllPlayersAtTable(1);
-
 
             foreach (UserModel player in players)
             {
@@ -78,6 +71,7 @@ namespace Capstone.Web.Controllers
                 s.Hand = new Hand();
 
                 s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
+                s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
 
                 model.Seats.Add(s);
             }
@@ -88,9 +82,6 @@ namespace Capstone.Web.Controllers
                 s.Username = "Available";
                 model.Seats.Add(s);
             }
-
-
-
             return View("HandSetup", model);
         }
 
@@ -103,8 +94,6 @@ namespace Capstone.Web.Controllers
 
         public ActionResult ReplaceCards(Table model)
         {
-
-
             foreach (var seat in model.Seats)
             {
                 if (seat.Active)
@@ -112,7 +101,6 @@ namespace Capstone.Web.Controllers
                     seat.Hand.Replace(seat.Discards, model.Deck);
                 }   
             }
-
             return View("ReplaceCards", model);
         }
 

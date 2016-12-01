@@ -190,3 +190,16 @@ section {
 .errorMessage{
     margin-top: .3em;
 }
+
+/*playing card styling*/
+
+.playingCard{
+    display:inline-block;
+    background-color:white;
+    border:1px solid black;
+    border-radius: 3%;
+    height: 2.5em;
+    width: 1.75em;
+    vertical-align:top;
+    text-align:center;
+}

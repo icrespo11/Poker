@@ -37,7 +37,8 @@ namespace Capstone.Web.Models
                 c.SuitLetter = "♢";
                 cardList.Add(c);
             }
-            GetSuitAndLetterValues();
+
+            cardList = GetSuitAndLetterValues(cardList);
             //call shuffle here?
         }
 
@@ -63,9 +64,9 @@ namespace Capstone.Web.Models
             return output;
         }
 
-        public void GetSuitAndLetterValues()
+        public static List<Card> GetSuitAndLetterValues(List<Card> cardList)
         {
-            for (int j = 0; j < 52; j++)
+            for (int j = 0; j < cardList.Count; j++)
             {
                 if (cardList[j].Number == 1)
                 {
@@ -105,6 +106,8 @@ namespace Capstone.Web.Models
                     cardList[j].SuitLetter = "♣";
                 }
             }
+
+            return cardList;
         }
     }
 }
