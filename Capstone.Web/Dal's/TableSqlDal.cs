@@ -36,6 +36,9 @@ namespace Capstone.Web.Dal_s
                         t.TableHost = Convert.ToString(reader["host"]);
                         t.TableID = Convert.ToInt32(reader["table_id"]);
                         t.Name = Convert.ToString(reader["name"]);
+                        t.MaxBuyIn = Convert.ToInt32(reader["max_buy_in"]);
+                        t.Pot = Convert.ToInt32(reader["pot"]);
+                        t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
                     }
                 }
             }
@@ -80,9 +83,9 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
-        public bool CreateTable(Table table, UserModel user)
+        public int CreateTable(Table table)
         {
-            int rowsAffected = 0;
+            int output = 0;
 
             try
             {
@@ -90,21 +93,31 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO poker_table (name, host, max_bet, min_bet, ante) VALUES (@tableName, @host, @maxBet, @minBet, @ante);");
+                    SqlCommand cmd = new SqlCommand("INSERT INTO poker_table (name, host, max_bet, min_bet, ante, max_buy_in, pot, dealer_position) VALUES " +
+                        "(@name, @host, @maxBet, @minBet, @ante, @maxBuyIn, @pot, @dealerPosition);", conn);
                     cmd.Parameters.AddWithValue("@name", table.Name);
-                    cmd.Parameters.AddWithValue("@host", user.Username);
+                    cmd.Parameters.AddWithValue("@host", table.TableHost);
                     cmd.Parameters.AddWithValue("@maxBet", table.MaxBet);
                     cmd.Parameters.AddWithValue("@minBet", table.MinBet);
                     cmd.Parameters.AddWithValue("@ante", table.Ante);
+                    cmd.Parameters.AddWithValue("@maxBuyIn", table.MaxBuyIn);
+                    cmd.Parameters.AddWithValue("@pot", table.Pot);
+                    cmd.Parameters.AddWithValue("@dealerPosition", table.DealerPosition);
 
-                    rowsAffected = cmd.ExecuteNonQuery();
+                    //rowsAffected = cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand("SELECT table_id FROM poker_table WHERE name = @name ORDER BY table_id DESC;", conn);
+                    cmd.Parameters.AddWithValue("@name", table.Name);
+
+                    output = (int)cmd.ExecuteScalar();
                 }
             }
             catch (SqlException)
             {
                 throw;
             }
-            return (rowsAffected > 0);
+            return output;
         }
 
         public List<Table> GetAllTables()
@@ -249,9 +262,10 @@ namespace Capstone.Web.Dal_s
             catch (SqlException)
             {
                 throw;
-            }
-            
-
+            }           
         }
+
+        //creating a table 
+
     }
 }

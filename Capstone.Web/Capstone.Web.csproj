@@ -153,6 +153,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TableController.cs" />
     <Compile Include="Controllers\TestHandController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Crypto\HashProvider.cs" />
@@ -191,7 +192,11 @@
     <Content Include="Views\Home\LoggedInLanding.cshtml" />
     <Content Include="Views\Game\JoinedTable.cshtml" />
     <Content Include="Views\Game\HandSetup.cshtml" />
+
     <Content Include="Views\Game\FinalHand.cshtml" />
+
+    <Content Include="Views\Table\CreateTable.cshtml" />
+
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
