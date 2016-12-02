@@ -191,6 +191,7 @@
     <Content Include="Views\Home\LoggedInLanding.cshtml" />
     <Content Include="Views\Game\JoinedTable.cshtml" />
     <Content Include="Views\Game\HandSetup.cshtml" />
+    <Content Include="Views\Game\FinalHand.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

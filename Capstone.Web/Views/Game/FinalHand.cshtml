@@ -1,0 +1,89 @@
+﻿@model Capstone.Web.Models.Table
+
+@{
+    ViewBag.Title = "Table";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    <script src="/Scripts/HandSetupJavaScript.js"></script>
+}
+
+<section>
+    <h2>@Model.Name</h2>
+
+    <div id="otherPlayersFields">
+        @foreach (var seat in Model.Seats)
+        {
+            if (seat.Username.ToLower() != Session["username"].ToString().ToLower())
+            {
+                <div>
+
+                    @if (seat.Occupied && seat.IsTurn)
+                    {
+                        <p id="currentPlayer">@seat.Username</p>
+                    }
+                    else
+                    {
+                        <p>@seat.Username</p>
+                    }
+                    <p>@seat.TableBalance.ToString("C")</p>
+                </div>
+            }
+        }
+    </div>
+
+    @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post))
+    {
+        foreach (var seat in Model.Seats)
+        {
+            if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
+            {
+                <div id="currentUserPlayField">
+                    @if (seat.Occupied && seat.IsTurn)
+                    {
+                        <p id="currentPlayer">@seat.Username</p>
+                    }
+                    else
+                    {
+                        <p>@seat.Username</p>
+                    }
+                    <p>@seat.TableBalance.ToString("C")</p>
+
+
+                    @foreach (var card in seat.Hand.MyHand)
+                    {
+
+                        if (card.Suit == "diamonds" || card.Suit == "hearts")
+                        {
+                            <div class="playingCard red">
+                                @Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })
+                                <p>@card.ConvertedNumber @card.SuitLetter</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="playingCard black">
+                                @Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })
+                                <p>@card.ConvertedNumber @card.SuitLetter</p>
+                            </div>
+                        }
+
+
+                    }
+                    @if (seat.Occupied && seat.IsTurn)
+                    {
+                        <p>Gonna Do Stuff Here</p>
+                    }
+                </div>
+            }
+        }
+
+
+        <button>Advance</button>
+    }
+
+    @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post))
+    {
+        <button>Discard</button>
+    }
+
+
+</section>

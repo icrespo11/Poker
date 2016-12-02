@@ -98,8 +98,6 @@ namespace Capstone.Web.Controllers
                     seat.Occupied = true;
                 }
             }
-            
-
 
             return View("HandSetup", model);
         }
@@ -202,23 +200,93 @@ namespace Capstone.Web.Controllers
                 return RedirectToAction("HandSetup", model);   
         }
 
+        public ActionResult ReplaceCards (Table model)
+        {
+            TableSqlDal dal = new TableSqlDal();
+            model = dal.FindTable(1);
+            List<UserModel> players = dal.GetAllPlayersAtTable(1);
+            DeckOfCards deck = new DeckOfCards();
+            deck.Shuffle();
+
+            foreach (UserModel player in players)
+            {
+                Seat s = new Seat();
+                s.Username = player.Username;
+                s.TableBalance = player.CurrentMoney;
+
+                s.Hand = new Hand();
+
+                s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
+                s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
+
+                s.Hand.MyHand[0].Discard = true;
+                s.Hand.MyHand[1].Discard = true;
+
+                List<Card> toDiscard = new List<Card>();
+
+                foreach(var card in s.Hand.MyHand)
+                {
+                    if(card.Discard == true)
+                    {
+                        toDiscard.Add(card);
+                    }
+                }
+
+                s.Hand.Replace(toDiscard, deck);
+
+                model.Seats.Add(s);
+            }
+
+            return View("FinalHand", model);
+        }
+
+        public ActionResult FinalHand(Table model)
+        {
+            TableSqlDal dal = new TableSqlDal();
+
+            for (int i = model.Seats.Count; i < 5; i++)
+            {
+                Seat s = new Seat();
+                s.Username = "Available";
+                model.Seats.Add(s);
+            }
+
+            string playerTurn = dal.GetActivePlayer(model.TableID);
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == playerTurn)
+                {
+                    seat.IsTurn = true;
+                }
+                //not longtime solution
+                if (seat.Username != "Available")
+                {
+                    seat.Active = true;
+                    seat.Occupied = true;
+                }
+            }
+
+            return View("FinalHand", model);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public ActionResult firstBettingRound(Table model)
         {
             //betting stuff
 
             return View("firstBettingRound", model);
-        }
-
-        public ActionResult ReplaceCards(Table model)
-        {
-            foreach (var seat in model.Seats)
-            {
-                if (seat.Active)
-                {
-                    seat.Hand.Replace(seat.Discards, model.Deck);
-                }   
-            }
-            return View("ReplaceCards", model);
         }
 
         public ActionResult secondRoundOdBetting(Table model)
