@@ -26,7 +26,8 @@ namespace Capstone.Web.Tests.DALTest
             {
                 conn.Open();
                 //this will need to be updated when we add tables that depend on users
-                SqlCommand cmd = new SqlCommand("DELETE FROM table_players; DELETE FROM poker_table; DELETE FROM users;", conn);
+                SqlCommand cmd = new SqlCommand("DELETE FROM table_players; DELETE FROM hand_actions; DELETE FROM hand_cards; " +
+                    "DELETE FROM hand; DELETE FROM poker_table; DELETE FROM users;", conn);
                 cmd.ExecuteNonQuery();
 
                 cmd = new SqlCommand("INSERT INTO users VALUES" +

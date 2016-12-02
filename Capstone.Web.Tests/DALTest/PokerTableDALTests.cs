@@ -26,7 +26,8 @@ namespace Capstone.Web.Tests.DALTest
             {
                 conn.Open();
                 //this will need to be updated when we add tables that depend on users
-                SqlCommand cmd = new SqlCommand("DELETE FROM table_players; DELETE FROM poker_table; DELETE FROM users;", conn);
+                SqlCommand cmd = new SqlCommand("DELETE FROM table_players; DELETE FROM hand_actions; DELETE FROM hand_cards; " +
+                    "DELETE FROM hand; DELETE FROM poker_table; DELETE FROM users;", conn);
                 cmd.ExecuteNonQuery();
 
                 cmd = new SqlCommand("INSERT INTO users VALUES" +
@@ -39,6 +40,15 @@ namespace Capstone.Web.Tests.DALTest
 
                 cmd = new SqlCommand("INSERT INTO poker_table (host, name, min_bet, max_bet, ante) VALUES" +
                     "('Bob', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10);"
+                    , conn);
+
+                cmd.ExecuteNonQuery();
+
+                cmd = new SqlCommand("SELECT table_id from poker_table WHERE host = 'Bob'", conn);
+                int tableID = (int)cmd.ExecuteScalar();
+                 
+                cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " + 
+                    $"({tableID}, 'Bob', 1), ({tableID}, 'Boo', 0);"
                     , conn);
 
                 cmd.ExecuteNonQuery();
@@ -99,20 +109,53 @@ namespace Capstone.Web.Tests.DALTest
 
 
 
-        //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
         [TestMethod]
-        public void TestGetTop10UserNamesWithChipCounts()
+        public void TestGetAllPlayersAtTableFromAGivenTableNumber()
         {
-            UserSqlDal dal = new UserSqlDal();
-            Dictionary<string, int> output = dal.GetAllUsernamesWithChipsSortedByChipCount();
-            Assert.AreEqual(3, output.Count);
-            //CollectionAssert.Contains(output, "Boo");
-            Assert.AreEqual(50000, output["Bob"]);
-            Assert.AreEqual(500, output["Brian"]);
-            CollectionAssert.DoesNotContain(output.Keys, "Boa");
+            Table t = new Table();
+            TableSqlDal dal = new TableSqlDal();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    //get information (including table ID) from database for the table we created in the initialize
+
+                    SqlCommand cmd = new SqlCommand("SELECT * from poker_table WHERE host = 'Bob'", conn);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        t.Ante = Convert.ToInt32(reader["ante"]);
+                        t.MaxBet = Convert.ToInt32(reader["max_bet"]);
+                        t.MinBet = Convert.ToInt32(reader["min_bet"]);
+                        t.TableHost = Convert.ToString(reader["host"]);
+                        t.TableID = Convert.ToInt32(reader["table_id"]);
+                        t.Name = Convert.ToString(reader["name"]);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            int tableID = t.TableID;
+
+            List<UserModel> output = dal.GetAllPlayersAtTable(tableID);
+
+
+            Assert.AreEqual(2, output.Count);
+            Assert.AreEqual(output[0].Username, "Bob");
+            Assert.AreEqual(output[1].Username, "Boo");
+            //CollectionAssert.Contains(output[0]., "Bob");
+
         }
 
 
+        //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
         [TestMethod]
         public void TestAddUser()
         {
