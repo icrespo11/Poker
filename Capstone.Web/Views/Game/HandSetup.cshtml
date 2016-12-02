@@ -14,7 +14,7 @@
             if (seat.Username.ToLower() != Session["username"].ToString().ToLower())
             {
                 <div>
-                    
+
                     @if (seat.Occupied && seat.IsTurn)
                     {
                         <p id="currentPlayer">@seat.Username</p>
@@ -45,9 +45,21 @@
                 <p>@seat.TableBalance.ToString("C")</p>
                 @foreach (var card in seat.Hand.MyHand)
                 {
-                    <div class="playingCard">
-                        <p>@card.ConvertedNumber @card.SuitLetter</p>
-                    </div>
+
+                    if (card.Suit == "diamonds" || card.Suit == "hearts")
+                        {
+                        <div class="playingCard red">
+                            <p>@card.ConvertedNumber @card.SuitLetter</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="playingCard black">
+                            <p>@card.ConvertedNumber @card.SuitLetter</p>
+                        </div>
+                    }
+
+
                 }
                 @if (seat.Occupied && seat.IsTurn)
                     {
