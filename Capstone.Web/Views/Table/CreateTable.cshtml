@@ -1,0 +1,37 @@
+﻿@model Capstone.Web.Models.Table
+@{
+    ViewBag.Title = "CreateTable";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section>
+    <h2>Create a New Table</h2>
+
+    @using (Html.BeginForm("CreateTable", "Table", FormMethod.Post))
+    {
+        <div>
+            @Html.LabelFor(m => m.Name, "Name Your Table")
+            @Html.TextBoxFor(m => m.Name)
+            @* validation? *@
+        </div>
+        <div>
+            @Html.LabelFor(m => m.Ante, "Ante:")
+            @Html.TextBoxFor(m => m.Ante)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MinBet, "Minimum Bet:")
+            @Html.TextBoxFor(m => m.MinBet)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MaxBet, "Maximum Bet:")
+            @Html.TextBoxFor(m => m.MaxBet)
+        </div>
+        <div>
+            @Html.LabelFor(m => m.MaxBuyIn, "Maximum Buy-In:")
+            @Html.TextBoxFor(m => m.MaxBuyIn)
+        </div>
+        <div>
+            <button>SUBMIT!</button>
+        </div>
+
+    }
+</section>
