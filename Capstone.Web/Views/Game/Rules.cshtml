@@ -5,66 +5,77 @@
 }
 
 <section>
+    <div id="gameRules">
+        <h1 class="rulesHeading">Five Card Draw Rules</h1>
+        <br />
+        <p>
+            <h3>Ante Up! </h3>
+            Before any cards are dealt players must ante by placing the intial ante amount into the pot.<br />
+            All players who have put their ante into the pot are then dealt five cards.<br /><br />
+        </p>
 
-    <h1 class="rulesHeading">Five Card Draw Rules</h1>
+        <p>
+            <h3>First Betting Roud.</h3>
+            Starting with the player left of the dealer, each player is allowed to take their turn during the betting round. <br />
+            The player may check (bet nothing) if there is no bet/raise that has occurred before their turn. <br />
+            Players also have the option to fold or raise the bet amount. <br />
+            Once all players have either checked, folded, or called the amount raised, the play advances to drawing cards.<br /><br />
+        </p>
 
-    <p>
-        Ante Up! <br />
-        Before any cards are dealt players must ante by placing the intial ante amount into the pot.<br />
-        All players who have put their ante into the pot are then dealt five cards.<br /><br />
-    </p>
-    <p>
-        First Betting Roud.<br />
-        Starting with the player left of the dealer, each player is allowed to take their turn during the betting round. <br />
-        The player may check (bet nothing) if there is no bet/raise that has occurred before their turn. <br />
-        Players also have the option to fold or raise the bet amount. <br />
-        Once all players have either checked, folded, or called the amount raised, the play advances to drawing cards.<br /><br />
-    </p>
+        <p>
+            <h3>Draw Cards. </h3>
+            Each player determines how many cards in their hand they wish to replace from zero to five. <br />
+            The dealer then deals each player (starting with the player left of the dealer) the desired amount of cards to replace. <br /><br />
+        </p>
 
-    <p>
-        Draw Cards. <br />
-        Each player determines how many cards in their hand they wish to replace from zero to five. <br />
-        The dealer then deals each player (starting with the player left of the dealer) the desired amount of cards to replace. <br /><br />
-    </p>
+        <p>
+            <h3>Second Betting Round.</h3>
+            A second round of betting proceeds in the same fashion as the first betting round.<br />
+            Once all players have either checked, folded, or called the amount raised, the players who have not folded show their cards.<br />
+            The winner is determined by the hand heiarchy (pictured below) and they are rewarded the sum of all antes and bets (the pot). <br />
+        </p>
+    </div>
 
-    <p>
-        Second Betting Round.<br />
-        A second round of betting proceeds in the same fashion as the first betting round.<br />
-        Once all players have either checked, folded, or called the amount raised, the players who have not folded show their cards.<br />
-        The winner is determined by the hand heiarchy (pictured below) and they are rewarded the sum of all antes and bets (the pot). <br />
-    </p>
-
-<h2 class="rulesHeading">Hand Hierarchy</h2>
-    <div>
+    <div id="handHierarchy">
+        <br />
+        <h2 class="rulesHeading">Hand Hierarchy</h2>
+        <br />
         <ul id="cardHierarchy">
-            <li>Royal Flush (A K Q J 10 of the same suit)</li>
-            <li>A♠ K♠ Q♠ J♠ 10♠</li>
-            <li></li>
-            <li>Straight Flush (any other 5 cards in a row of the same suit)</li>
-            <li>J♠ 10♠ 9♠ 8♠ 7♠</li>
-            <li></li>
-            <li>Four of a Kind</li>
-            <li>A♠ A♡ A♢ A♣ 6♠</li>
-            <li></li>
-            <li>Flush (5 cards of the same suit)</li>
-            <li>A♠ Q♠ 9♠ 7♠ 2♠</li>
-            <li></li>
-            <li>Straight (5 cards in a row)</li>
-            <li>5♠ 4♠ 3♢ 2♣ A♢</li>
-            <li></li>
-            <li>Three of a Kind</li>
-            <li>5♠ 5♡ 5♢ 7♣ 3♢</li>
-            <li></li>
-            <li>Two Pair</li>
-            <li>K♠ K♢ 7♢ 7♣ 5♠</li>
-            <li></li>
-            <li>One Pair</li>
-            <li>Q♠ Q♡ 10♣ 7♣ 5♠</li>
-            <li></li>
-            <li>High Card</li>
-            <li>A♡ J♣ 9♣ 6♡ 4♣</li>
+            <li><h3>Royal Flush (A K Q J 10 of the same suit)</h3></li>
+            <li><div class="playingCard black"><p>A♠</p></div> <div class="playingCard black"><p>K♠</p></div> <div class="playingCard black"><p>Q♠</p></div> <div class="playingCard black"><p>J♠</p></div> <div class="playingCard black"><p>10♠</p></div></li>
+            <li><br /></li>
+            <li><h3>Straight Flush (any other 5 cards in a row of the same suit)</h3></li>
+            <li><div class="playingCard black"><p>J♠</p></div> <div class="playingCard black"><p>10♠</p></div> <div class="playingCard black"><p>9♠</p></div> <div class="playingCard black"><p>8♠</p></div> <div class="playingCard black"><p>7♠</p></div></li>
+            <li><br /></li>
+            <li><h3>Four of a Kind</h3></li>
+            <li><div class="playingCard black"><p>A♠</p></div> <div class="playingCard red"><p>A♡</p></div> <div class="playingCard red"><p>A♢</p></div> <div class="playingCard black"><p>A♣</p></div> <div class="playingCard black"><p>J♠</p></div></li>
+            <li><br /></li>
+            <li><h3>Full House (3 of a kind and 2 of a kind)</h3></li>
+            <li><div class="playingCard black"><p>5♠</p></div> <div class="playingCard red"><p>5♢</p></div> <div class="playingCard red"><p>5♡</p></div> <div class="playingCard red"><p>K♢</p></div> <div class="playingCard red"><p>K♡</p></div></li>
+            <li><br /></li>
+            <li><h3>Flush (5 cards of the same suit)</h3></li>
+            <li><div class="playingCard black"><p>A♠</p></div> <div class="playingCard black"><p>Q♠</p></div> <div class="playingCard black"><p>9♠</p></div> <div class="playingCard black"><p>2♠</p></div> <div class="playingCard black"><p>7♠</p></div></li>
+            <li><br /></li>
+            <li><h3>Straight (5 cards in a row)</h3></li>
+            <li><div class="playingCard black"><p>6♠</p></div>  <div class="playingCard red"><p>5♢</p></div> <div class="playingCard black"><p>4♣</p></div> <div class="playingCard red"><p>3♢</p></div> <div class="playingCard red"><p>2♡</p></div></li>
+            <li><br /></li>
+            <li><h3>Three of a Kind</h3></li>
+            <li><div class="playingCard black"><p>A♠</p></div> <div class="playingCard red"><p>A♡</p></div> <div class="playingCard red"><p>A♢</p></div> <div class="playingCard red"><p>5♢</p></div> <div class="playingCard black"><p>7♣</p></div></li>
+            <li><br /></li>
+            <li><h3>Two Pair</h3></li>
+            <li><div class="playingCard red"><p>6♡</p></div> <div class="playingCard red"><p>6♢</p></div> <div class="playingCard black"><p>Q♠</p></div> <div class="playingCard black"><p>J♠</p></div> <div class="playingCard red"><p>J♡</p></div></li>
+            <li><br /></li>
+            <li><h3>One Pair</h3></li>
+            <li><div class="playingCard black"><p>4♣</p></div> <div class="playingCard red"><p>4♢</p></div> <div class="playingCard red"><p>7♢</p></div> <div class="playingCard black"><p>Q♠</p></div> <div class="playingCard black"><p>8♠</p></div></li>
+            <li><br /></li>
+            <li><h3>High Card</h3></li>
+            <li><div class="playingCard red"><p>A♢</p></div> <div class="playingCard red"><p>5♢</p></div> <div class="playingCard black"><p>7♣</p></div> <div class="playingCard black"><p>J♠</p></div> <div class="playingCard black"><p>2♠</p></div></li>
         </ul>
-        <p>In the event of a tie, higher values win.  If both players have the same hand, higher kicker card is the next tiebreaker.  <br />
-        If there is no possible tiebreaker, all players with the winning hand split the pot.</p>
+        <br />
+        <p>
+            In the event of a tie, higher values win.  If both players have the same hand, higher kicker card is the next tiebreaker.  <br />
+            If there is no possible tiebreaker, all players with the winning hand split the pot.
+        </p>
+        <br />
     </div>
 </section>
