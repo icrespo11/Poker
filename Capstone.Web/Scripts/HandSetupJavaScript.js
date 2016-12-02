@@ -8,7 +8,8 @@ $(document).ready(function () {
 
         clickedCard = $(this);
         clickedCard.toggleClass("selectedToDiscard");
-
     });
+
+    var discardField = $("")
 
 })
