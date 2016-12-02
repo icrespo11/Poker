@@ -14,7 +14,15 @@
             if (seat.Username.ToLower() != Session["username"].ToString().ToLower())
             {
                 <div>
-                    <p>@seat.Username</p>
+                    
+                    @if (seat.Occupied && seat.IsTurn)
+                    {
+                        <p id="currentPlayer">@seat.Username</p>
+                    }
+                    else
+                    {
+                        <p>@seat.Username</p>
+                    }
                     <p>@seat.TableBalance.ToString("C")</p>
                 </div>
             }
@@ -26,7 +34,14 @@
         if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
         {
             <div id="currentUserPlayField">
-                <p>@seat.Username</p>
+                @if (seat.Occupied && seat.IsTurn)
+                    {
+                    <p id="currentPlayer">@seat.Username</p>
+                }
+                else
+                {
+                    <p>@seat.Username</p>
+                }
                 <p>@seat.TableBalance.ToString("C")</p>
                 @foreach (var card in seat.Hand.MyHand)
                 {
@@ -34,11 +49,15 @@
                         <p>@card.ConvertedNumber @card.SuitLetter</p>
                     </div>
                 }
+                @if (seat.Occupied && seat.IsTurn)
+                    {
+                    <p>Gonna Do Stuff Here</p>
+                }
             </div>
         }
     }
 
-    @using (Html.BeginForm("HandSetup", "Game", FormMethod.Get))
+    @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Get))
     {
         <button>Advance</button>
     }

@@ -38,6 +38,8 @@ namespace Capstone.Web.Controllers
                 s.Username = "Available";
                 model.Seats.Add(s);
             }
+            model.Seats[0].IsTurn = true;
+            dal.SetActivePlayer(model.Seats[0].Username);
             return View("JoinedTable", model);
         }
 
@@ -83,6 +85,57 @@ namespace Capstone.Web.Controllers
                 model.Seats.Add(s);
             }
             return View("HandSetup", model);
+        }
+
+        public ActionResult updatePlayerTurn(Table model)
+        {
+            TableSqlDal dal = new TableSqlDal();
+            model = dal.FindTable(1);
+            List<UserModel> players = dal.GetAllPlayersAtTable(1);
+
+            foreach (UserModel player in players)
+            {
+                Seat s = new Seat();
+                s.Username = player.Username;
+                s.TableBalance = player.CurrentMoney;
+
+                s.Hand = new Hand();
+
+                s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
+                s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
+
+                model.Seats.Add(s);
+            }
+            string justTookTurn = dal.GetActivePlayer(model.TableID);
+
+            int seatChecking = 0;
+            bool updatedPlayer = false;
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == justTookTurn)
+                {
+                    for (int i = seatChecking; i < model.Seats.Count - 1; i++)
+                    {
+                        if(model.Seats[i].Occupied && model.Seats[i].Active)
+                        {
+                            dal.UpdateActivePlayer(model.Seats[i].Username);
+                            updatedPlayer = true;
+                        }
+                    }
+                    if (!updatedPlayer)
+                    {
+                        for (int i = 0; i < model.Seats.Count - 1; i++)
+                        {
+                            if (model.Seats[i].Occupied && model.Seats[i].Active)
+                            {
+                                dal.UpdateActivePlayer(model.Seats[i].Username);
+                            }
+                        }
+                    }
+                }
+                seatChecking++;
+            }
+            return RedirectToAction("HandSetup", model);   
         }
 
         public ActionResult firstBettingRound(Table model)

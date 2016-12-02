@@ -186,5 +186,70 @@ namespace Capstone.Web.Dal_s
 
             return output;
         }
+        public void SetActivePlayer (string playerID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET isTurn = 1 where player = @player;", conn);
+                    cmd.Parameters.AddWithValue("@player", playerID);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+        }
+
+        public string GetActivePlayer(int tableId)
+        {
+            string output = "";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("Select player from table_players where isTurn = 1 and table_id = @table_id;", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableId);
+                    output = cmd.ExecuteScalar().ToString();
+
+
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return output;
+        }
+
+        public void UpdateActivePlayer (string playerID)
+        {
+            
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players where isTurn =1 SET isTurn = 0;", conn);
+                    cmd.ExecuteNonQuery();
+
+                    SqlCommand cmd1 = new SqlCommand("UPDATE table_players where player = @player SET isTurn = 1;", conn);
+                    cmd1.Parameters.AddWithValue("@player", playerID);
+                    cmd1.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            
+
+        }
     }
 }

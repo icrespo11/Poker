@@ -203,3 +203,8 @@ section {
     vertical-align:top;
     text-align:center;
 }
+
+#currentPlayer {
+    color: gold;
+    text-shadow: -3px 3px 2px black;
+}

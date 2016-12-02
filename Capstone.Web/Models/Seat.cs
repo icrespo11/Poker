@@ -21,5 +21,7 @@ namespace Capstone.Web.Models
         public bool Active { get; set; } 
 
         public List<Card> Discards { get; set; }
+
+        public bool IsTurn { get; set; }
     }
 }
