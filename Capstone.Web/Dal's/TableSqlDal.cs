@@ -227,8 +227,8 @@ namespace Capstone.Web.Dal_s
             }
             return output;
         }
-
-        public void UpdateActivePlayer (string playerID)
+        //cannot accomodate one player two tables
+        public void UpdateActivePlayer (int tableID, string playerID)
         {
             
             try
@@ -236,10 +236,12 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("UPDATE table_players where isTurn =1 SET isTurn = 0;", conn);
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET isTurn = 0 where table_id = @table_id and isTurn =1;", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
                     cmd.ExecuteNonQuery();
 
-                    SqlCommand cmd1 = new SqlCommand("UPDATE table_players where player = @player SET isTurn = 1;", conn);
+                    SqlCommand cmd1 = new SqlCommand("UPDATE table_players SET isTurn = 1 where table_id = @table_id and player = @player;", conn);
+                    cmd1.Parameters.AddWithValue("@table_id", tableID);
                     cmd1.Parameters.AddWithValue("@player", playerID);
                     cmd1.ExecuteNonQuery();
                 }

@@ -84,6 +84,23 @@ namespace Capstone.Web.Controllers
                 s.Username = "Available";
                 model.Seats.Add(s);
             }
+            string playerTurn = dal.GetActivePlayer(model.TableID);
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == playerTurn)
+                {
+                    seat.IsTurn = true;
+                }
+                //not longtime solution
+                if (seat.Username != "Available")
+                {
+                    seat.Active = true;
+                    seat.Occupied = true;
+                }
+            }
+            
+
+
             return View("HandSetup", model);
         }
 
@@ -106,36 +123,83 @@ namespace Capstone.Web.Controllers
 
                 model.Seats.Add(s);
             }
-            string justTookTurn = dal.GetActivePlayer(model.TableID);
-
+            string playerTurn = dal.GetActivePlayer(model.TableID);
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == playerTurn)
+                {
+                    seat.IsTurn = true;
+                }
+                //not longtime solution
+                if (seat.Username != "Available")
+                {
+                    seat.Active = true;
+                    seat.Occupied = true;
+                }
+            }
+            
             int seatChecking = 0;
+            foreach (var seat in model.Seats)
+            {
+                seatChecking++;
+                if(seat.Username == playerTurn)
+                {
+                    break;
+                }
+
+            }
+
             bool updatedPlayer = false;
             foreach (var seat in model.Seats)
             {
-                if (seat.Username == justTookTurn)
+                if (seat.Username == playerTurn)
                 {
-                    for (int i = seatChecking; i < model.Seats.Count - 1; i++)
+                    
+                    for (int i = seatChecking; i < model.Seats.Count; i++)
                     {
                         if(model.Seats[i].Occupied && model.Seats[i].Active)
                         {
-                            dal.UpdateActivePlayer(model.Seats[i].Username);
+                            dal.UpdateActivePlayer(model.TableID, model.Seats[i].Username);
+                            
                             updatedPlayer = true;
+                            break;
                         }
                     }
                     if (!updatedPlayer)
                     {
-                        for (int i = 0; i < model.Seats.Count - 1; i++)
+                        for (int i = 0; i < seatChecking; i++)
                         {
                             if (model.Seats[i].Occupied && model.Seats[i].Active)
                             {
-                                dal.UpdateActivePlayer(model.Seats[i].Username);
+                                dal.UpdateActivePlayer(model.TableID, model.Seats[i].Username);
+                                //seat.IsTurn = false;
+                                break;
                             }
                         }
                     }
                 }
-                seatChecking++;
+               
+                //seatChecking++;
+
             }
-            return RedirectToAction("HandSetup", model);   
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == playerTurn)
+                {
+                    seat.IsTurn = false;
+                }
+            }
+
+            string newPlayerTurn = dal.GetActivePlayer(model.TableID);
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == newPlayerTurn)
+                {
+                    seat.IsTurn = true;
+                }
+            }
+
+                return RedirectToAction("HandSetup", model);   
         }
 
         public ActionResult firstBettingRound(Table model)
