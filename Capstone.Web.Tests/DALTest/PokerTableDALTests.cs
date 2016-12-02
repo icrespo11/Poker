@@ -109,7 +109,6 @@ namespace Capstone.Web.Tests.DALTest
 
 
 
-        //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
         [TestMethod]
         public void TestGetAllPlayersAtTableFromAGivenTableNumber()
         {
@@ -156,6 +155,7 @@ namespace Capstone.Web.Tests.DALTest
         }
 
 
+        //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
         [TestMethod]
         public void TestAddUser()
         {
