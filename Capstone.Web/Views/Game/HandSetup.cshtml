@@ -32,7 +32,7 @@
 
 @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post))
 {
-    @foreach (var seat in Model.Seats)
+    foreach (var seat in Model.Seats)
     {
         if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
         {
@@ -61,6 +61,7 @@
                     else
                     {
                         <div class="playingCard black">
+                            @Html.Hidden("isDiscard", card.Discard)
                             <p>@card.ConvertedNumber @card.SuitLetter</p>
                         </div>
                     }
