@@ -54,7 +54,7 @@
                     if (card.Suit == "diamonds" || card.Suit == "hearts")
                         {
                         <div class="playingCard red">
-                            @Html.Hidden($"{card.Discard}")
+                            @Html.Hidden("isDiscard", card.Discard)
                             <p>@card.ConvertedNumber @card.SuitLetter</p>
                         </div>
                     }
