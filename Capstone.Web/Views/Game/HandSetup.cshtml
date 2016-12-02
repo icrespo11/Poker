@@ -54,14 +54,14 @@
                     if (card.Suit == "diamonds" || card.Suit == "hearts")
                         {
                         <div class="playingCard red">
-                            @Html.Hidden("isDiscard", card.Discard)
+                            @Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })
                             <p>@card.ConvertedNumber @card.SuitLetter</p>
                         </div>
                     }
                     else
                     {
                         <div class="playingCard black">
-                            @Html.Hidden("isDiscard", card.Discard)
+                            @Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })
                             <p>@card.ConvertedNumber @card.SuitLetter</p>
                         </div>
                     }
