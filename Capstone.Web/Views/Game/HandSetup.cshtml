@@ -30,6 +30,8 @@
         }
     </div>
 
+@using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post))
+{
     @foreach (var seat in Model.Seats)
     {
         if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
@@ -44,12 +46,15 @@
                     <p>@seat.Username</p>
                 }
                 <p>@seat.TableBalance.ToString("C")</p>
+
+
                 @foreach (var card in seat.Hand.MyHand)
                 {
 
                     if (card.Suit == "diamonds" || card.Suit == "hearts")
                         {
                         <div class="playingCard red">
+                            @Html.Hidden("isDiscard", card.Discard)
                             <p>@card.ConvertedNumber @card.SuitLetter</p>
                         </div>
                     }
@@ -70,8 +75,7 @@
         }
     }
 
-    @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Get))
-    {
+
         <button>Advance</button>
     }
 

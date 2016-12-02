@@ -99,7 +99,7 @@ namespace Capstone.Web.Tests.DALTest
 
 
 
-        //
+        //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
         [TestMethod]
         public void TestGetTop10UserNamesWithChipCounts()
         {
