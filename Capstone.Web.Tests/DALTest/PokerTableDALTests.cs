@@ -37,7 +37,11 @@ namespace Capstone.Web.Tests.DALTest
 
                 rowsAffected = cmd.ExecuteNonQuery();
 
-               // cmd = new SqlCommand("INSERT INTO poker_table (")
+                cmd = new SqlCommand("INSERT INTO poker_table (host, name, min_bet, max_bet, ante) VALUES" +
+                    "('Bob', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10);"
+                    , conn);
+
+                cmd.ExecuteNonQuery();
             }
         }
 
@@ -48,16 +52,54 @@ namespace Capstone.Web.Tests.DALTest
         }
 
         [TestMethod]
-        public void TestGetAllUsernames()
+        public void FindTableByTableIDTesting()
         {
-            UserSqlDal dal = new UserSqlDal();
-            List<string> output = dal.GetAllUsernames();
 
-            Assert.AreEqual(3, output.Count);
-            CollectionAssert.Contains(output, "Bob");
-            CollectionAssert.Contains(output, "Boo");
-            CollectionAssert.DoesNotContain(output, "Boa");
+            Table t = new Table();
+            TableSqlDal dal = new TableSqlDal();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    //get information (including table ID) from database for the table we created in the initialize
+
+                    SqlCommand cmd = new SqlCommand("SELECT * from poker_table WHERE host = 'Bob'", conn);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        t.Ante = Convert.ToInt32(reader["ante"]);
+                        t.MaxBet = Convert.ToInt32(reader["max_bet"]);
+                        t.MinBet = Convert.ToInt32(reader["min_bet"]);
+                        t.TableHost = Convert.ToString(reader["host"]);
+                        t.TableID = Convert.ToInt32(reader["table_id"]);
+                        t.Name = Convert.ToString(reader["name"]);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            int tableID = t.TableID;
+
+            Table TOut = dal.FindTable(tableID);
+
+            Assert.AreEqual(TOut.TableHost, t.TableHost);
+            Assert.AreEqual(TOut.TableID, t.TableID);
+            Assert.AreEqual(TOut.Name, t.Name);
         }
+
+
+
+
+
+        //
         [TestMethod]
         public void TestGetTop10UserNamesWithChipCounts()
         {
