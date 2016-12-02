@@ -38,8 +38,8 @@ namespace Capstone.Web.Tests.DALTest
 
                 rowsAffected = cmd.ExecuteNonQuery();
 
-                cmd = new SqlCommand("INSERT INTO poker_table (host, name, min_bet, max_bet, ante) VALUES" +
-                    "('Bob', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10);"
+                cmd = new SqlCommand("INSERT INTO poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position) VALUES" +
+                    "('Bob', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0);"
                     , conn);
 
                 cmd.ExecuteNonQuery();
@@ -157,53 +157,52 @@ namespace Capstone.Web.Tests.DALTest
 
         //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
         [TestMethod]
-        public void TestAddUser()
+        public void TestCreatingANewTable()
         {
-            UserModel newUser = new UserModel();
-            newUser.Username = "Boa";
-            newUser.Password = "aaa";
-            newUser.ConfirmPassword = "aaa";
-            newUser.CurrentMoney = 9001;
-            newUser.HighestMoney = 9001;
-            newUser.IsOnline = true;
-            newUser.Privilege = "duck";
-            newUser.IsTaken = false;
-            newUser.LoginFail = false;
-            //add salt that matches their formatting
-            //TEST THIS TOMORROW
-            newUser.Salt = "UBROKEIT";
+            Table t1 = new Table();
+            t1.Ante = 10;
+            t1.DealerPosition = 0;
+            t1.MaxBet = 50;
+            t1.MaxBuyIn = 500;
+            t1.MinBet = 10;
+            t1.Name = "TestTable";
+            t1.Pot = 0;
+            t1.TableHost = "Bob";
 
-            UserSqlDal dal = new UserSqlDal();
-            bool confirm = dal.Register(newUser);
+            TableSqlDal dal = new TableSqlDal();
 
-            Assert.AreEqual(true, confirm);
+            int newID = dal.CreateTable(t1);
 
-            List<UserModel> allUsers = new List<UserModel>();
+            Assert.IsNotNull(newID);
+
+            Table t2 = new Table();
 
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                SqlCommand cmd = new SqlCommand("SELECT * FROM users ORDER BY username DESC;", conn);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM poker_table WHERE table_id = @id;", conn);
+                cmd.Parameters.AddWithValue("@id", newID);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    UserModel u = new UserModel();
-                    u.Username = Convert.ToString(reader["username"]);
-                    u.Password = Convert.ToString(reader["password"]);
-                    u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
-                    u.HighestMoney = Convert.ToInt32(reader["highest_money"]);
-                    u.Privilege = Convert.ToString(reader["privilege"]);
-                    u.IsOnline = Convert.ToBoolean(reader["is_online"]);
-                    u.Salt = Convert.ToString(reader["salt"]);
-                    allUsers.Add(u);
+
+                    t2.Ante = Convert.ToInt32(reader["ante"]);
+                    t2.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
+                    t2.MaxBet = Convert.ToInt32(reader["max_bet"]);
+                    t2.MinBet = Convert.ToInt32(reader["min_bet"]);
+                    t2.MaxBuyIn = Convert.ToInt32(reader["max_buy_in"]);
+                    t2.Name = Convert.ToString(reader["name"]);
+                    t2.Pot = Convert.ToInt32(reader["pot"]);
+                    t2.TableHost = Convert.ToString(reader["host"]);
+                    t2.TableID = Convert.ToInt32(reader["table_id"]);
                 }
 
-                Assert.IsNotNull(allUsers);
-                Assert.AreEqual(4, allUsers.Count);
-                Assert.AreEqual("Boa", allUsers[3].Username);
-                Assert.AreEqual("aaa", allUsers[3].Password);
-                Assert.AreEqual(50000, allUsers[2].CurrentMoney);
-                Assert.AreEqual("omg-hash", allUsers[1].Salt);
+                Assert.IsNotNull(t2);
+                Assert.AreEqual(500, t2.MaxBuyIn);
+                Assert.AreEqual(newID, t2.TableID);
+                Assert.AreEqual("TestTable", t2.Name);
+                Assert.AreEqual(t1.MinBet, t2.MinBet);
+                Assert.AreEqual(t1.TableHost, t2.TableHost);
             }
 
         }

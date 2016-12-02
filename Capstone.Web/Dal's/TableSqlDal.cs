@@ -14,7 +14,7 @@ namespace Capstone.Web.Dal_s
 
         public Table FindTable(int tableID)
         {
-            bool foundTable = false;
+            //bool foundTable = false;
             Table t = new Table();
 
             try
