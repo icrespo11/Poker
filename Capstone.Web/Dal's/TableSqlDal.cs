@@ -120,6 +120,8 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
+
+        //not tested/used yet
         public List<Table> GetAllTables()
         {
             List<Table> output = new List<Table>();
@@ -167,6 +169,8 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
+
+        //not tested/used yet
         public List<Card> GetAllCardsForPlayer(string username)
         {
             List<Card> output = new List<Card>();
@@ -199,6 +203,8 @@ namespace Capstone.Web.Dal_s
 
             return output;
         }
+
+        //not tested
         public void SetActivePlayer (string playerID)
         {
             try
@@ -219,6 +225,7 @@ namespace Capstone.Web.Dal_s
 
         }
 
+        //not tested
         public string GetActivePlayer(int tableId)
         {
             string output = "";
@@ -240,7 +247,9 @@ namespace Capstone.Web.Dal_s
             }
             return output;
         }
-        //cannot accomodate one player two tables
+
+        //not yet tested
+        //cannot accomodate one player two tables...possibly changed
         public void UpdateActivePlayer (int tableID, string playerID)
         {
             
@@ -264,8 +273,6 @@ namespace Capstone.Web.Dal_s
                 throw;
             }           
         }
-
-        //creating a table 
 
     }
 }
