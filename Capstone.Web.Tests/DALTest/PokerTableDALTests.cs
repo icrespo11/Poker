@@ -252,6 +252,46 @@ namespace Capstone.Web.Tests.DALTest
 
         }
 
+        [TestMethod]
+        public void TestRemovingAPlayerFromATable()
+        {
+            TableSqlDal dal = new TableSqlDal();
+            string playerToRemove = "Boo";
+            int tableID = 0;
+            Table t = new Table();
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT table_id FROM poker_table WHERE host = 'Bob'", conn);
+                tableID = (int)cmd.ExecuteScalar();
+            }
+
+            dal.RemovePlayerFromTable(tableID, playerToRemove);
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM table_players WHERE table_id = {tableID}", conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    t.TableID = Convert.ToInt32(reader["table_id"]);
+                    Seat s = new Seat();
+                    s.Username = Convert.ToString(reader["player"]);
+                    s.IsTurn = Convert.ToBoolean(reader["isTurn"]);
+                    t.Seats.Add(s);
+                }
+
+            }
+            Assert.IsNotNull(t.Seats);
+            Assert.AreEqual(1, t.Seats.Count);
+            Assert.AreEqual("Bob", t.Seats[0].Username);
+        }
 
     }
 }
