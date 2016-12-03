@@ -18,7 +18,7 @@ namespace Capstone.Web.Controllers
                 {2, () => {ConfirmAnte(model); } },
                 {3, () => {HandSetup(model); } },
                 {4, () => {firstBettingRound(model); } },
-                {5, () => {ReplaceCards(model); } },
+                //{5, () => {ReplaceCards(model); } },
                 {6, () => {secondBettingRound(model); } },
                 {7, () => {determineWinner(model); } },
             };
@@ -36,6 +36,9 @@ namespace Capstone.Web.Controllers
         {           
             TableSqlDal dal = new TableSqlDal();
             model = dal.FindTable(1);
+
+            model.Deck = new DeckOfCards();
+            model.Deck.Shuffle();
 
             List<UserModel> players = dal.GetAllPlayersAtTable(1);
 
@@ -221,37 +224,39 @@ namespace Capstone.Web.Controllers
 
         public ActionResult ReplaceCards (Table model)
         {
-            TableSqlDal dal = new TableSqlDal();
-            model = dal.FindTable(1);
-            List<UserModel> players = dal.GetAllPlayersAtTable(1);
-            DeckOfCards deck = new DeckOfCards();
-            deck.Shuffle();
+            //TableSqlDal dal = new TableSqlDal();
+            //model = dal.FindTable(1);
+            //List<UserModel> players = dal.GetAllPlayersAtTable(1);
+            //DeckOfCards deck = new DeckOfCards();
+            //deck.Shuffle();
 
-            foreach (UserModel player in players)
+            model = HttpContext.Cache["Table"] as Table;
+
+            foreach (Seat s in model.Seats)
             {
-                Seat s = new Seat();
-                s.Username = player.Username;
-                s.TableBalance = player.CurrentMoney;
+                //Seat s = new Seat();
+                //s.Username = player.Username;
+                //s.TableBalance = player.CurrentMoney;
 
-                s.Hand = new Hand();
+                //s.Hand = new Hand();
 
-                s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
-                s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
+                //s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
+                //s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
 
-                s.Hand.MyHand[0].Discard = true;
-                s.Hand.MyHand[1].Discard = true;
+                //s.Hand.MyHand[0].Discard = "true";
+                //s.Hand.MyHand[1].Discard = "true";
 
                 List<Card> toDiscard = new List<Card>();
 
                 foreach(var card in s.Hand.MyHand)
                 {
-                    if(card.Discard == true)
+                    if(bool.Parse(card.Discard) == true)
                     {
                         toDiscard.Add(card);
                     }
                 }
-                s.Hand.Replace(toDiscard, deck);
-                model.Seats.Add(s);
+                s.Hand.Replace(toDiscard, model.Deck);
+                //model.Seats.Add(s);
             }
 
             return View("FinalHand", model);
