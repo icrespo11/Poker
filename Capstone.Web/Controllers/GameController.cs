@@ -18,7 +18,7 @@ namespace Capstone.Web.Controllers
                 {2, () => {ConfirmAnte(model); } },
                 {3, () => {HandSetup(model); } },
                 {4, () => {firstBettingRound(model); } },
-                //{5, () => {ReplaceCards(model); } },
+                {5, () => {ReplaceCards(model); } },
                 {6, () => {secondBettingRound(model); } },
                 {7, () => {determineWinner(model); } },
             };
@@ -219,6 +219,25 @@ namespace Capstone.Web.Controllers
                 }
             }
             HttpContext.Cache.Insert("Table", model);
+
+            //this is where bob starts breaking everything in hoping of fixing it.
+            int userIndex = 0;
+            for (int i = 0; i < model.Seats.Count; i++)
+            {
+                if (model.Seats[i].Username == (string)Session["username"])
+                {
+                    userIndex = i;
+                }
+            }
+            TableAndCardDictionary combo = new TableAndCardDictionary();
+            combo.Table = model;
+            for (int j = 0; j < 5; j++)
+            {
+                combo.CardList.Add(model.Seats[userIndex].Hand.MyHand[j], false);
+            }
+            //be afraid
+            //be very, very afraid.
+
             return RedirectToAction("HandSetup", model);   
         }
 

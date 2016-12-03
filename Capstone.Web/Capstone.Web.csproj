@@ -170,6 +170,7 @@
     <Compile Include="Models\PlayTexasHoldEm.cs" />
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\Table.cs" />
+    <Compile Include="Models\TableAndCardDictionary.cs" />
     <Compile Include="Models\UserAndTable.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
