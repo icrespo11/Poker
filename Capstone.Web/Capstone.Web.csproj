@@ -197,6 +197,7 @@
     <Content Include="Views\Game\FinalHand.cshtml" />
     <Content Include="Views\Table\CreateTable.cshtml" />
     <Content Include="Views\Table\TakeSeat.cshtml" />
+    <Content Include="Views\Table\TableSearch.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

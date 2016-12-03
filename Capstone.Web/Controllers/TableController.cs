@@ -19,6 +19,15 @@ namespace Capstone.Web.Controllers
 
         //    return View();
         //}
+        public ActionResult TableSearch(List<Table> tables)
+        {
+
+            TableSqlDal dal = new TableSqlDal();
+            tables = dal.GetAllTables();
+
+            return View("TableSearch", tables);
+        }
+
 
         public ActionResult CreateTable()
         {
@@ -52,7 +61,7 @@ namespace Capstone.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddPlayerToTable(UserAndTable model)
+        public ActionResult TakeSeat(UserAndTable model)
         {
 
             int tableID = model.Table.TableID;

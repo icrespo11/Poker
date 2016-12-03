@@ -1,0 +1,45 @@
+﻿@model List<Capstone.Web.Models.Table>
+@{
+    ViewBag.Title = "TableSearch";
+
+
+}
+
+<section>
+    <h2>Active Tables</h2>
+
+    <table>
+        <tr>
+            <th>Table Name</th>
+            <th>Table Host</th>
+            <th>Max Buy-in</th>
+            <th>Open Seats</th>
+        </tr>
+
+        @foreach (var table in Model)
+        {
+            int openSeats = 5;
+
+            <tr>
+                <td>@table.Name</td>
+                <td>@table.TableHost</td>
+                <td>@table.MaxBuyIn</td>
+
+
+
+                @foreach (var seat in table.Seats)
+                {
+                    if (seat.Occupied == true)
+                    {
+                        openSeats--;
+                    }
+                }
+
+                <td>@openSeats</td>
+            </tr>
+        }
+
+    </table>
+
+
+</section>

@@ -129,7 +129,7 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " + 
+                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " +
                         "(@tableID, @playerName, 0);"
                         , conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
@@ -173,42 +173,44 @@ namespace Capstone.Web.Dal_s
         public List<Table> GetAllTables()
         {
             List<Table> output = new List<Table>();
-            List<int> activeTables = new List<int>();
 
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmd = new SqlCommand("SELECT UNIQUE table_id FROM table_players;");
+                    conn.Open();
 
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM poker_table INNER JOIN table_players on poker_table.table_id = table_players.table_id;", conn);
+                    
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        activeTables.Add(Convert.ToInt32(reader["table_id"]));
-                    }
 
-                    foreach (int id in activeTables)
-                    {
-                        cmd.CommandText = "SELECT * FROM poker_table WHERE table_id = @id";
-                        cmd.Parameters.AddWithValue("@id", id);
+                        Table t = new Table();
+                        t.Ante = Convert.ToInt32(reader["ante"]);
+                        t.MaxBet = Convert.ToInt32(reader["max_bet"]);
+                        t.MinBet = Convert.ToInt32(reader["min_bet"]);
+                        t.TableHost = Convert.ToString(reader["host"]);
+                        t.TableID = Convert.ToInt32(reader["table_id"]);
+                        t.Name = Convert.ToString(reader["name"]);
 
-                        reader = cmd.ExecuteReader();
-
-                        while (reader.Read())
+                        bool add = true;
+                        foreach (var table in output)
                         {
-                            Table t = new Table();
-                            t.Ante = Convert.ToInt32(reader["ante"]);
-                            t.MaxBet = Convert.ToInt32(reader["max_bet"]);
-                            t.MinBet = Convert.ToInt32(reader["min_bet"]);
-                            t.TableHost = Convert.ToString(reader["host"]);
-                            t.TableID = Convert.ToInt32(reader["table_id"]);
-                            t.Name = Convert.ToString(reader["name"]);
-
+                            if(t.TableID == table.TableID)
+                            {
+                                add = false;
+                            }
+                        }
+                        if (add)
+                        {
                             output.Add(t);
                         }
                     }
                 }
+
+
             }
             catch (SqlException)
             {
