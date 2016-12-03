@@ -120,6 +120,33 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
+        public bool AddPlayerToTable(int tableID, string playerName)
+        {
+            int rowsAffected = 0;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " + 
+                        "(@tableID, @playerName, 0);"
+                        , conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@playerName", playerName);
+
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+            return (rowsAffected > 0);
+        }
+
+
+        //not tested/used yet
         public List<Table> GetAllTables()
         {
             List<Table> output = new List<Table>();
@@ -167,6 +194,9 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
+
+        //not tested/used yet
+        //probably needs to check hand_id as well
         public List<Card> GetAllCardsForPlayer(string username)
         {
             List<Card> output = new List<Card>();
@@ -199,7 +229,9 @@ namespace Capstone.Web.Dal_s
 
             return output;
         }
-        public void SetActivePlayer (string playerID)
+
+        //not tested
+        public void SetActivePlayer(string playerID)
         {
             try
             {
@@ -219,6 +251,7 @@ namespace Capstone.Web.Dal_s
 
         }
 
+        //not tested
         public string GetActivePlayer(int tableId)
         {
             string output = "";
@@ -240,10 +273,12 @@ namespace Capstone.Web.Dal_s
             }
             return output;
         }
-        //cannot accomodate one player two tables
-        public void UpdateActivePlayer (int tableID, string playerID)
+
+        //not yet tested
+        //cannot accomodate one player two tables...possibly changed
+        public void UpdateActivePlayer(int tableID, string playerID)
         {
-            
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -262,10 +297,8 @@ namespace Capstone.Web.Dal_s
             catch (SqlException)
             {
                 throw;
-            }           
+            }
         }
-
-        //creating a table 
 
     }
 }
