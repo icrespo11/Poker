@@ -98,8 +98,3 @@ insert into hand_cards values
 (1, 'Dan', 1, 8, 'clubs', 0), (1, 'Dan', 1, 1, 'diamonds', 0), (1, 'Isaac', 1, 9, 'hearts', 0),
 (1, 'Isaac', 1, 2, 'spades', 0), (1, 'Isaac', 1, 10, 'diamonds', 0), (1, 'Isaac', 1, 13, 'diamonds', 0),
 (1, 'Isaac', 1, 4, 'diamonds', 0);
-
-SELECT * FROM users;
-SELECT * FROM poker_table;
-SELECT * FROM table_players;
-

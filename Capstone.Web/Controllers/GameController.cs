@@ -10,6 +10,22 @@ namespace Capstone.Web.Controllers
 {
     public class GameController : Controller
     {
+        public void AdvanceGame(Table model)
+        {
+            Dictionary<int, Action> gameStates = new Dictionary<int, Action>()
+            {
+                {1, () => {JoinedTable(model); } },
+                {2, () => {ConfirmAnte(model); } },
+                {3, () => {HandSetup(model); } },
+                {4, () => {firstBettingRound(model); } },
+                {5, () => {ReplaceCards(model); } },
+                {6, () => {secondBettingRound(model); } },
+                {7, () => {determineWinner(model); } },
+            };
+
+            gameStates[model.StateCounter].Invoke();
+        }
+
         // GET: Game
         public ActionResult Rules()
         {
@@ -40,6 +56,7 @@ namespace Capstone.Web.Controllers
             }
             model.Seats[0].IsTurn = true;
             dal.SetActivePlayer(model.Seats[0].Username);
+            
             return View("JoinedTable", model);
         }
 
@@ -98,7 +115,6 @@ namespace Capstone.Web.Controllers
                     seat.Occupied = true;
                 }
             }
-
             return View("HandSetup", model);
         }
 
@@ -144,7 +160,6 @@ namespace Capstone.Web.Controllers
                 {
                     break;
                 }
-
             }
 
             bool updatedPlayer = false;
@@ -175,10 +190,8 @@ namespace Capstone.Web.Controllers
                             }
                         }
                     }
-                }
-               
+                }               
                 //seatChecking++;
-
             }
             foreach (var seat in model.Seats)
             {
@@ -196,7 +209,6 @@ namespace Capstone.Web.Controllers
                     seat.IsTurn = true;
                 }
             }
-
                 return RedirectToAction("HandSetup", model);   
         }
 
@@ -231,9 +243,7 @@ namespace Capstone.Web.Controllers
                         toDiscard.Add(card);
                     }
                 }
-
                 s.Hand.Replace(toDiscard, deck);
-
                 model.Seats.Add(s);
             }
 
@@ -265,22 +275,8 @@ namespace Capstone.Web.Controllers
                     seat.Occupied = true;
                 }
             }
-
             return View("FinalHand", model);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         public ActionResult firstBettingRound(Table model)
         {
@@ -289,7 +285,7 @@ namespace Capstone.Web.Controllers
             return View("firstBettingRound", model);
         }
 
-        public ActionResult secondRoundOdBetting(Table model)
+        public ActionResult secondBettingRound(Table model)
         {
             //betting stuff
 
