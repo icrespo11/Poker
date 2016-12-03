@@ -40,9 +40,30 @@ namespace Capstone.Web.Controllers
             //need to get table ID out of the table we just created 
             Table output = dal.FindTable(newID);
 
+            UserSqlDal userDal = new UserSqlDal();
+            UserModel currentUser = userDal.Login(model.TableHost);
 
-            /////////
-            return View("JoinTable", output);
+            UserAndTable ut = new UserAndTable();
+            ut.Table = output;
+            ut.User = currentUser;
+
+            /////////need to do a post redirect get here, possibly validate stuff on previosu screen
+            return View("TakeSeat", ut);
+        }
+
+        [HttpPost]
+        public ActionResult AddPlayerToTable(UserAndTable model)
+        {
+
+            int tableID = model.Table.TableID;
+            string userName = model.User.Username;
+            int MoneyAdded = model.MoneyToTheTable;
+
+            TableSqlDal dal = new TableSqlDal();
+            bool isAdded = dal.AddPlayerToTable(tableID, userName);
+
+
+            return View();
         }
     }
 }

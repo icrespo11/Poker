@@ -1,0 +1,41 @@
+﻿@model Capstone.Web.Models.UserAndTable
+@{
+    ViewBag.Title = "TakeSeat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section>
+    <h2>@Model.Table.Name</h2>
+
+    <h3>@Model.Table.TableHost</h3>
+
+    @* get username from session
+        need amount of money they're bringing *@
+
+    <p>Ante: @Model.Table.Ante</p>
+    <br />
+    <p>Minimum Bet: @Model.Table.MinBet</p>
+    <br />
+    <p>Maximun Bet: @Model.Table.MaxBet</p>
+    <br />
+    <p>Maximum Buy-in: @Model.Table.MaxBuyIn</p>
+    <br />
+    <p>Current Money: @Model.User.CurrentMoney.ToString("C")</p>
+    <br />
+
+    @using (Html.BeginForm("AddPlayerToTable", "Table", FormMethod.Post))
+    {
+        <div>
+            @Html.LabelFor(m => m.MoneyToTheTable, "How Much Money Will You Bring?")
+            @Html.TextBoxFor(m => m.MoneyToTheTable)
+            @* validation? *@
+
+            @Html.HiddenFor(m => m.Table.TableID, Model.Table.TableID)
+            @Html.HiddenFor(m => m.User.Username, Model.User.Username)
+        </div>
+        <div>
+            <button>SUBMIT!</button>
+        </div>
+
+    }
+
+</section>

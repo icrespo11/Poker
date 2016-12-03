@@ -170,6 +170,7 @@
     <Compile Include="Models\PlayTexasHoldEm.cs" />
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\Table.cs" />
+    <Compile Include="Models\UserAndTable.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -192,11 +193,9 @@
     <Content Include="Views\Home\LoggedInLanding.cshtml" />
     <Content Include="Views\Game\JoinedTable.cshtml" />
     <Content Include="Views\Game\HandSetup.cshtml" />
-
     <Content Include="Views\Game\FinalHand.cshtml" />
-
     <Content Include="Views\Table\CreateTable.cshtml" />
-
+    <Content Include="Views\Table\TakeSeat.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
