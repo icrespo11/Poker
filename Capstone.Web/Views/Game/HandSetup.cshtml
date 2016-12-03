@@ -4,7 +4,9 @@
     ViewBag.Title = "Table";
     Layout = "~/Views/Shared/_Layout.cshtml";
     <script src="/Scripts/HandSetupJavaScript.js"></script>
-}
+
+        List<bool> discardList = new List<bool>() { false, false, false, false, false };
+    }
 
 <section>
     <h2>@Model.Name</h2>
@@ -84,14 +86,25 @@
 
     @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post))
     {
+        @*
+        Capstone.Web.Models.Seat s = new Capstone.Web.Models.Seat();
+        Capstone.Web.Models.Card c = new Capstone.Web.Models.Card();
+        Capstone.Web.Models.Card c2 = new Capstone.Web.Models.Card();
+        c.Discard = "true";
+        c2.Discard = "false";
+        s.Hand.MyHand[0] = c;
+        s.Hand.MyHand[1] = c2;
+
         foreach (var seat in Model.Seats)
         {
             if (seat.Username == Session["username"].ToString())
             {
-
+                <div>
+                    @Html.HiddenFor(m => m.Seats[0], s);
+                </div>
             }
         }
-
+        *@
         <button>Discard</button>
     }
 </section>

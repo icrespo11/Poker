@@ -221,6 +221,7 @@ namespace Capstone.Web.Controllers
             HttpContext.Cache.Insert("Table", model);
 
             //this is where bob starts breaking everything in hoping of fixing it.
+            /*
             int userIndex = 0;
             for (int i = 0; i < model.Seats.Count; i++)
             {
@@ -235,6 +236,7 @@ namespace Capstone.Web.Controllers
             {
                 combo.CardList.Add(model.Seats[userIndex].Hand.MyHand[j], false);
             }
+            */
             //be afraid
             //be very, very afraid.
 
@@ -249,6 +251,11 @@ namespace Capstone.Web.Controllers
             //DeckOfCards deck = new DeckOfCards();
             //deck.Shuffle();
 
+
+
+
+            //this is completely obliterting anything/everything we would be passing in.
+            //we need to get SOMETHING set and copied out before we do this.
             model = HttpContext.Cache["Table"] as Table;
 
             foreach (Seat s in model.Seats)
