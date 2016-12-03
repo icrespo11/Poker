@@ -130,7 +130,7 @@ namespace Capstone.Web.Dal_s
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " + 
-                        "(@tableID, @playerName, 0"
+                        "(@tableID, @playerName, 0);"
                         , conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", playerName);

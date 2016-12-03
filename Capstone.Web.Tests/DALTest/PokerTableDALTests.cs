@@ -46,8 +46,8 @@ namespace Capstone.Web.Tests.DALTest
 
                 cmd = new SqlCommand("SELECT table_id from poker_table WHERE host = 'Bob'", conn);
                 int tableID = (int)cmd.ExecuteScalar();
-                 
-                cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " + 
+
+                cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " +
                     $"({tableID}, 'Bob', 1), ({tableID}, 'Boo', 0);"
                     , conn);
 
@@ -155,7 +155,7 @@ namespace Capstone.Web.Tests.DALTest
         }
 
 
-        //THE REST OF THESE ARE DUPLICATES THAT HAVENT BEEN REPLACED YET
+
         [TestMethod]
         public void TestCreatingANewTable()
         {
@@ -207,30 +207,51 @@ namespace Capstone.Web.Tests.DALTest
 
         }
 
-        [TestMethod]
-        public void TestLoginSuccess()
-        {
-            UserSqlDal dal = new UserSqlDal();
-            UserModel a = dal.Login("Bob");
 
-            Assert.AreEqual(50000, a.CurrentMoney);
-            Assert.AreEqual("admin", a.Privilege);
-            Assert.AreEqual("pwd2", a.Password);
+
+        [TestMethod]
+        public void TestAddingAPlayerToATable()
+        {
+            TableSqlDal dal = new TableSqlDal();
+            string playerToAdd = "Brian";
+            int tableID = 0;
+            Table t = new Table();
+
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("SELECT table_id FROM poker_table WHERE host = 'Bob'", conn);
+                tableID = (int)cmd.ExecuteScalar();
+            }
+            dal.AddPlayerToTable(tableID, playerToAdd);
+
+            //player added to table, now need to get all information out of table_players
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM table_players WHERE table_id = {tableID}", conn);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    t.TableID = Convert.ToInt32(reader["table_id"]);
+                    Seat s = new Seat();
+                    s.Username = Convert.ToString(reader["player"]);
+                    s.IsTurn =  Convert.ToBoolean(reader["isTurn"]);
+                    t.Seats.Add(s);
+                }
+
+            }
+            Assert.IsNotNull(t.Seats);
+            Assert.AreEqual(3, t.Seats.Count);
+            Assert.AreEqual("Brian", t.Seats[2].Username);
+
         }
 
-        //this kinda made more sense when we were checking password in the DAL
-        [TestMethod]
-        public void TestLoginFail()
-        {
-            UserSqlDal dal = new UserSqlDal();
-            UserModel a = dal.Login("Boa");
-            UserModel b = dal.Login("arglefargle");
-            UserModel c = dal.Login("Bo");
-            Assert.IsNull(a);
-            Assert.IsNull(b);
-            Assert.IsNull(c);
-            //Assert.AreNotEqual(50000, a.CurrentMoney);
-            //Assert.AreNotEqual("admin", a.Privilege);
-        }
+
     }
 }
