@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "Table";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    <script src = "/Scripts/HandSetupJavaScript.js" ></script>
+    <script src="/Scripts/HandSetupJavaScript.js"></script>
 }
 
 <section>
@@ -30,61 +30,69 @@
         }
     </div>
 
-@using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post))
-{
-    foreach (var seat in Model.Seats)
+    @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn
     {
-        if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
+        for (int i = 0; i < Model.Seats.Count; i++)
         {
-            <div id="currentUserPlayField">
-                @if (seat.Occupied && seat.IsTurn)
+            if (Model.Seats[i].Username.ToLower() == Session["username"].ToString().ToLower())
+            {
+                <div id="currentUserPlayField">
+                    @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
                     {
-                    <p id="currentPlayer">@seat.Username</p>
-                }
-                else
-                {
-                    <p>@seat.Username</p>
-                }
-                <p>@seat.TableBalance.ToString("C")</p>
-
-
-                @foreach (var card in seat.Hand.MyHand)
-                {
-
-                    if (card.Suit == "diamonds" || card.Suit == "hearts")
-                        {
-                        <div class="playingCard red">
-                            @Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })
-                            <p>@card.ConvertedNumber @card.SuitLetter</p>
-                        </div>
+                        <p id="currentPlayer">@Model.Seats[i].Username</p>
                     }
                     else
                     {
-                        <div class="playingCard black">
-                            @Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })
-                            <p>@card.ConvertedNumber @card.SuitLetter</p>
-                        </div>
+                        <p>@Model.Seats[i].Username</p>
                     }
+                    <p>@Model.Seats[i].TableBalance.ToString("C")</p>
 
 
-                }
-                @if (seat.Occupied && seat.IsTurn)
+                    @for (int j = 0; j < 5; j++)
                     {
-                    <p>Gonna Do Stuff Here</p>
-                }
-            </div>
+
+                        if (Model.Seats[i].Hand.MyHand[j].Suit == "diamonds" || Model.Seats[i].Hand.MyHand[j].Suit == "hearts")
+                        {
+                            <div class="playingCard red">
+                                @*@Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })*@
+                                @Html.HiddenFor(c => c.Seats[i].Hand.MyHand[j].Discard, new { @class = "shouldDiscard" })
+                                <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="playingCard black">
+                                @*@Html.Hidden("isDiscard", Model.Seats[i].Hand.MyHand[j].Discard, new { @class = "shouldDiscard" })*@
+                                @Html.HiddenFor(c => c.Seats[i].Hand.MyHand[j].Discard, new { @class = "shouldDiscard" })
+                                <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
+                            </div>
+                        }
+
+
+                    }
+                    @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
+                    {
+                        <p>Gonna Do Stuff Here</p>
+                    }
+                </div>
+            }
         }
-    }
 
         <button>Advance</button>
-        
+
     }
 
-@using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post))
-{
-    <button>Discard</button>
-}
+    @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post))
+    {
+        foreach (var seat in Model.Seats)
+        {
+            if (seat.Username == Session["username"].ToString())
+            {
 
+            }
+        }
 
+        <button>Discard</button>
+    }
 </section>
 
