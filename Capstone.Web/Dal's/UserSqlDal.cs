@@ -138,5 +138,30 @@ namespace Capstone.Web.Dal_s
             }
         }
 
+        //not tested
+        public bool UpdateMoney(string username, int amount)
+        {
+            int rowsEffected = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE users SET current_money = @amount WHERE username = @username;", conn);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@amount", amount);
+                    rowsEffected = cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            return (rowsEffected > 0);
+
+        }
     }
 }
