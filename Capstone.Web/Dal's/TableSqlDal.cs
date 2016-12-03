@@ -36,9 +36,9 @@ namespace Capstone.Web.Dal_s
                         t.TableHost = Convert.ToString(reader["host"]);
                         t.TableID = Convert.ToInt32(reader["table_id"]);
                         t.Name = Convert.ToString(reader["name"]);
-                        //t.MaxBuyIn = Convert.ToInt32(reader["max_buy_in"]);
-                        //t.Pot = Convert.ToInt32(reader["pot"]);
-                        //t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
+                        t.MaxBuyIn = Convert.ToInt32(reader["max_buy_in"]);
+                        t.Pot = Convert.ToInt32(reader["pot"]);
+                        t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
                     }
                 }
             }
@@ -254,6 +254,8 @@ namespace Capstone.Web.Dal_s
         }
 
         //not tested
+        //currently only relevant the first time when creating the table, when all seats are inactive
+        //may be used when starting a new hand
         public void SetActivePlayer(string playerID)
         {
             try

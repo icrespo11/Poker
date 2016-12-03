@@ -293,5 +293,8 @@ namespace Capstone.Web.Tests.DALTest
             Assert.AreEqual("Bob", t.Seats[0].Username);
         }
 
+
+
+
     }
 }

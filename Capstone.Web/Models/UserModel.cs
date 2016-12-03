@@ -20,7 +20,7 @@ namespace Capstone.Web.Models
         public string ConfirmPassword { get; set; }
 
         public string LoginPassword { get; set; }
-        public int CurrentMoney { get; set; }
+        public int CurrentMoney { get; set; }  
         public int HighestMoney { get; set; }
         public bool IsOnline { get; set; }
         public string Privilege { get; set; }
