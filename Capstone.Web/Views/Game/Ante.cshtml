@@ -1,0 +1,29 @@
+﻿@model Capstone.Web.Models.Table
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section>
+    <h2>Welcome</h2>
+
+    <h3>Are you in this round or not?</h3>
+    <h3>The Ante is @Model.Ante</h3>
+
+    <div>
+        @* This currently doesn'tdo anything, but needs to pass information to the controller that 
+            the player wants to be in this round.  The Controller will have to subtract  that amount from
+            the appropraite seat's tablebalance and add it to that seat's currentbet.  After all players
+            have anted or chosen not to play, those currentbets will be set to 0 and their 
+            former values added to the pot.
+            
+            presumably it should take the player to a waiting page of some sort, which confirms that all players
+            have bet before moving on to the phase where it distributes cards*@
+        <button>Ante Up!</button>
+    </div>
+
+
+</section>
+
+

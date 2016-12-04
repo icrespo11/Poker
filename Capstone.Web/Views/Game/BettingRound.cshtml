@@ -1,0 +1,63 @@
+﻿@model Capstone.Web.Models.Table
+@{
+    ViewBag.Title = "BettingRound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int currentBetToCall = 0;
+}
+<section>
+<h2>BettingRound</h2>
+
+    @foreach (var seat in Model.Seats)
+    {
+        if(seat.CurrentBet > currentBetToCall)
+        {
+            currentBetToCall = seat.CurrentBet);
+        }
+    }
+
+
+    @*
+     need to get bet of the current seat here
+
+    @if( mySeat.CurrentBet < currentBetToCall)
+    {
+        callingValue = currentBetToCall - myseat.CurrentBet;
+    }
+    *@
+
+    @Html.Label("Bet or Raise:")
+    @Html.TextBox("Bet or Raise:")
+
+    @* this text box should be set to only take integers, not allow numbers below table.currentminbet, and not allow numbers
+        above maxbet.  it should also not let the player bet more than their tablemoney*@
+    @* we may need a textbox for or something specifically to pass this properly.*@
+
+
+
+    <div>
+        <button>Bet/Raise</button>
+    </div>
+    @* this button should go to the controller with the bet.  it should automatically remove the currentbettocall amount from
+    the seat's tablebalance nad add it to its currentbet, then additionally take the amount from the above textbox and remove 
+    that from the tablebalnce and add it to currentbet.  a flag for lastbet should be set to this seat, in the name of making 
+    sure that everyone has to match that before moving on to the next round *@
+
+    @* the controller this is sent to should also check the bet amount against the table's currentMinBet and update that to
+        match the bet that was just made*@
+
+
+    <div>
+        <button>Check/Call</button>
+    </div>
+    @* this button should go to teh controller with the call.  It should remove the currentbettocall amount from the seat's tablebalance
+        and add it to its currentbet, then go to a waiting mode to watch the other players' turns.*@
+
+    <div>
+        <button>Fold</button>
+    </div>
+    @* this button should immediately remove all money form the player's current bet and place it in the pot.  the player should be
+        removed from the action list and their cards no longer tracked by the table until the next hand starts*@
+
+
+</section>
+

@@ -21,6 +21,8 @@ namespace Capstone.Web.Models
 
         public int MinBet { get; set; }
 
+        public int currentMinBet { get; set; }
+
         //public int SmallBlind { get; set; }
 
         //public int BigBlind { get; set; }
