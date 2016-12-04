@@ -86,15 +86,31 @@
 
     @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post))
     {
-        @*
-        Capstone.Web.Models.Seat s = new Capstone.Web.Models.Seat();
+
+
         Capstone.Web.Models.Card c = new Capstone.Web.Models.Card();
         Capstone.Web.Models.Card c2 = new Capstone.Web.Models.Card();
         c.Discard = "true";
         c2.Discard = "false";
-        s.Hand.MyHand[0] = c;
-        s.Hand.MyHand[1] = c2;
 
+        Capstone.Web.Models.Hand h = new Capstone.Web.Models.Hand();
+        h.MyHand = new List<Capstone.Web.Models.Card>();
+        h.MyHand.Add(c);
+        h.MyHand.Add(c2);
+
+        Capstone.Web.Models.Seat s = new Capstone.Web.Models.Seat();
+        //s.Hand = new Capstone.Web.Models.Hand();
+        s.Hand = h;
+
+        List<Capstone.Web.Models.Seat> ls = new List<Capstone.Web.Models.Seat>();
+
+        ls.Add(s);
+
+        <div>
+            @Html.HiddenFor(m => m.Seats, ls);
+        </div>
+        
+        @*
         foreach (var seat in Model.Seats)
         {
             if (seat.Username == Session["username"].ToString())
