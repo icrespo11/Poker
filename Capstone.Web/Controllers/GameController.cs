@@ -44,7 +44,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
 
             Table output = dal.FindTable(tableID);
-            int handID = dal.GetHandID(tableID);
+            int handID = 1; // dal.GetHandID(tableID);
 
             List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
 
@@ -69,7 +69,6 @@ namespace Capstone.Web.Controllers
                 s.Username = "Available";
                 output.Seats.Add(s);
             }
-
             return output;
         }
 
@@ -87,7 +86,6 @@ namespace Capstone.Web.Controllers
             model.Seats[0].IsTurn = true;
             dal.SetActivePlayer(model.Seats[0].Username);
             //dal.UpdateStateCounter(model.TableID);
-            HttpContext.Cache.Insert("Table", model);
             return View("JoinedTable", model);
         }
 
@@ -105,19 +103,16 @@ namespace Capstone.Web.Controllers
             return View("ConfirmAnte", model);
         }
 
-        public ActionResult CreateDeck(int tableID)
+        public void CreateDeck(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
 
-            int handID = dal.CreateHand(tableID);
-
+            int handID = 1; //dal.CreateHand(tableID);
 
             DeckOfCards deck = new DeckOfCards();
             deck.Shuffle();
 
             dal.StoreCards(deck.cardList, handID);
-
-            return RedirectToAction("HandSetup");
         }
 
         public ActionResult HandSetup(int tableID)
@@ -126,6 +121,33 @@ namespace Capstone.Web.Controllers
             //model = HttpContext.Cache["Table"] as Table;
 
             Table model = GetTableInfo(tableID);
+            CreateDeck(tableID);
+            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
+
+            string playerTurn = dal.GetActivePlayer(model.TableID);
+            foreach (var seat in model.Seats)
+            {
+                if (seat.Username == playerTurn)
+                {
+                    seat.IsTurn = true;
+                }
+                //not longtime solution
+                if (seat.Username != "Available")
+                {
+                    seat.Active = true;
+                    seat.Occupied = true;
+                }
+            }
+            return View("HandSetup", model);
+        }
+
+        public ActionResult HandSetupDupe(int tableID)
+        {
+            TableSqlDal dal = new TableSqlDal();
+            //model = HttpContext.Cache["Table"] as Table;
+
+            Table model = GetTableInfo(tableID);
+            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
 
             string playerTurn = dal.GetActivePlayer(model.TableID);
             foreach (var seat in model.Seats)
@@ -269,7 +291,7 @@ namespace Capstone.Web.Controllers
             //deck.Shuffle();
 
             TableSqlDal dal = new TableSqlDal();
-            int handID = dal.GetHandID(model.TableId);
+            int handID = 1; //  dal.GetHandID(model.TableId);
 
             dal.DiscardCards(model);
             dal.DrawCards(handID, model.Discards.Count, model.Username);
@@ -307,7 +329,7 @@ namespace Capstone.Web.Controllers
                 //model.Seats.Add(s);
             //}
 
-            return RedirectToAction("HandSetup", new { tableID = model.TableId });
+            return RedirectToAction("HandSetupDupe", new { tableID = model.TableId });
         }
 
         public ActionResult FinalHand(Table model)

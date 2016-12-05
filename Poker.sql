@@ -63,7 +63,7 @@ constraint fk_hand_poker_table_table_id Foreign Key (table_id) References poker_
 create table hand_cards (
 hand_id integer Not Null,
 player varchar(200) Not Null,
-seat_number integer Not Null,
+--seat_number integer Not Null,
 card_number integer Not Null,
 card_suit varchar(8) Not Null,
 dealt bit Not Null,
@@ -122,10 +122,10 @@ insert into hand (table_id) values (2);
 
 delete from hand_cards;
 insert into hand_cards values 
-(1, 'Dan', 1, 2, 'hearts', 1, 0), (1, 'Dan', 1, 11, 'diamonds',1, 0), (1, 'Dan', 1, 6, 'hearts',1, 0), 
-(1, 'Dan', 1, 8, 'clubs',1, 0), (1, 'Dan', 1, 1, 'diamonds',1, 0), (1, 'Isaac', 1, 9, 'hearts',1, 0),
-(1, 'Isaac', 1, 2, 'spades',1, 0), (1, 'Isaac', 1, 10, 'diamonds', 1,0), (1, 'Isaac', 1, 13, 'diamonds',1, 0),
-(1, 'Isaac', 1, 4, 'diamonds',1, 0);
+(1, 'Dan', 2, 'hearts', 1, 0), (1, 'Dan', 11, 'diamonds',1, 0), (1, 'Dan', 6, 'hearts',1, 0), 
+(1, 'Dan', 8, 'clubs',1, 0), (1, 'Dan', 5, 'diamonds',1, 0), (1, 'Isaac', 9, 'hearts',1, 0),
+(1, 'Isaac', 2, 'spades',1, 0), (1, 'Isaac', 10, 'diamonds', 1,0), (1, 'Isaac', 13, 'diamonds', 1, 0),
+(1, 'Isaac', 4, 'diamonds',1, 0);
 
 insert into hand_seat VALUES(1, 1, 'dan', 20, 1, 0, 0, 0, 0);
 insert into hand_seat VALUES(1, 1, 'isaac', 20, 0, 0, 0, 0, 0)

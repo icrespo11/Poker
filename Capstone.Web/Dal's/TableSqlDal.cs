@@ -362,7 +362,7 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "SELECT MAX hand_id from hand where table_id = @tableID;";
+                    cmd.CommandText = "SELECT MAX(hand_id) from hand where table_id = @tableID;";
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     handID = (int)cmd.ExecuteScalar();
@@ -423,7 +423,6 @@ namespace Capstone.Web.Dal_s
             }
             catch (SqlException)
             {
-
                 throw;
             }
         }
@@ -434,9 +433,9 @@ namespace Capstone.Web.Dal_s
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0;", conn);
+                {                                                                           //hand id is hardcoded and
+                    conn.Open();                                                            //needs to be fixed later
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = 1 AND dealt = 0;", conn);
                     cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -449,15 +448,17 @@ namespace Capstone.Web.Dal_s
                         c.Suit = Convert.ToString(reader["card_suit"]);
                         output.Add(c);
                     }
+                    reader.Close();
 
                     foreach (Card card in output)
                     {
-                        cmd.CommandText = "INSERT INTO hand_cards VALUES (@handID, @player, @number, @suit, 1, 0);";
+                        cmd = new SqlCommand("INSERT INTO hand_cards VALUES (@handID, @player, @number, @suit, 1, 0);", conn);
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@handID", handID);
                         cmd.Parameters.AddWithValue("@player", player);
                         cmd.Parameters.AddWithValue("@number", card.Number);
                         cmd.Parameters.AddWithValue("@suit", card.Suit);
+                        cmd.ExecuteNonQuery();
                     }
                 }
             }
@@ -478,7 +479,7 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO hand_card_deck VALUES (@hand_id, @card_suit, @card_number, 0;", conn);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO hand_card_deck VALUES (@hand_id, @card_number, @card_suit, 0, 0);", conn);
 
                     for (int i = 0; i < 52; i++)
                     {
