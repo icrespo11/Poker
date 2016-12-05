@@ -14,15 +14,21 @@ namespace Capstone.Web.Controllers
         { TableSqlDal dal = new TableSqlDal();
             Table currentTable = new Table();
             currentTable = dal.FindTable(tableID);
+
+            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
+
+            foreach (Seat s in currentTable.Seats)
+            {
+
+            }
+
             if (currentTable.StateCounter == 0)
             {
                 currentTable.StateCounter = 1;
                 dal.UpdateStateCounter(currentTable.TableID);
             }
-            Dictionary<int, Action> gameStates = new Dictionary<int, Action>()
-            
-            {
-               
+            Dictionary<int, Action> gameStates = new Dictionary<int, Action>()           
+            {               
                 {1, () => {JoinedTable(currentTable); } },
                 {2, () => {ConfirmAnte(currentTable); } },
                 {3, () => {HandSetup(currentTable); } },
@@ -45,7 +51,6 @@ namespace Capstone.Web.Controllers
         {           
             TableSqlDal dal = new TableSqlDal();
              
-
             model.Deck = new DeckOfCards();
             model.Deck.Shuffle();
 
