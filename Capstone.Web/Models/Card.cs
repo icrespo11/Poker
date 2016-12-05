@@ -14,6 +14,7 @@ namespace Capstone.Web.Models
         public string ConvertedNumber { get; set; }
         public string SuitLetter { get; set; }
 
-        public string Discard { get; set; }
+        public bool Discard { get; set; }
+        public bool Dealt { get; set; }
     }
 }
