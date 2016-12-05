@@ -10,35 +10,67 @@ namespace Capstone.Web.Controllers
 {
     public class GameController : Controller
     {
-        public void AdvanceGame(int tableID)
-        { TableSqlDal dal = new TableSqlDal();
+        public ActionResult AdvanceGame(int tableID)
+        {
+            TableSqlDal dal = new TableSqlDal();
             Table currentTable = new Table();
-            currentTable = dal.FindTable(tableID);
-
-            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
-
-            foreach (Seat s in currentTable.Seats)
-            {
-
-            }
+            currentTable = GetTableInfo(tableID);
 
             if (currentTable.StateCounter == 0)
             {
                 currentTable.StateCounter = 1;
                 dal.UpdateStateCounter(currentTable.TableID);
             }
-            Dictionary<int, Action> gameStates = new Dictionary<int, Action>()           
-            {               
-                {1, () => {JoinedTable(currentTable); } },
-                {2, () => {ConfirmAnte(currentTable); } },
-                {3, () => {HandSetup(currentTable); } },
-                {4, () => {firstBettingRound(currentTable); } },
-                {5, () => {ReplaceCards(null); } },
-                {6, () => {secondBettingRound(currentTable); } },
-                {7, () => {determineWinner(currentTable); } },
+
+            Dictionary<int, string> gameStates = new Dictionary<int, string>()           
+            {
+                //{1, () => {JoinedTable(currentTable); } },
+                {1, "JoinedTable" },
+                //{2, () => {ConfirmAnte(currentTable); } },
+                //{3, () => {HandSetup(currentTable); } },
+                //{4, () => {firstBettingRound(currentTable); } },
+                //{5, () => {ReplaceCards(null); } },
+                //{6, () => {secondBettingRound(currentTable); } },
+                //{7, () => {determineWinner(currentTable); } },
             };
 
-            gameStates[currentTable.StateCounter].Invoke();
+            //gameStates[currentTable.StateCounter].Invoke();
+
+            return RedirectToAction(gameStates[currentTable.StateCounter], currentTable);
+        }
+
+        public Table GetTableInfo(int tableID)
+        {
+            TableSqlDal dal = new TableSqlDal();
+
+            Table output = dal.FindTable(tableID);
+            int handID = dal.GetHandID(tableID);
+
+            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
+
+            for (int i = 0; i < players.Count; i++)
+            {
+                Seat s = new Seat();
+                s.Username = players[i].Username;
+                s.TableBalance = players[i].CurrentMoney;
+
+                if (s.Username != "Available")
+                {
+                    s.Hand = new Hand();
+
+                    s.Hand.MyHand = dal.GetAllCardsForPlayer(s.Username, handID);
+                }
+                output.Seats.Add(s);
+            }
+
+            for (int i = output.Seats.Count; i < 5; i++)
+            {
+                Seat s = new Seat();
+                s.Username = "Available";
+                output.Seats.Add(s);
+            }
+
+            return output;
         }
 
         // GET: Game
@@ -51,9 +83,6 @@ namespace Capstone.Web.Controllers
         {           
             TableSqlDal dal = new TableSqlDal();
              
-            model.Deck = new DeckOfCards();
-            model.Deck.Shuffle();
-
             List<UserModel> players = dal.GetAllPlayersAtTable(1);
 
             foreach (UserModel player in players)
@@ -73,7 +102,7 @@ namespace Capstone.Web.Controllers
             }
             model.Seats[0].IsTurn = true;
             dal.SetActivePlayer(model.Seats[0].Username);
-            dal.UpdateStateCounter(model.TableID);
+            //dal.UpdateStateCounter(model.TableID);
             HttpContext.Cache.Insert("Table", model);
             return View("JoinedTable", model);
         }
@@ -92,37 +121,28 @@ namespace Capstone.Web.Controllers
             return View("ConfirmAnte", model);
         }
 
-        public ActionResult HandSetup(Table model)
+        public ActionResult CreateDeck(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
-            model = HttpContext.Cache["Table"] as Table;
 
-            //List<UserModel> players = dal.GetAllPlayersAtTable(1);
+            int handID = dal.CreateHand(tableID);
 
-            foreach (Seat s in model.Seats)
-            {
-                //Seat s = new Seat();
-                //s.Username = player.Username;
-                //s.TableBalance = player.CurrentMoney;
 
-                if (s.Username != "Available")
-                {
-                    s.Hand = new Hand();
+            DeckOfCards deck = new DeckOfCards();
+            deck.Shuffle();
 
-                    s.Hand.MyHand = dal.GetAllCardsForPlayer(s.Username);
-                    s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
+            dal.StoreCards(deck.cardList, handID);
 
-                }
+            return RedirectToAction("HandSetup");
+        }
 
-                //model.Seats.Add(s);
-            }
+        public ActionResult HandSetup(int tableID)
+        {
+            TableSqlDal dal = new TableSqlDal();
+            //model = HttpContext.Cache["Table"] as Table;
 
-            //for (int i = model.Seats.Count; i < 5; i++)
-            //{
-            //    Seat s = new Seat();
-            //    s.Username = "Available";
-            //    model.Seats.Add(s);
-            //}
+            Table model = GetTableInfo(tableID);
+
             string playerTurn = dal.GetActivePlayer(model.TableID);
             foreach (var seat in model.Seats)
             {
@@ -137,7 +157,6 @@ namespace Capstone.Web.Controllers
                     seat.Occupied = true;
                 }
             }
-            HttpContext.Cache.Insert("Table", model);
             return View("HandSetup", model);
         }
 
@@ -265,12 +284,17 @@ namespace Capstone.Web.Controllers
             //DeckOfCards deck = new DeckOfCards();
             //deck.Shuffle();
 
+            TableSqlDal dal = new TableSqlDal();
+            int handID = dal.GetHandID(model.TableId);
 
+            dal.DiscardCards(model);
+            dal.DrawCards(handID, model.Discards.Count);
 
 
             //this is completely obliterting anything/everything we would be passing in.
             //we need to get SOMETHING set and copied out before we do this.
-            Table t = HttpContext.Cache["Table"] as Table;
+
+            //Table t = HttpContext.Cache["Table"] as Table;
 
             //foreach (Seat s in model.Seats)
             //{

@@ -242,7 +242,7 @@ namespace Capstone.Web.Dal_s
 
         //not tested/used yet
         //probably needs to check hand_id as well
-        public List<Card> GetAllCardsForPlayer(string username)
+        public List<Card> GetAllCardsForPlayer(string username, int handID)
         {
             List<Card> output = new List<Card>();
 
@@ -252,8 +252,9 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT card_number, card_suit FROM hand_cards WHERE player = @player;", conn);
+                    SqlCommand cmd = new SqlCommand("SELECT card_number, card_suit FROM hand_cards WHERE player = @player AND hand_id = @handID;", conn);
                     cmd.Parameters.AddWithValue("@player", username);
+                    cmd.Parameters.AddWithValue("@handID", handID);
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -272,7 +273,7 @@ namespace Capstone.Web.Dal_s
                 throw;
             }
 
-            return output;
+            return DeckOfCards.GetSuitAndLetterValues(output);
         }
 
         //not tested
@@ -347,5 +348,142 @@ namespace Capstone.Web.Dal_s
             }
         }
 
+        public int CreateHand(int tableID)
+        {
+            int handID = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("INSERT INTO hand (table_id) VALUES (@tableID);", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "SELECT MAX hand_id from hand where table_id = @tableID;";
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    handID = (int)cmd.ExecuteScalar();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return GetHandID(tableID);
+        }
+
+        public int GetHandID(int tableID)
+        {
+            int handID = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT MAX(hand_id) from hand where table_id = @tableID;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    handID = (int)cmd.ExecuteScalar();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return handID;
+        }
+
+        public void DiscardCards(ReplaceCardModel cards)
+        {
+            int handID = GetHandID(cards.TableId);
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    foreach (Card card in cards.Discards)
+                    {
+                        SqlCommand cmd = new SqlCommand("DELETE * FROM hand_cards WHERE hand_id = @handID AND player = @player AND card_suit = @suit AND card_number = @number;", conn);
+                        cmd.Parameters.AddWithValue("@handID", handID);
+                        cmd.Parameters.AddWithValue("@player", cards.Username);
+                        cmd.Parameters.AddWithValue("@suit", card.Suit);
+                        cmd.Parameters.AddWithValue("@number", card.Number);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+
+                throw;
+            }
+        }
+
+        public List<Card> DrawCards(int handID, int numberToDraw)
+        {
+            List<Card> output = new List<Card>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT TOP @numberToDraw * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0;", conn);
+                    cmd.Parameters.AddWithValue("@numberToDraw", numberToDraw);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Card c = new Card();
+
+                        c.Number = Convert.ToInt32(reader["card_number"]);
+                        c.Suit = Convert.ToString(reader["card_suit"]);
+                        output.Add(c);
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            output = DeckOfCards.GetSuitAndLetterValues(output);
+            return output;
+        }
+
+        public void StoreCards(List<Card> cards, int handID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("INSERT INTO hand_card_deck VALUES (@hand_id, @card_suit, @card_number, 0;", conn);
+
+                    for (int i = 0; i < 52; i++)
+                    {
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@hand_id", handID);
+                        cmd.Parameters.AddWithValue("@card_number", cards[i].Number);
+                        cmd.Parameters.AddWithValue("@card_suit", cards[i].Suit);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -56,21 +56,15 @@
                         if (Model.Seats[i].Hand.MyHand[j].Suit == "diamonds" || Model.Seats[i].Hand.MyHand[j].Suit == "hearts")
                         {
                             <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">
-                                @*@Html.Hidden("isDiscard", card.Discard, new { @class = "shouldDiscard" })*@
-                                @Html.HiddenFor(c => c.Seats[i].Hand.MyHand[j].Discard, new { @class = "shouldDiscard" })
                                 <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
                             </div>
                         }
                         else
                         {
                             <div  data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard black">
-                                @*@Html.Hidden("isDiscard", Model.Seats[i].Hand.MyHand[j].Discard, new { @class = "shouldDiscard" })*@
-                                @Html.HiddenFor(c => c.Seats[i].Hand.MyHand[j].Discard, new { @class = "shouldDiscard" })
                                 <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
                             </div>
                         }
-
-
                     }
                     @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
                     {

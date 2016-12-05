@@ -34,6 +34,7 @@
     
     @using (Html.BeginForm("HandSetup", "Game", FormMethod.Get))
     {
+        @Html.Hidden("tableID", Model.TableID);
         <button>Advance</button>
     }
 
