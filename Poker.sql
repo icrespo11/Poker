@@ -1,3 +1,4 @@
+drop table hand_seat;
 drop table hand_card_deck;
 drop table hand_cards;
 drop table hand_actions;
@@ -97,6 +98,22 @@ discarded bit Not Null,
 
 constraint pk_hand_card_deck Primary Key (hand_id, card_number, card_suit),
 constraint fk_hand_card_deck Foreign Key (hand_id) references hand (hand_id),
+);
+
+create table hand_seat(
+table_id integer Not Null,
+hand_id integer Not Null,
+player varchar(200) Not Null,
+current_bet integer Not Null,
+is_turn bit Not Null,
+discard_count integer Not Null,
+has_discarded bit Not Null,
+has_checked bit Not Null,
+has_folded bit Not Null,
+
+constraint pk_hand_seat Primary Key (table_id, hand_id),
+constraint fk_hand_seat_hand_id Foreign Key (hand_id) references hand (hand_id),
+constraint fk_hand_seat_player_table_id Foreign Key (table_id, player) references table_players (table_id, player),
 );
 
 insert into users values ('Brian', 'aWj+MjmYxgDJJs+nZ0I0UT/HXuo=', 1000, 1000, 'admin', 0, 'jX1cFHUweSs=');

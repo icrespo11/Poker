@@ -112,6 +112,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\img\blackjack-303154_960_720.png" />
     <Content Include="Content\img\chips.jpg" />
+    <Content Include="Content\img\depositphotos_17012037-stock-illustration-playing-cards-op-art.jpg" />
+    <Content Include="Content\img\felt.png" />
+    <Content Include="Content\img\free-vector-red-poker-background.jpg" />
+    <Content Include="Content\img\images %281%29.jpg" />
     <Content Include="Content\img\img-noise-361x370 %281%29.png" />
     <Content Include="Content\Leaderboard.css" />
     <Content Include="Content\Index.css" />

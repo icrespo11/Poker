@@ -1,6 +1,6 @@
 ﻿.topScoresHeading{
     font-size: 2.5em;
-    color:gold;
+    color:#B90101;
     text-shadow: -3px 3px 2px black; 
 }
 
@@ -9,7 +9,7 @@
     left: 25%;
     text-align:left;
     font-size: 2em;
-    color:gainsboro;
+    color:#B90101;
     width: 50%;
 }
 #leaderTable tr:nth-child(2) {

@@ -17,14 +17,17 @@
     <title>Poker Night</title>
 </head>
 <body>
-    <div id ="background"><img src="~/Content/img/chips.jpg"/></div>
-        <nav class="navbar navbar-default">
+    <div id ="background"><img src="~/Content/img/free-vector-red-poker-background.jpg"/></div>
+    
+
+    <nav class="navbar navbar-default">
             <div class="container-fluid">
                 @Html.Action("GetAuthenticatedUser", "User")
             </div>
         </nav>
     
     <div> 
+        
         @RenderBody()
     </div>
 </body>
