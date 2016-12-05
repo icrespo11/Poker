@@ -8,14 +8,15 @@
     padding-bottom: 1em;
     width: 24em;
     border:solid 1px;
-    border-color:gold;
+    border-color:green;
     margin-top: 1em;
     text-align: center;
 }
 
 .welcomeAnchor {
     text-decoration: none;
-    color: gold;
+    color: green;
+    opacity:1.0;
 }
 
 #jackHead {

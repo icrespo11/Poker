@@ -1,6 +1,9 @@
 ﻿@model Capstone.Web.Models.UserModel
+
+
 @if (Model == null)
 {
+    
     <ul id="nav-login">
         <li>@Html.ActionLink("Register", "Register", "User") </li>
         <li>@Html.ActionLink("Log In", "Login", "User")</li>
