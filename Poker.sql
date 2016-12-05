@@ -1,7 +1,7 @@
 drop table hand_seat;
 drop table hand_card_deck;
-drop table hand_cards;
-drop table hand_actions;
+drop table hand_cards; 
+--drop table hand_actions; --we need this one in the first time
 drop table table_players;
 drop table hand;
 drop table poker_table;
@@ -77,16 +77,16 @@ constraint fk_hand_cards_player_hand_hand_id Foreign Key (hand_id) References ha
 );
 
 
-create table hand_actions (
-hand_id integer Not Null,
-player varchar(200) Not Null,
-action varchar(50) Not Null,
-round integer Not Null,
+--create table hand_actions (
+--hand_id integer Not Null,
+--player varchar(200) Not Null,
+--action varchar(50) Not Null,
+--round integer Not Null,
 
-constraint pk_hand_actions_hand_id_player_round Primary Key (hand_id, player, round),
-constraint fk_hand_actions_hand_hand_id Foreign Key (hand_id) References hand (hand_id),
-constraint fk_hand_actions_users_player Foreign Key (player) References users (username),
-);
+--constraint pk_hand_actions_hand_id_player_round Primary Key (hand_id, player, round),
+--constraint fk_hand_actions_hand_hand_id Foreign Key (hand_id) References hand (hand_id),
+--constraint fk_hand_actions_users_player Foreign Key (player) References users (username),
+--);
 
 
 create table hand_card_deck (
