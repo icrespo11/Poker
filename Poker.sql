@@ -29,6 +29,7 @@ ante integer Not Null,
 max_buy_in integer Not Null,
 pot integer Not Null,
 dealer_position integer Not Null,
+state_counter integer Not Null,
 
 constraint pk_poker_table_table_id Primary Key(table_ID),
 constraint fk_poker_table_users_host_username Foreign Key(host) References users(username),
@@ -85,9 +86,9 @@ insert into users values ('Isaac', '+6ZmQLH549dDQLpRCe2gUzNJbLU=', 1000, 1000, '
 insert into users values ('Roberto', '8UIpfDlbW6WP0t/0Uz2P4jp6EO8=', 1000, 1000, 'admin', 0, '9STlYHzStS8='); 
 insert into users values ('ThatCrazyCow', 'LA0WSOFTrk+XK74D751oDcFe4fY=', 5000, 5000, 'admin', 0, 'd8xtGBE936c=');
 
-insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position) VALUES
-('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0),
-('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0);
+insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position, state_counter) VALUES
+('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0),
+('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0);
 
 insert into table_players (table_ID, player, isTurn) VALUES 
 (1, 'Dan', 0), (1, 'Isaac', 0),
@@ -103,8 +104,8 @@ insert into hand_cards values
 (1, 'Isaac', 1, 4, 'diamonds', 0);
 
 
-SELECT * FROM users;
-SELECT * FROM poker_table;
-SELECT * FROM table_players;
-SELECT * from hand_actions;
+--SELECT * FROM users;
+--SELECT * FROM poker_table;
+--SELECT * FROM table_players;
+--SELECT * from hand_actions;
 
