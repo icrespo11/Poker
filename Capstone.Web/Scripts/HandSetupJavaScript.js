@@ -13,9 +13,24 @@ $(document).ready(function () {
 
         var selectedDiscardField = $(".selectedToDiscard .shouldDiscard");
         
-        var selectedSuit = clickedCard.attr("data-suit");
-        var selectedNumber = clickedCard.attr("data-number");
-        $("#Suit").val(selectedSuit);
-        $("#Number").val(selectedNumber);
+        $("#discardForm").children(".card").remove();
+
+        var discardList = $(".selectedToDiscard");
+
+        for (var i = 0; i < discardList.length; i++) {
+            var selectedSuit = $(discardList[i]).attr("data-suit");
+            var selectedNumber = $(discardList[i]).attr("data-number");
+
+            var suit = $("<input>").addClass("card").attr("type", "hidden").attr("name", "Discards[" + i + "].Suit").val(selectedSuit);
+            var number = $("<input>").addClass("card").attr("type", "hidden").attr("name", "Discards[" + i + "].Number").val(selectedNumber);
+
+            $("#discardForm").append(suit);
+            $("#discardForm").append(number);
+        }
+
+        
+
+
+
     });
 })

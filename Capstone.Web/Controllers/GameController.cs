@@ -79,9 +79,10 @@ namespace Capstone.Web.Controllers
             return View("Rules");
         }
 
-        public ActionResult JoinedTable(Table model)
+        public ActionResult JoinedTable(int id)
         {           
             TableSqlDal dal = new TableSqlDal();
+            Table model = GetTableInfo(id);
              
             List<UserModel> players = dal.GetAllPlayersAtTable(1);
 
@@ -323,7 +324,7 @@ namespace Capstone.Web.Controllers
                 //model.Seats.Add(s);
             //}
 
-            return RedirectToAction("HandSetup");
+            return RedirectToAction("HandSetup", new { tableID = model.TableId });
         }
 
         public ActionResult FinalHand(Table model)

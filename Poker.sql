@@ -111,7 +111,7 @@ has_discarded bit Not Null,
 has_checked bit Not Null,
 has_folded bit Not Null,
 
-constraint pk_hand_seat Primary Key (table_id, hand_id),
+constraint pk_hand_seat Primary Key (table_id, hand_id, player),
 constraint fk_hand_seat_hand_id Foreign Key (hand_id) references hand (hand_id),
 constraint fk_hand_seat_player_table_id Foreign Key (table_id, player) references table_players (table_id, player),
 );
@@ -138,6 +138,9 @@ insert into hand_cards values
 (1, 'Dan', 1, 8, 'clubs',1, 0), (1, 'Dan', 1, 1, 'diamonds',1, 0), (1, 'Isaac', 1, 9, 'hearts',1, 0),
 (1, 'Isaac', 1, 2, 'spades',1, 0), (1, 'Isaac', 1, 10, 'diamonds', 1,0), (1, 'Isaac', 1, 13, 'diamonds',1, 0),
 (1, 'Isaac', 1, 4, 'diamonds',1, 0);
+
+insert into hand_seat VALUES(1, 1, 'dan', 20, 1, 0, 0, 0, 0);
+insert into hand_seat VALUES(1, 1, 'isaac', 20, 0, 0, 0, 0, 0)
 
 
 --SELECT * FROM users;

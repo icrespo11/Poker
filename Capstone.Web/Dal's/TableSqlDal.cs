@@ -286,7 +286,7 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET isTurn = 1 where player = @player;", conn);
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET is_turn = 1 where player = @player;", conn);
                     cmd.Parameters.AddWithValue("@player", playerID);
 
                     cmd.ExecuteNonQuery();
@@ -308,7 +308,7 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("Select player from table_players where isTurn = 1 and table_id = @table_id;", conn);
+                    SqlCommand cmd = new SqlCommand("Select player from hand_seat where is_turn = 1 and table_id = @table_id;", conn);
                     cmd.Parameters.AddWithValue("@table_id", tableId);
                     output = cmd.ExecuteScalar().ToString();
 
@@ -411,7 +411,7 @@ namespace Capstone.Web.Dal_s
 
                     foreach (Card card in cards.Discards)
                     {
-                        SqlCommand cmd = new SqlCommand("DELETE * FROM hand_cards WHERE hand_id = @handID AND player = @player AND card_suit = @suit AND card_number = @number;", conn);
+                        SqlCommand cmd = new SqlCommand("DELETE FROM hand_cards WHERE hand_id = @handID AND player = @player AND card_suit = @suit AND card_number = @number;", conn);
                         cmd.Parameters.AddWithValue("@handID", handID);
                         cmd.Parameters.AddWithValue("@player", cards.Username);
                         cmd.Parameters.AddWithValue("@suit", card.Suit);
@@ -435,8 +435,8 @@ namespace Capstone.Web.Dal_s
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmd = new SqlCommand("SELECT TOP @numberToDraw * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0;", conn);
-                    cmd.Parameters.AddWithValue("@numberToDraw", numberToDraw);
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0;", conn);                    
                     cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();

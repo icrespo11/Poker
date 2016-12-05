@@ -55,7 +55,7 @@
 
                         if (Model.Seats[i].Hand.MyHand[j].Suit == "diamonds" || Model.Seats[i].Hand.MyHand[j].Suit == "hearts")
                         {
-                            <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">
+                            <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">                                                                                                
                                 <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
                             </div>
                         }
@@ -78,7 +78,7 @@
 
     }
 
-    @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post))
+    @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))
     {
 
 
@@ -102,9 +102,12 @@
 
         @Html.HiddenFor(m => m.TableID)
         @Html.Hidden("Username", (string)Session["Username"])
-        @Html.Hidden("Suit")
-        @Html.Hidden("Number")
-        
+
+      
+        <div id="discardList">
+
+        </div>
+
         @*
         foreach (var seat in Model.Seats)
         {
