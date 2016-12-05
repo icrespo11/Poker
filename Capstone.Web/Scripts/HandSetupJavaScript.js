@@ -10,9 +10,14 @@ $(document).ready(function () {
 
         clickedCard = $(this);
         clickedCard.toggleClass("selectedToDiscard");
+
         discardField.val(false);
         var selectedDiscardField = $(".selectedToDiscard .shouldDiscard");
         selectedDiscardField.val(true);
         
+        var selectedSuit = clickedCard.attr("data-suit");
+        var selectedNumber = clickedCard.attr("data-number");
+        $("#Suit").val(selectedSuit);
+        $("#Number").val(selectedNumber);
     });
 })

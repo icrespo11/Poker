@@ -168,6 +168,7 @@
     <Compile Include="Models\DeckOfCards.cs" />
     <Compile Include="Models\Hand.cs" />
     <Compile Include="Models\PlayTexasHoldEm.cs" />
+    <Compile Include="Models\ReplaceCardModel.cs" />
     <Compile Include="Models\Seat.cs" />
     <Compile Include="Models\Table.cs" />
     <Compile Include="Models\TableAndCardDictionary.cs" />

@@ -18,7 +18,7 @@ namespace Capstone.Web.Controllers
                 {2, () => {ConfirmAnte(model); } },
                 {3, () => {HandSetup(model); } },
                 {4, () => {firstBettingRound(model); } },
-                {5, () => {ReplaceCards(model); } },
+                {5, () => {ReplaceCards(null); } },
                 {6, () => {secondBettingRound(model); } },
                 {7, () => {determineWinner(model); } },
             };
@@ -243,7 +243,7 @@ namespace Capstone.Web.Controllers
             return RedirectToAction("HandSetup", model);   
         }
 
-        public ActionResult ReplaceCards (Table model)
+        public ActionResult ReplaceCards (ReplaceCardModel model)
         {
             //TableSqlDal dal = new TableSqlDal();
             //model = dal.FindTable(1);
@@ -256,10 +256,10 @@ namespace Capstone.Web.Controllers
 
             //this is completely obliterting anything/everything we would be passing in.
             //we need to get SOMETHING set and copied out before we do this.
-            model = HttpContext.Cache["Table"] as Table;
+            Table t = HttpContext.Cache["Table"] as Table;
 
-            foreach (Seat s in model.Seats)
-            {
+            //foreach (Seat s in model.Seats)
+            //{
                 //Seat s = new Seat();
                 //s.Username = player.Username;
                 //s.TableBalance = player.CurrentMoney;
@@ -272,20 +272,20 @@ namespace Capstone.Web.Controllers
                 //s.Hand.MyHand[0].Discard = "true";
                 //s.Hand.MyHand[1].Discard = "true";
 
-                List<Card> toDiscard = new List<Card>();
+                //List<Card> toDiscard = new List<Card>();
 
-                foreach(var card in s.Hand.MyHand)
-                {
-                    if(bool.Parse(card.Discard) == true)
-                    {
-                        toDiscard.Add(card);
-                    }
-                }
-                s.Hand.Replace(toDiscard, model.Deck);
+                //foreach(var card in s.Hand.MyHand)
+                //{
+                //    if(bool.Parse(card.Discard) == true)
+                //    {
+                //        toDiscard.Add(card);
+                //    }
+                //}
+                //s.Hand.Replace(toDiscard, model.Deck);
                 //model.Seats.Add(s);
-            }
+            //}
 
-            return View("FinalHand", model);
+            return RedirectToAction("HandSetup");
         }
 
         public ActionResult FinalHand(Table model)
