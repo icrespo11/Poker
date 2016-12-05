@@ -31,6 +31,7 @@ max_buy_in integer Not Null,
 pot integer Not Null,
 dealer_position integer Not Null,
 state_counter integer Not Null,
+current_min_bet integer Not Null,
 
 constraint pk_poker_table_table_id Primary Key(table_ID),
 constraint fk_poker_table_users_host_username Foreign Key(host) References users(username),
@@ -63,7 +64,9 @@ player varchar(200) Not Null,
 seat_number integer Not Null,
 card_number integer Not Null,
 card_suit varchar(8) Not Null,
+dealt bit Not Null,
 discarded bit Not Null,
+
 
 constraint pk_hand_cards_hand_id_card_number_card_suit Primary Key (hand_id, card_number, card_suit),
 constraint fk_hand_cards_users_player_username Foreign Key (player) References users (username),
@@ -88,6 +91,7 @@ hand_id integer Not Null,
 card_number integer Not Null,
 card_suit varchar(8) Not Null,
 dealt bit Not Null,
+discarded bit Not Null,
 
 constraint pk_hand_card_deck Primary Key (hand_id, card_number, card_suit),
 constraint fk_hand_card_deck Foreign Key (hand_id) references hand (hand_id),
@@ -99,9 +103,9 @@ insert into users values ('Isaac', '+6ZmQLH549dDQLpRCe2gUzNJbLU=', 1000, 1000, '
 insert into users values ('Roberto', '8UIpfDlbW6WP0t/0Uz2P4jp6EO8=', 1000, 1000, 'admin', 0, '9STlYHzStS8='); 
 insert into users values ('ThatCrazyCow', 'LA0WSOFTrk+XK74D751oDcFe4fY=', 5000, 5000, 'admin', 0, 'd8xtGBE936c=');
 
-insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position, state_counter) VALUES
-('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0),
-('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0);
+insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position, state_counter, current_min_bet) VALUES
+('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0, 10),
+('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0, 50);
 
 insert into table_players (table_ID, player, is_turn, seat_number) VALUES 
 (1, 'Dan', 0, 0), (1, 'Isaac', 0, 1),
@@ -111,10 +115,10 @@ insert into hand (table_id) values (1);
 insert into hand (table_id) values (2);
 
 insert into hand_cards values 
-(1, 'Dan', 1, 2, 'hearts', 0), (1, 'Dan', 1, 11, 'diamonds', 0), (1, 'Dan', 1, 6, 'hearts', 0), 
-(1, 'Dan', 1, 8, 'clubs', 0), (1, 'Dan', 1, 1, 'diamonds', 0), (1, 'Isaac', 1, 9, 'hearts', 0),
-(1, 'Isaac', 1, 2, 'spades', 0), (1, 'Isaac', 1, 10, 'diamonds', 0), (1, 'Isaac', 1, 13, 'diamonds', 0),
-(1, 'Isaac', 1, 4, 'diamonds', 0);
+(1, 'Dan', 1, 2, 'hearts', 1, 0), (1, 'Dan', 1, 11, 'diamonds',1, 0), (1, 'Dan', 1, 6, 'hearts',1, 0), 
+(1, 'Dan', 1, 8, 'clubs',1, 0), (1, 'Dan', 1, 1, 'diamonds',1, 0), (1, 'Isaac', 1, 9, 'hearts',1, 0),
+(1, 'Isaac', 1, 2, 'spades',1, 0), (1, 'Isaac', 1, 10, 'diamonds', 1,0), (1, 'Isaac', 1, 13, 'diamonds',1, 0),
+(1, 'Isaac', 1, 4, 'diamonds',1, 0);
 
 
 --SELECT * FROM users;
