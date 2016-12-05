@@ -8,15 +8,15 @@ namespace Capstone.Web.Models
 {
     public class UserModel
     {
-        [Required (ErrorMessage = "Required")]
+        [Required (ErrorMessage = "Username field is required.")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Required")]
-        [RegularExpression(@"(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$", ErrorMessage = "Your password must contain a symbol, an upper case letter and a number and be at least 8 characters.")]
+        [Required(ErrorMessage = "Password field is required.")]
+        [RegularExpression(@"(?=^.{8,}$)(?=.*\d)(?=.*[!@#$%^&*]+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$", ErrorMessage = "Your password must contain an upper case letter, number, and symbol, and be at least 8 characters.")]
         public string Password { get; set; }
 
-        [Required(ErrorMessage = "Required")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Passwords Do Not Match!")]
+        [Required(ErrorMessage = "Confirm password field is required.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "Passwords do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string LoginPassword { get; set; }
