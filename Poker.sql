@@ -133,6 +133,7 @@ insert into table_players (table_ID, player, seat_number, table_balance, active,
 insert into hand (table_id) values (1);
 insert into hand (table_id) values (2);
 
+delete from hand_cards;
 insert into hand_cards values 
 (1, 'Dan', 1, 2, 'hearts', 1, 0), (1, 'Dan', 1, 11, 'diamonds',1, 0), (1, 'Dan', 1, 6, 'hearts',1, 0), 
 (1, 'Dan', 1, 8, 'clubs',1, 0), (1, 'Dan', 1, 1, 'diamonds',1, 0), (1, 'Isaac', 1, 9, 'hearts',1, 0),

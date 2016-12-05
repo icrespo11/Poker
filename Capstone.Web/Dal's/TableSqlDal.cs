@@ -40,7 +40,7 @@ namespace Capstone.Web.Dal_s
                         t.Pot = Convert.ToInt32(reader["pot"]);
                         t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
                         t.StateCounter = Convert.ToInt32(reader["state_counter"]);
-                        
+
                     }
                 }
             }
@@ -201,7 +201,7 @@ namespace Capstone.Web.Dal_s
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM poker_table INNER JOIN table_players on poker_table.table_id = table_players.table_id;", conn);
-                    
+
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
@@ -218,7 +218,7 @@ namespace Capstone.Web.Dal_s
                         bool add = true;
                         foreach (var table in output)
                         {
-                            if(t.TableID == table.TableID)
+                            if (t.TableID == table.TableID)
                             {
                                 add = false;
                             }
@@ -428,7 +428,7 @@ namespace Capstone.Web.Dal_s
             }
         }
 
-        public List<Card> DrawCards(int handID, int numberToDraw)
+        public List<Card> DrawCards(int handID, int numberToDraw, string player)
         {
             List<Card> output = new List<Card>();
             try
@@ -436,7 +436,7 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0;", conn);                    
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0;", conn);
                     cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -448,6 +448,16 @@ namespace Capstone.Web.Dal_s
                         c.Number = Convert.ToInt32(reader["card_number"]);
                         c.Suit = Convert.ToString(reader["card_suit"]);
                         output.Add(c);
+                    }
+
+                    foreach (Card card in output)
+                    {
+                        cmd.CommandText = "INSERT INTO hand_cards VALUES (@handID, @player, @number, @suit, 1, 0);";
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@handID", handID);
+                        cmd.Parameters.AddWithValue("@player", player);
+                        cmd.Parameters.AddWithValue("@number", card.Number);
+                        cmd.Parameters.AddWithValue("@suit", card.Suit);
                     }
                 }
             }

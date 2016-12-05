@@ -83,24 +83,7 @@ namespace Capstone.Web.Controllers
         {           
             TableSqlDal dal = new TableSqlDal();
             Table model = GetTableInfo(id);
-             
-            List<UserModel> players = dal.GetAllPlayersAtTable(1);
 
-            foreach (UserModel player in players)
-            {
-                Seat s = new Seat();
-                s.Username = player.Username;
-                s.TableBalance = player.CurrentMoney;
-
-                model.Seats.Add(s);
-            }
-
-            for (int i = model.Seats.Count; i < 5; i++)
-            {
-                Seat s = new Seat();
-                s.Username = "Available";
-                model.Seats.Add(s);
-            }
             model.Seats[0].IsTurn = true;
             dal.SetActivePlayer(model.Seats[0].Username);
             //dal.UpdateStateCounter(model.TableID);
@@ -289,7 +272,7 @@ namespace Capstone.Web.Controllers
             int handID = dal.GetHandID(model.TableId);
 
             dal.DiscardCards(model);
-            dal.DrawCards(handID, model.Discards.Count);
+            dal.DrawCards(handID, model.Discards.Count, model.Username);
 
 
             //this is completely obliterting anything/everything we would be passing in.
