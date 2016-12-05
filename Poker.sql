@@ -1,3 +1,4 @@
+drop table hand_card_deck;
 drop table hand_cards;
 drop table hand_actions;
 drop table table_players;
@@ -38,7 +39,8 @@ constraint fk_poker_table_users_host_username Foreign Key(host) References users
 create table table_players (
 table_id integer Not Null,
 player varchar(200) Not Null,
-isTurn bit Not null,
+is_turn bit Not null,
+seat_number integer Not Null,
 
 constraint pk_table_players_player_table_id Primary Key(table_ID, player),
 constraint fk_table_players_poker_table_table_id Foreign Key(table_ID) References poker_table(table_ID),
@@ -80,6 +82,17 @@ constraint fk_hand_actions_hand_hand_id Foreign Key (hand_id) References hand (h
 constraint fk_hand_actions_users_player Foreign Key (player) References users (username),
 );
 
+
+create table hand_card_deck (
+hand_id integer Not Null,
+card_number integer Not Null,
+card_suit varchar(8) Not Null,
+dealt bit Not Null,
+
+constraint pk_hand_card_deck Primary Key (hand_id, card_number, card_suit),
+constraint fk_hand_card_deck Foreign Key (hand_id) references hand (hand_id),
+);
+
 insert into users values ('Brian', 'aWj+MjmYxgDJJs+nZ0I0UT/HXuo=', 1000, 1000, 'admin', 0, 'jX1cFHUweSs=');
 insert into users values ('Dan', '1YHheZjlGm4OX6OwR6juPpk+DVA=', 1000, 1000, 'admin', 0, 'GWg3QKuxpCc=');
 insert into users values ('Isaac', '+6ZmQLH549dDQLpRCe2gUzNJbLU=', 1000, 1000, 'admin', 0, 'PLxvjrzmYSY=');
@@ -90,9 +103,9 @@ insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, de
 ('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0),
 ('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0);
 
-insert into table_players (table_ID, player, isTurn) VALUES 
-(1, 'Dan', 0), (1, 'Isaac', 0),
-(2, 'ThatCrazyCow', 0), (2, 'Brian', 0);
+insert into table_players (table_ID, player, is_turn, seat_number) VALUES 
+(1, 'Dan', 0, 0), (1, 'Isaac', 0, 1),
+(2, 'ThatCrazyCow', 0, 0), (2, 'Brian', 0, 1);
 
 insert into hand (table_id) values (1);
 insert into hand (table_id) values (2);
