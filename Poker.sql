@@ -40,8 +40,10 @@ constraint fk_poker_table_users_host_username Foreign Key(host) References users
 create table table_players (
 table_id integer Not Null,
 player varchar(200) Not Null,
-is_turn bit Not null,
 seat_number integer Not Null,
+table_balance integer Not Null,
+active bit Not Null,
+occupied bit Not Null,
 
 constraint pk_table_players_player_table_id Primary Key(table_ID, player),
 constraint fk_table_players_poker_table_table_id Foreign Key(table_ID) References poker_table(table_ID),
@@ -107,9 +109,9 @@ insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, de
 ('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0, 10),
 ('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0, 50);
 
-insert into table_players (table_ID, player, is_turn, seat_number) VALUES 
-(1, 'Dan', 0, 0), (1, 'Isaac', 0, 1),
-(2, 'ThatCrazyCow', 0, 0), (2, 'Brian', 0, 1);
+insert into table_players (table_ID, player, seat_number, table_balance, active, occupied) VALUES 
+(1, 'Dan',  0, 500, 1, 1), (1, 'Isaac', 1, 400, 1, 1),
+(2, 'ThatCrazyCow', 0, 2000, 1, 1), (2, 'Brian', 1, 1000, 1, 1);
 
 insert into hand (table_id) values (1);
 insert into hand (table_id) values (2);
