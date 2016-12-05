@@ -39,6 +39,8 @@ namespace Capstone.Web.Dal_s
                         t.MaxBuyIn = Convert.ToInt32(reader["max_buy_in"]);
                         t.Pot = Convert.ToInt32(reader["pot"]);
                         t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
+                        t.StateCounter = Convert.ToInt32(reader["state_counter"]);
+                        
                     }
                 }
             }
@@ -48,7 +50,25 @@ namespace Capstone.Web.Dal_s
             }
             return t;
         }
+        public void UpdateStateCounter(int tableId)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("Update poker_table Set state_counter= (state_counter +1) where table_id = @table_id;", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableId);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+
+        }
         public List<UserModel> GetAllPlayersAtTable(int tableID)
         {
             List<UserModel> output = new List<UserModel>();

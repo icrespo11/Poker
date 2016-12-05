@@ -10,20 +10,29 @@ namespace Capstone.Web.Controllers
 {
     public class GameController : Controller
     {
-        public void AdvanceGame(Table model)
-        {
-            Dictionary<int, Action> gameStates = new Dictionary<int, Action>()
+        public void AdvanceGame(int tableID)
+        { TableSqlDal dal = new TableSqlDal();
+            Table currentTable = new Table();
+            currentTable = dal.FindTable(tableID);
+            if (currentTable.StateCounter == 0)
             {
-                {1, () => {JoinedTable(model); } },
-                {2, () => {ConfirmAnte(model); } },
-                {3, () => {HandSetup(model); } },
-                {4, () => {firstBettingRound(model); } },
+                currentTable.StateCounter = 1;
+                dal.UpdateStateCounter(currentTable.TableID);
+            }
+            Dictionary<int, Action> gameStates = new Dictionary<int, Action>()
+            
+            {
+               
+                {1, () => {JoinedTable(currentTable); } },
+                {2, () => {ConfirmAnte(currentTable); } },
+                {3, () => {HandSetup(currentTable); } },
+                {4, () => {firstBettingRound(currentTable); } },
                 {5, () => {ReplaceCards(null); } },
-                {6, () => {secondBettingRound(model); } },
-                {7, () => {determineWinner(model); } },
+                {6, () => {secondBettingRound(currentTable); } },
+                {7, () => {determineWinner(currentTable); } },
             };
 
-            gameStates[model.StateCounter].Invoke();
+            gameStates[currentTable.StateCounter].Invoke();
         }
 
         // GET: Game
@@ -35,7 +44,7 @@ namespace Capstone.Web.Controllers
         public ActionResult JoinedTable(Table model)
         {           
             TableSqlDal dal = new TableSqlDal();
-            model = dal.FindTable(1);
+             
 
             model.Deck = new DeckOfCards();
             model.Deck.Shuffle();
@@ -59,7 +68,7 @@ namespace Capstone.Web.Controllers
             }
             model.Seats[0].IsTurn = true;
             dal.SetActivePlayer(model.Seats[0].Username);
-
+            dal.UpdateStateCounter(model.TableID);
             HttpContext.Cache.Insert("Table", model);
             return View("JoinedTable", model);
         }
