@@ -275,3 +275,27 @@ section {
     color: gold;
     text-shadow: -3px 3px 2px black;
 }
+
+/*TopScoresStyling*/
+.topScoresHeading{
+    font-size: 2.5em;
+    color:#B90101;
+    text-shadow: -3px 3px 2px black; 
+}
+
+#leaderTable {
+    position: relative;
+    left: 25%;
+    text-align:left;
+    font-size: 2em;
+    color:#B90101;
+    width: 50%;
+}
+#leaderTable tr:nth-child(2) {
+    color:  #ffff60;
+    text-shadow: -3px 3px 2px #333333;
+}
+#leaderBoardSection {
+    
+    text-align:center;
+}
