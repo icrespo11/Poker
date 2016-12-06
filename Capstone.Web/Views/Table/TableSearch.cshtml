@@ -36,9 +36,9 @@
                 }
 
                 <td>@openSeats</td>
-                @Html.BeginForm("SitAtTable", "Table", FormMethod.Post)
+                @using (Html.BeginForm("SitAtTable", "Table", FormMethod.Post))
                 {
-                @Html.Hidden("TableID", table.TableID)
+                    @Html.Hidden("TableID", table.TableID)
                 <td>
                     <button>Join Table</button>
                 </td>
