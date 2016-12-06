@@ -178,8 +178,8 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO poker_table (name, host, max_bet, min_bet, ante, max_buy_in, pot, dealer_position) VALUES " +
-                        "(@name, @host, @maxBet, @minBet, @ante, @maxBuyIn, @pot, @dealerPosition);", conn);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO poker_table (name, host, max_bet, min_bet, ante, max_buy_in, pot, dealer_position, current_min_bet, state_counter) VALUES " +
+                        "(@name, @host, @maxBet, @minBet, @ante, @maxBuyIn, @pot, @dealerPosition, @current_min_bet, @state_counter);", conn);
                     cmd.Parameters.AddWithValue("@name", table.Name);
                     cmd.Parameters.AddWithValue("@host", table.TableHost);
                     cmd.Parameters.AddWithValue("@maxBet", table.MaxBet);
@@ -188,6 +188,9 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@maxBuyIn", table.MaxBuyIn);
                     cmd.Parameters.AddWithValue("@pot", table.Pot);
                     cmd.Parameters.AddWithValue("@dealerPosition", table.DealerPosition);
+                    cmd.Parameters.AddWithValue("@current_min_bet", table.MinBet);
+                    cmd.Parameters.AddWithValue("@state_counter", 0);
+
 
                     //rowsAffected = cmd.ExecuteNonQuery();
                     cmd.ExecuteNonQuery();
@@ -205,7 +208,7 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
-        public bool AddPlayerToTable(int tableID, string playerName)
+        public bool AddPlayerToTable(int tableID, string playerName, int tableBalance)
         {
             int rowsAffected = 0;
             try
@@ -214,11 +217,12 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, isTurn) VALUES " +
-                        "(@tableID, @playerName, 0);"
+                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, table_balance, isTurn) VALUES " +
+                        "(@tableID, @playerName, @table_balance, 0);"
                         , conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", playerName);
+                    cmd.Parameters.AddWithValue("@table_balance", tableBalance);
 
                     rowsAffected = cmd.ExecuteNonQuery();
                 }

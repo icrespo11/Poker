@@ -81,7 +81,6 @@
     @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))
     {
 
-
         //Capstone.Web.Models.Card c = new Capstone.Web.Models.Card();
         //Capstone.Web.Models.Card c2 = new Capstone.Web.Models.Card();
         //c.Discard = "true";
@@ -102,7 +101,6 @@
 
         @Html.HiddenFor(m => m.TableID)
         @Html.Hidden("Username", (string)Session["Username"])
-
       
         <div id="discardList">
 

@@ -4,9 +4,10 @@
 
 
 }
-
+@Html.BeginForm("SitAtTable", "Table", FormMethod.Post){
 <section>
     <h2>Active Tables</h2>
+    
 
     <table>
         <tr>
@@ -14,6 +15,7 @@
             <th>Table Host</th>
             <th>Max Buy-in</th>
             <th>Open Seats</th>
+            
         </tr>
 
         @foreach (var table in Model)
@@ -25,21 +27,22 @@
                 <td>@table.TableHost</td>
                 <td>@table.MaxBuyIn</td>
 
-
-
                 @foreach (var seat in table.Seats)
                 {
-                    if (seat.Occupied == true)
+                    if (seat.Username != "Available")
                     {
                         openSeats--;
                     }
                 }
 
                 <td>@openSeats</td>
+               
+                    @Html.Hidden("TableID", table.TableID)
+                <td>
+                    <button>Join Table</button>
+                </td>                               
             </tr>
-        }
-
+        }       
     </table>
-
-
 </section>
+}

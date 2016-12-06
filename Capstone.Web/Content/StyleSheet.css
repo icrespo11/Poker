@@ -260,7 +260,7 @@ button{
     margin-bottom: 0.4em;
 }
 
-/*playing card styling*/
+/*Playing card styling*/
 
 .playingCard {
     display: inline-block;
@@ -302,12 +302,6 @@ button{
     box-shadow: 0 0 0.2em yellow, 0 0 0.6em white;
 }
 
-/*Game Styling*/
-#currentPlayer {
-    color: gold;
-    text-shadow: -3px 3px 2px black;
-}
-
 /*TopScoresStyling*/
 .topScoresHeading {
     font-size: 2.5em;
@@ -331,4 +325,56 @@ button{
 
 #leaderBoardSection {
     text-align: center;
+}
+
+/*Game Styling*/
+#currentPlayer {
+    color: #B90101;
+    text-shadow: -3px 3px 2px black;
+}
+
+#gameArea{
+    text-align: center;
+}
+
+#gameArea img{
+    position: absolute;
+    top: 8em;
+    right: 14.5em;
+}
+
+#player1 {
+    position: absolute;
+    font-weight: bold;
+    top: 18em;
+    left: 22.5em
+}
+
+#player2 {
+    position: absolute;
+    top: 11em;
+    left: 8em;
+}
+
+#player3 {
+    position: absolute;
+    top: 3em;
+    left: 15em;
+}
+
+#player4 {
+    position: absolute;
+    top: 3em;
+    left: 29.5em;
+}
+
+#player5 {
+    position: absolute;
+    top: 11em;
+    left: 36em;
+}
+
+#gameArea button{
+    position: absolute;
+    left: 1em;
 }
