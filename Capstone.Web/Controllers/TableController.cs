@@ -59,6 +59,23 @@ namespace Capstone.Web.Controllers
             return View("TakeSeat", ut);
         }
 
+        public ActionResult SitAtTable(int TableID)
+        {
+            TableSqlDal dal = new TableSqlDal();
+            UserSqlDal userDal = new UserSqlDal();
+
+            string username = (string)Session["Username"];
+
+            UserModel currentUser = userDal.Login(username);
+            Table table = dal.FindTable(TableID);
+
+            UserAndTable ut = new UserAndTable();
+            ut.Table = table;
+            ut.User = currentUser;
+
+            return View("TakeSeat", ut);
+        }
+
         [HttpPost]
         public ActionResult TakeSeat(UserAndTable model)
         {
@@ -67,9 +84,9 @@ namespace Capstone.Web.Controllers
             int MoneyAdded = model.MoneyToTheTable;
 
             TableSqlDal dal = new TableSqlDal();
-            bool isAdded = dal.AddPlayerToTable(tableID, userName);
+            bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
 
-            return View();
+            return View("JoinedTable", tableID);
         }
     }
 }

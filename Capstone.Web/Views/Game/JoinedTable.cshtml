@@ -3,40 +3,67 @@
 @{
     ViewBag.Title = "Table";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    int i = 0;
+
+    int seated = 1;
+
+    string player = "player" + seated;
 }
 
 <section>
-    <h2>@Model.Name</h2>
-    
-    <div id="otherPlayersFields">
+    <div id="gameArea">
+        <h2>@Model.Name</h2>
+
+        <img src="~/Content/img/ovalpokertable.png" />
+
         @foreach (var seat in Model.Seats)
         {
-            if (seat.Username.ToLower() != Session["username"].ToString().ToLower())
+
+            if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
             {
-                <div>
+                <div id="@player">
                     <p>@seat.Username</p>
                     <p>@seat.TableBalance.ToString("C")</p>
                 </div>
+
+                seated++;
+
+                player = "player" + seated;
+
+                break;
             }
+            i++;
+        }
+        @for (int j = i + 1; j < 5; j++)
+        {
+            <div id="@player">
+                <p>@Model.Seats[j].Username</p>
+                <p>@Model.Seats[j].TableBalance.ToString("C")</p>
+            </div>
+
+            seated++;
+
+            player = "player" + seated;
+
+        }
+        @for (int j = 0; j < i; j++)
+        {
+            <div id="@player">
+                <p>@Model.Seats[j].Username</p>
+                <p>@Model.Seats[j].TableBalance.ToString("C")</p>
+            </div>
+
+            seated++;
+
+            player = "player" + seated;
+        }
+
+        @using (Html.BeginForm("HandSetup", "Game", FormMethod.Get))
+        {
+            @Html.Hidden("tableID", Model.TableID);
+            <button>Advance</button>
         }
     </div>
-
-    @foreach (var seat in Model.Seats)
-    {
-        if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
-        {
-            <div id="currentUserPlayField">
-                <p>@seat.Username</p>
-                <p>@seat.TableBalance.ToString("C")</p>
-            </div>
-        }
-    }
-    
-    @using (Html.BeginForm("HandSetup", "Game", FormMethod.Get))
-    {
-        @Html.Hidden("tableID", Model.TableID);
-        <button>Advance</button>
-    }
-
 </section>
 

@@ -117,6 +117,7 @@
     <Content Include="Content\img\free-vector-red-poker-background.jpg" />
     <Content Include="Content\img\images %281%29.jpg" />
     <Content Include="Content\img\img-noise-361x370 %281%29.png" />
+    <Content Include="Content\img\ovalpokertable.png" />
     <Content Include="Content\Leaderboard.css" />
     <Content Include="Content\Index.css" />
     <Content Include="Content\StyleSheet.css" />
