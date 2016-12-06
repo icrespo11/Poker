@@ -82,6 +82,7 @@ card_number integer Not Null,
 card_suit varchar(8) Not Null,
 dealt bit Not Null,
 discarded bit Not Null,
+deck_position integer Not Null,
 
 constraint pk_hand_card_deck Primary Key (hand_id, card_number, card_suit),
 constraint fk_hand_card_deck Foreign Key (hand_id) references hand (hand_id),
