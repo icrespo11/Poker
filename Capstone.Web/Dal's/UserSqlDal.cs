@@ -63,7 +63,6 @@ namespace Capstone.Web.Dal_s
                 }
                 catch (SqlException)
                 {
-
                     throw;
                 }
 
@@ -92,7 +91,6 @@ namespace Capstone.Web.Dal_s
                 }
                 catch (SqlException)
                 {
-
                     throw;
                 }
 
@@ -130,7 +128,6 @@ namespace Capstone.Web.Dal_s
                 }
                 catch (SqlException)
                 {
-
                     throw;
                 }
 

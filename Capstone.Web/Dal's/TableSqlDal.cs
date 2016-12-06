@@ -40,7 +40,6 @@ namespace Capstone.Web.Dal_s
                         t.Pot = Convert.ToInt32(reader["pot"]);
                         t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
                         t.StateCounter = Convert.ToInt32(reader["state_counter"]);
-
                     }
                 }
             }
@@ -50,6 +49,7 @@ namespace Capstone.Web.Dal_s
             }
             return t;
         }
+
         public void UpdateStateCounter(int tableId)
         {
             try
@@ -64,11 +64,11 @@ namespace Capstone.Web.Dal_s
             }
             catch (Exception)
             {
-
                 throw;
             }
 
         }
+
         public List<UserModel> GetAllPlayersAtTable(int tableID)
         {
             List<UserModel> output = new List<UserModel>();
@@ -229,8 +229,6 @@ namespace Capstone.Web.Dal_s
                         }
                     }
                 }
-
-
             }
             catch (SqlException)
             {
@@ -238,7 +236,6 @@ namespace Capstone.Web.Dal_s
             }
             return output;
         }
-
 
         //not tested/used yet
         //probably needs to check hand_id as well
@@ -326,7 +323,6 @@ namespace Capstone.Web.Dal_s
         //cannot accomodate one player two tables...possibly changed
         public void UpdateActivePlayer(int tableID, string playerID)
         {
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))

@@ -56,7 +56,6 @@ namespace Capstone.Web.Controllers
                 user.IsTaken = false;
 
                 return RedirectToAction("LoggedInLanding", "Home");
-
             }
             else
             {

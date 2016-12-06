@@ -296,7 +296,6 @@ namespace Capstone.Web.Controllers
             dal.DiscardCards(model);
             dal.DrawCards(handID, model.Discards.Count, model.Username);
 
-
             //this is completely obliterting anything/everything we would be passing in.
             //we need to get SOMETHING set and copied out before we do this.
 

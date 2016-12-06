@@ -45,7 +45,6 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             int newID = dal.CreateTable(model);
 
-
             //need to get table ID out of the table we just created 
             Table output = dal.FindTable(newID);
 
@@ -63,14 +62,12 @@ namespace Capstone.Web.Controllers
         [HttpPost]
         public ActionResult TakeSeat(UserAndTable model)
         {
-
             int tableID = model.Table.TableID;
             string userName = model.User.Username;
             int MoneyAdded = model.MoneyToTheTable;
 
             TableSqlDal dal = new TableSqlDal();
             bool isAdded = dal.AddPlayerToTable(tableID, userName);
-
 
             return View();
         }
