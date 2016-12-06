@@ -69,29 +69,54 @@ namespace Capstone.Web.Dal_s
 
         }
 
-        public List<UserModel> GetAllPlayersAtTable(int tableID)
+        public List<Seat> GetAllPlayersAtTable(int tableID)
         {
-            List<UserModel> output = new List<UserModel>();
-
+            List<Seat> output = new List<Seat>();
+            int handID = 0;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT table_players.player, users.current_money FROM table_players INNER JOIN users ON users.username = table_players.player WHERE table_id = @tableID;", conn);
+                    //"FROM table_players INNER JOIN users ON users.username = table_players.player " +
+                    SqlCommand cmd = new SqlCommand("SELECT table_players.player, seat_number, table_balance, active, occupied, hand_id, current_bet, is_turn, discard_count, has_discarded, has_checked, has_folded " +                  
+                        "FROM table_players " +
+                        "INNER JOIN hand_seat on (table_players.player = hand_seat.player AND table_players.table_id = hand_seat.table_id)  " +
+                        "WHERE table_players.table_id = @tableID;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        UserModel u = new UserModel();
+                        //UserModel u = new UserModel();
 
-                        u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
-                        u.Username = Convert.ToString(reader["player"]);
+                        //u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
+                        //u.Username = Convert.ToString(reader["player"]);
+                        //u.
 
-                        output.Add(u);
+                        //output.Add(u);
+                        Seat s = new Seat();
+                        //pulled from hand_cards                       
+                        //s.Hand = ;
+                        //s.Discards = ;
+                        //pulled from table_players
+                        s.Active = Convert.ToBoolean(reader["active"]);                        
+                        s.Occupied = Convert.ToBoolean(reader["occupied"]);
+                        s.SeatNumber = Convert.ToInt32(reader["seat_number"]);
+                        s.TableBalance = Convert.ToInt32(reader["table_balance"]);
+                        s.Username = Convert.ToString(reader["player"]);
+                        //pulled from hand_seat
+                        s.IsTurn = Convert.ToBoolean(reader["is_turn"]);
+                        s.CurrentBet = Convert.ToInt32(reader["current_bet"]); ;
+                        s.HasFolded = Convert.ToBoolean(reader["has_folded"]); ;
+                        s.HasDiscarded = Convert.ToBoolean(reader["has_discarded"]); ;
+                        s.HasChecked = Convert.ToBoolean(reader["has_checked"]); ;
+
+                        handID = Convert.ToInt32(reader["hand_id"]);
+
+                        output.Add(s);
                     }
                 }
             }
@@ -486,6 +511,130 @@ namespace Capstone.Web.Dal_s
                         cmd.Parameters.AddWithValue("@i", i);
                         cmd.ExecuteNonQuery();
                     }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void LowerTableBalanceRaiseBet(int tableID, int handID, string userName, int money)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET table_balance = table_balance - @money " +
+                        "WHERE table_id = @tableID AND player = @userName;", conn);
+                    cmd.Parameters.AddWithValue("@money", money);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", userName);
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand("UPDATE hand_seat SET current_bet = current_bet + @money " +
+                        "WHERE table_id - @tableID AND hand_id = @handID AND player = @userName;", conn);
+                    cmd.Parameters.AddWithValue("@money", money);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", userName);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void SetPlayerToHasChecked(int tableID, int handID, string userName)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_checked = 1 " +
+                        "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", userName);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void SetPlayerCheckedAndAllOthersNot(int tableID, int handID, string userName)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_checked = 0 " +
+                        "WHERE table_id = @tableID AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.ExecuteNonQuery();
+
+
+                    cmd = new SqlCommand("UPDATE hand_seat SET has_checked = 1 " +
+                        "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", userName);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void SetPlayerAsFolded(int tableID, int handID, string userName)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_folded = 1 " +
+                        "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", userName);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateCurrentMinBet(int tableID, int newMinBet)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE poker_table SET current_min_bet = @newMinBet " +
+                        "WHERE table_id = @tableID;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@newMinBet", newMinBet);
+                    cmd.ExecuteNonQuery();
                 }
             }
             catch (SqlException)

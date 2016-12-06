@@ -379,5 +379,57 @@ namespace Capstone.Web.Controllers
 
             return View("determineWinner", model);
         }
+
+        public ActionResult playerCalled (int tableID, int myBet, int betToCall)
+        {
+            TableSqlDal tdal = new TableSqlDal();
+
+            int additionalMoney = betToCall - myBet;
+
+            int handID = tdal.GetHandID(tableID);
+
+            string userName = (string)Session["username"];
+
+            tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
+
+            tdal.SetPlayerToHasChecked(tableID, handID, userName);
+
+            return RedirectToAction("HandSetup",tableID);
+        }
+
+        public ActionResult playerBet (int tableID, int myBet, int betToCall, int newBet)
+        {
+            TableSqlDal tdal = new TableSqlDal();
+
+            int additionalMoney = betToCall - myBet + newBet;
+
+            int handID = tdal.GetHandID(tableID);
+
+            string userName = (string)Session["username"];
+
+            tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
+
+            tdal.SetPlayerCheckedAndAllOthersNot(tableID, handID, userName);
+
+            tdal.UpdateCurrentMinBet(tableID, newBet);
+
+            return RedirectToAction("HandSetup", tableID);
+        }
+
+        public ActionResult playerFolded (int tableID)
+        {
+            TableSqlDal tdal = new TableSqlDal();
+
+            int handID = tdal.GetHandID(tableID);
+
+            string userName = (string)Session["username"];
+
+            tdal.SetPlayerAsFolded(tableID, handID, userName);
+
+            //maybe set active to false
+
+            return RedirectToAction("HandSetup", tableID);
+
+        }
     }
 }
