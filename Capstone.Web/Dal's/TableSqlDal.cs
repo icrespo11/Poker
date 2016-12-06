@@ -391,11 +391,11 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET isTurn = 0 where table_id = @table_id and isTurn =1;", conn);
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET is_turn = 0 where table_id = @table_id and is_turn =1;", conn);
                     cmd.Parameters.AddWithValue("@table_id", tableID);
                     cmd.ExecuteNonQuery();
 
-                    SqlCommand cmd1 = new SqlCommand("UPDATE table_players SET isTurn = 1 where table_id = @table_id and player = @player;", conn);
+                    SqlCommand cmd1 = new SqlCommand("UPDATE hand_seat SET is_turn = 1 where table_id = @table_id and player = @player;", conn);
                     cmd1.Parameters.AddWithValue("@table_id", tableID);
                     cmd1.Parameters.AddWithValue("@player", playerID);
                     cmd1.ExecuteNonQuery();
@@ -688,27 +688,6 @@ namespace Capstone.Web.Dal_s
                 throw;
             }
         }
-        //public void SetPlayerAsFolded(int tableID, int handID, string userName)
-        //{
-        //    try
-        //    {
-        //        using (SqlConnection conn = new SqlConnection(connectionString))
-        //        {
-        //            conn.Open();
-
-        //            SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_folded = 1 " +
-        //                "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
-        //            cmd.Parameters.AddWithValue("@handID", handID);
-        //            cmd.Parameters.AddWithValue("@tableID", tableID);
-        //            cmd.Parameters.AddWithValue("@userName", userName);
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //    }
-        //    catch (SqlException)
-        //    {
-        //        throw;
-        //    }
-        //}
 
         public Dictionary<int,int> GetNumberOfSittingPlayers()
         {
@@ -735,5 +714,29 @@ namespace Capstone.Web.Dal_s
             }
             return output;
         }
+
+        public void InsertIntoHandSeat(int tableID, int handID, string username)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("INSERT into hand_seat VALUES (@table_id, @hand_id, @player, 0, 0, 0, 0, 0, 1);", conn);
+
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
+                    cmd.Parameters.AddWithValue("@hand_id", handID);
+                    cmd.Parameters.AddWithValue("@player", username);
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }
