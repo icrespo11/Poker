@@ -158,54 +158,29 @@ namespace Capstone.Web.Controllers
             return PartialView("HandSetup", model);
         }
 
-        public ActionResult updatePlayerTurn(Table model)
+        public ActionResult updatePlayerTurn(int tableID)
         {
+
             TableSqlDal dal = new TableSqlDal();
-            model = HttpContext.Cache["Table"] as Table;
-            //List<UserModel> players = dal.GetAllPlayersAtTable(1);
+            Table model = GetTableInfo(tableID);
 
-            //foreach (UserModel player in players)
-            //{
-            //    Seat s = new Seat();
-            //    s.Username = player.Username;
-            //    s.TableBalance = player.CurrentMoney;
+            string playerTurn = dal.GetActivePlayer(tableID);
 
-            //    s.Hand = new Hand();
-
-            //    s.Hand.MyHand = dal.GetAllCardsForPlayer(player.Username);
-            //    s.Hand.MyHand = DeckOfCards.GetSuitAndLetterValues(s.Hand.MyHand);
-
-            //    model.Seats.Add(s);
-            //}
-            string playerTurn = dal.GetActivePlayer(model.TableID);
-            //foreach (var seat in model.Seats)
-            //{
-            //    if (seat.Username == playerTurn)
-            //    {
-            //        seat.IsTurn = true;
-            //    }
-            //    //not longtime solution
-            //    if (seat.Username != "Available")
-            //    {
-            //        seat.Active = true;
-            //        seat.Occupied = true;
-            //    }
-            //}
-            
             int seatChecking = 0;
             foreach (var seat in model.Seats)
             {
                 seatChecking++;
-                if(seat.Username == playerTurn)
+                if (seat.Username.ToLower() == playerTurn.ToLower())
                 {
                     break;
                 }
+                
             }
 
             bool updatedPlayer = false;
             foreach (var seat in model.Seats)
             {
-                if (seat.Username == playerTurn)
+                if (seat.Username.ToLower() == playerTurn.ToLower())
                 {
                     
                     for (int i = seatChecking; i < model.Seats.Count; i++)
@@ -235,7 +210,7 @@ namespace Capstone.Web.Controllers
             }
             foreach (var seat in model.Seats)
             {
-                if (seat.Username == playerTurn)
+                if (seat.Username.ToLower() == playerTurn.ToLower())
                 {
                     seat.IsTurn = false;
                 }
@@ -244,34 +219,13 @@ namespace Capstone.Web.Controllers
             string newPlayerTurn = dal.GetActivePlayer(model.TableID);
             foreach (var seat in model.Seats)
             {
-                if (seat.Username == newPlayerTurn)
+                if (seat.Username.ToLower() == newPlayerTurn.ToLower())
                 {
                     seat.IsTurn = true;
                 }
             }
-            HttpContext.Cache.Insert("Table", model);
 
-            //this is where bob starts breaking everything in hoping of fixing it.
-            /*
-            int userIndex = 0;
-            for (int i = 0; i < model.Seats.Count; i++)
-            {
-                if (model.Seats[i].Username == (string)Session["username"])
-                {
-                    userIndex = i;
-                }
-            }
-            TableAndCardDictionary combo = new TableAndCardDictionary();
-            combo.Table = model;
-            for (int j = 0; j < 5; j++)
-            {
-                combo.CardList.Add(model.Seats[userIndex].Hand.MyHand[j], false);
-            }
-            */
-            //be afraid
-            //be very, very afraid.
-
-            return RedirectToAction("HandSetup", model);   
+            return RedirectToAction("HandSetup", new { tableID = tableID });   
         }
 
         public ActionResult ReplaceCards (ReplaceCardModel model)

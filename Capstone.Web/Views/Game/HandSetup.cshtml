@@ -5,119 +5,169 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     <script src="/Scripts/HandSetupJavaScript.js"></script>
 
-        List<bool> discardList = new List<bool>() { false, false, false, false, false };
-    }
+    int i = 0;
 
+    int seated = 1;
 
-    <h2>@Model.Name</h2>
+    string player = "player" + seated;
 
-    <div id="otherPlayersFields">
-        @foreach (var seat in Model.Seats)
-        {
-            if (seat.Username.ToLower() != Session["username"].ToString().ToLower())
+    List<bool> discardList = new List<bool>() { false, false, false, false, false };
+}
+
+<section>
+    <div id="gameArea">
+        <h2>@Model.Name</h2>
+
+        <div id="populatedGameArea">
+            <img src="~/Content/img/ovalpokertable.png" />
+
+            @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn
             {
-                <div>
-
-                    @if (seat.Occupied && seat.IsTurn)
+                foreach (var seat in Model.Seats)
+                {
+                    if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
                     {
-                        <p id="currentPlayer">@seat.Username</p>
+                        <div id="@player">
+                            @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
+                            {
+                            <p id="currentPlayer">@seat.Username</p>
+                            }
+                            else
+                            {
+                            <p>@Model.Seats[i].Username</p>
+                            }
+                            <p>@Model.Seats[i].TableBalance.ToString("C")</p>
+                        </div>
+
+                        <div id="userCards">
+                            @if (!seat.HasFolded)
+                            {
+                                for (int j = 0; j < 5; j++)
+                                {
+
+                                    if (Model.Seats[i].Hand.MyHand[j].Suit.ToLower() == "diamonds" || Model.Seats[i].Hand.MyHand[j].Suit.ToLower() == "hearts")
+                                    {
+                                <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">
+                                    <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
+                                </div>
+                                    }
+                                    else
+                                    {
+                                <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard black">
+                                    <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
+                                </div>
+                                    }
+                                }
+                            }
+                        </div>
+
+                            if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
+                            {
+                            <p>Gonna Do Stuff Here</p>
+                        }
+
+                        seated++;
+
+                        player = "player" + seated;
+
+                        break;
+
+                    }
+                    i++;
+                }
+
+                @Html.HiddenFor(m => m.TableID );
+                
+                <button id="advance">Advance</button>
+
+            }
+
+            @for (int j = i + 1; j < 5; j++)
+            {
+                <div id="@player">
+
+                    @if (Model.Seats[j].Occupied && Model.Seats[j].IsTurn)
+                    {
+                        <p id="currentPlayer">@Model.Seats[j].Username</p>
                     }
                     else
                     {
-                        <p>@seat.Username</p>
+                        <p>@Model.Seats[j].Username</p>
                     }
-                    <p>@seat.TableBalance.ToString("C")</p>
-                </div>
-            }
-        }
-    </div>
+                    <p>@Model.Seats[j].TableBalance.ToString("C")</p>
 
-    @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn
-    {
-        for (int i = 0; i < Model.Seats.Count; i++)
-        {
-            if (Model.Seats[i].Username.ToLower() == Session["username"].ToString().ToLower())
+
+                </div>
+
+                seated++;
+
+                player = "player" + seated;
+
+            }
+
+            @for (int j = 0; j < i; j++)
             {
-                <div id="currentUserPlayField">
-                    @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
+                <div id="@player">
+
+                    @if (Model.Seats[j].Occupied && Model.Seats[j].IsTurn)
                     {
-                        <p id="currentPlayer">@Model.Seats[i].Username</p>
+                        <p id="currentPlayer">@Model.Seats[j].Username</p>
                     }
                     else
                     {
-                        <p>@Model.Seats[i].Username</p>
+                        <p>@Model.Seats[j].Username</p>
                     }
-                    <p>@Model.Seats[i].TableBalance.ToString("C")</p>
+                    <p>@Model.Seats[j].TableBalance.ToString("C")</p>
 
+                </div>
 
-                    @for (int j = 0; j < 5; j++)
+                seated++;
+
+                player = "player" + seated;
+
+            }
+
+            @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))
                     {
 
-                        if (Model.Seats[i].Hand.MyHand[j].Suit.ToLower() == "diamonds" || Model.Seats[i].Hand.MyHand[j].Suit.ToLower() == "hearts")
-                        {
-                            <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">                                                                                                
-                                <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
-                            </div>
-                        }
-                        else
-                        {
-                            <div  data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard black">
-                                <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
-                            </div>
-                        }
-                    }
-                    @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
-                    {
-                        <p>Gonna Do Stuff Here</p>
+                //Capstone.Web.Models.Card c = new Capstone.Web.Models.Card();
+                //Capstone.Web.Models.Card c2 = new Capstone.Web.Models.Card();
+                //c.Discard = "true";
+                //c2.Discard = "false";
+
+                //Capstone.Web.Models.Hand h = new Capstone.Web.Models.Hand();
+                //h.MyHand = new List<Capstone.Web.Models.Card>();
+                //h.MyHand.Add(c);
+                //h.MyHand.Add(c2);
+
+                //Capstone.Web.Models.Seat s = new Capstone.Web.Models.Seat();
+                ////s.Hand = new Capstone.Web.Models.Hand();
+                //s.Hand = h;
+
+                //List<Capstone.Web.Models.Seat> ls = new List<Capstone.Web.Models.Seat>();
+
+                //ls.Add(s);
+
+                @Html.HiddenFor(m => m.TableID)
+                        @Html.Hidden("Username", (string)Session["Username"])
+
+                        <div id="discardList">
+
+                        </div>
+
+                        @*
+                            foreach (var seat in Model.Seats)
+                            {
+                                if (seat.Username == Session["username"].ToString())
+                                {
+                                    <div>
+                                        @Html.HiddenFor(m => m.Seats[0], s);
+                                    </div>
+                                }
+                            }
+                        *@
+                        <button id="discardButton">Discard</button>
                     }
                 </div>
-            }
-        }
-
-        <button>Advance</button>
-
-    }
-
-    @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))
-    {
-
-        //Capstone.Web.Models.Card c = new Capstone.Web.Models.Card();
-        //Capstone.Web.Models.Card c2 = new Capstone.Web.Models.Card();
-        //c.Discard = "true";
-        //c2.Discard = "false";
-
-        //Capstone.Web.Models.Hand h = new Capstone.Web.Models.Hand();
-        //h.MyHand = new List<Capstone.Web.Models.Card>();
-        //h.MyHand.Add(c);
-        //h.MyHand.Add(c2);
-
-        //Capstone.Web.Models.Seat s = new Capstone.Web.Models.Seat();
-        ////s.Hand = new Capstone.Web.Models.Hand();
-        //s.Hand = h;
-
-        //List<Capstone.Web.Models.Seat> ls = new List<Capstone.Web.Models.Seat>();
-
-        //ls.Add(s);
-
-        @Html.HiddenFor(m => m.TableID)
-        @Html.Hidden("Username", (string)Session["Username"])
-      
-        <div id="discardList">
-
-        </div>
-
-        @*
-        foreach (var seat in Model.Seats)
-        {
-            if (seat.Username == Session["username"].ToString())
-            {
-                <div>
-                    @Html.HiddenFor(m => m.Seats[0], s);
-                </div>
-            }
-        }
-        *@
-        <button>Discard</button>
-    }
-
-
+            </div>
+        </section>
