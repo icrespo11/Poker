@@ -337,7 +337,7 @@ namespace Capstone.Web.Controllers
                 //model.Seats.Add(s);
             //}
 
-            return RedirectToAction("HandSetupDupe", new { tableID = model.TableId });
+            return RedirectToAction("HandSetup", new { tableID = model.TableId });
         }
 
         public ActionResult FinalHand(Table model)
