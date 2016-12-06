@@ -273,6 +273,7 @@ namespace Capstone.Web.Dal_s
                         t.TableHost = Convert.ToString(reader["host"]);
                         t.TableID = Convert.ToInt32(reader["table_id"]);
                         t.Name = Convert.ToString(reader["name"]);
+                        t.MaxBuyIn = Convert.ToInt32(reader["max_buy_in"]);
 
                         bool add = true;
                         foreach (var table in output)
