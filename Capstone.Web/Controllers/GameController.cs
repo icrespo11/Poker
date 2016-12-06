@@ -44,7 +44,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
 
             Table output = dal.FindTable(tableID);
-            int handID = 1; // dal.GetHandID(tableID);
+            int handID = dal.GetHandID(tableID);
 
             List<Seat> seats = dal.GetAllPlayersAtTable(tableID);
 
@@ -123,7 +123,15 @@ namespace Capstone.Web.Controllers
             Table model = GetTableInfo(tableID);
             int handID = CreateDeck(tableID);
 
-            return RedirectToAction("HandSetup", tableID);
+            foreach (Seat s in model.Seats)
+            {
+                if (s.Username != "Available")
+                {
+                    dal.DrawCards(handID, 5, s.Username);
+                }
+            }
+
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult HandSetup(int tableID)
@@ -131,8 +139,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             //model = HttpContext.Cache["Table"] as Table;
 
-            Table model = GetTableInfo(tableID);
-            
+            Table model = GetTableInfo(tableID);            
 
             string playerTurn = dal.GetActivePlayer(model.TableID);
             foreach (var seat in model.Seats)
@@ -300,7 +307,7 @@ namespace Capstone.Web.Controllers
             //deck.Shuffle();
 
             TableSqlDal dal = new TableSqlDal();
-            int handID = 1; //  dal.GetHandID(model.TableId);
+            int handID = dal.GetHandID(model.TableId);
 
             dal.DiscardCards(model);
             dal.DrawCards(handID, model.Discards.Count, model.Username);

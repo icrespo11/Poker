@@ -24,6 +24,7 @@ namespace Capstone.Web.Controllers
 
             TableSqlDal dal = new TableSqlDal();
             tables = dal.GetAllTables();
+            
 
             return View("TableSearch", tables);
         }
