@@ -20,21 +20,18 @@
 
         @foreach (var table in Model)
         {
-            int openSeats = 5;
+            int openSeats = 5 - ViewBag.Dictionary[table.TableID]; 
 
             <tr>
                 <td>@table.Name</td>
                 <td>@table.TableHost</td>
                 <td>@table.MaxBuyIn</td>
 
-                @foreach (var seat in table.Seats)
-                {
-                    if (seat.Username != "Available")
-                    {
-                        openSeats--;
-                    }
-                }
-
+                
+                
+                
+                
+                
                 <td>@openSeats</td>
                 @using (Html.BeginForm("SitAtTable", "Table", FormMethod.Post))
                 {

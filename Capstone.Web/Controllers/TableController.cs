@@ -24,8 +24,9 @@ namespace Capstone.Web.Controllers
 
             TableSqlDal dal = new TableSqlDal();
             tables = dal.GetAllTables();
-            
 
+            Dictionary<int,int> sittingPlayers = dal.GetNumberOfSittingPlayers();
+            ViewBag.Dictionary = sittingPlayers;
             return View("TableSearch", tables);
         }
 
@@ -87,7 +88,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
 
-            return View("JoinedTable", tableID);
+            return RedirectToAction("JoinedTable", "Game", new { id = tableID });
         }
     }
 }
