@@ -22,11 +22,11 @@
 
             <div class="inputBox">
                 @Html.LabelFor(m => m.Username)
-                @Html.TextBoxFor(m => m.Username, new {@class = "inputField" })
+                @Html.TextBoxFor(m => m.Username, new {@class = "inputField", placeHolder = "Username" })
             </div>
             <div class="inputBox">
                 @Html.LabelFor(m => m.LoginPassword, "Password")
-                @Html.PasswordFor(m => m.LoginPassword, new { @class = "inputField" })
+                @Html.PasswordFor(m => m.LoginPassword, new { @class = "inputField", placeHolder = "Password" })
             </div>
             <div id="inputButton">
                 <button>Login</button>

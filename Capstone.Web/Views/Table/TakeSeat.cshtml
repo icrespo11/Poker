@@ -25,15 +25,16 @@
     @using (Html.BeginForm("AddPlayerToTable", "Table", FormMethod.Post))
     {
         <div>
-            @Html.LabelFor(m => m.MoneyToTheTable, "How Much Money Will You Bring?")
-            @Html.TextBoxFor(m => m.MoneyToTheTable)
-            @* validation? *@
-
+            <div class="inputBox">
+                @Html.LabelFor(m => m.MoneyToTheTable, "How Much Money Will You Bring?")
+                @Html.TextBoxFor(m => m.MoneyToTheTable,  new { @class = "inputField", placeHolder = "Maximum Buy-In" })
+                @* validation? *@
+            </div>
             @Html.HiddenFor(m => m.Table.TableID, Model.Table.TableID)
             @Html.HiddenFor(m => m.User.Username, Model.User.Username)
         </div>
         <div>
-            <button>SUBMIT!</button>
+            <button>Join</button>
         </div>
 
     }

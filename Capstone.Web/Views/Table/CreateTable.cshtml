@@ -4,34 +4,36 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section>
-    <h2>Create a New Table</h2>
+    <div id="allInputs">
+        <h2>Create a New Table</h2>
 
-    @using (Html.BeginForm("CreateTable", "Table", FormMethod.Post))
-    {
-        <div>
-            @Html.LabelFor(m => m.Name, "Name Your Table")
-            @Html.TextBoxFor(m => m.Name)
-            @* validation? *@
-        </div>
-        <div>
-            @Html.LabelFor(m => m.Ante, "Ante:")
-            @Html.TextBoxFor(m => m.Ante)
-        </div>
-        <div>
-            @Html.LabelFor(m => m.MinBet, "Minimum Bet:")
-            @Html.TextBoxFor(m => m.MinBet)
-        </div>
-        <div>
-            @Html.LabelFor(m => m.MaxBet, "Maximum Bet:")
-            @Html.TextBoxFor(m => m.MaxBet)
-        </div>
-        <div>
-            @Html.LabelFor(m => m.MaxBuyIn, "Maximum Buy-In:")
-            @Html.TextBoxFor(m => m.MaxBuyIn)
-        </div>
-        <div>
-            <button>SUBMIT!</button>
-        </div>
+        @using (Html.BeginForm("CreateTable", "Table", FormMethod.Post))
+        {
+            <div class="inputBox">
+                @Html.LabelFor(m => m.Name, "Name Your Table")
+                @Html.TextBoxFor(m => m.Name, new { @class = "inputField", placeHolder = "Table Name" })
+                @* validation? *@
+            </div>
+            <div class="inputBox">
+                @Html.LabelFor(m => m.Ante, "Ante")
+                @Html.TextBoxFor(m => m.Ante, new { @class = "inputField", placeHolder = "Ante" })
+            </div>
+            <div class="inputBox">
+                @Html.LabelFor(m => m.MinBet, "Minimum Bet")
+                @Html.TextBoxFor(m => m.MinBet, new { @class = "inputField", placeHolder = "Minimum Bet" })
+            </div>
+            <div class="inputBox">
+                @Html.LabelFor(m => m.MaxBet, "Maximum Bet")
+                @Html.TextBoxFor(m => m.MaxBet, new { @class = "inputField", placeHolder = "Maximum Bet" })
+            </div>
+            <div class="inputBox">
+                @Html.LabelFor(m => m.MaxBuyIn, "Maximum Buy-In")
+                @Html.TextBoxFor(m => m.MaxBuyIn, new { @class = "inputField", placeHolder = "Maximum Buy-In" })
+            </div>
+            <div id="inputButton">
+                <button>Submit</button>
+            </div>
 
-    }
+        }
+    </div>
 </section>
