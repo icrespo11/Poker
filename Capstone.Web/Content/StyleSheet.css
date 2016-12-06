@@ -340,7 +340,7 @@ button{
 #gameArea img{
     position: absolute;
     top: 8em;
-    right: 14.5em;
+    Left: 14.0em;
 }
 
 #player1 {
@@ -377,4 +377,12 @@ button{
 #gameArea button{
     position: absolute;
     left: 1em;
+}
+
+#populatedGameArea {
+    position: absolute;
+    top: 10%;
+    left: 16%;
+    width: 60em;
+    height:auto;
 }

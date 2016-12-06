@@ -4,10 +4,10 @@
 
 
 }
-@Html.BeginForm("SitAtTable", "Table", FormMethod.Post){
+
 <section>
     <h2>Active Tables</h2>
-    
+
 
     <table>
         <tr>
@@ -15,7 +15,7 @@
             <th>Table Host</th>
             <th>Max Buy-in</th>
             <th>Open Seats</th>
-            
+
         </tr>
 
         @foreach (var table in Model)
@@ -36,13 +36,14 @@
                 }
 
                 <td>@openSeats</td>
-               
-                    @Html.Hidden("TableID", table.TableID)
+                @Html.BeginForm("SitAtTable", "Table", FormMethod.Post)
+                {
+                @Html.Hidden("TableID", table.TableID)
                 <td>
                     <button>Join Table</button>
-                </td>                               
+                </td>
+                }
             </tr>
-        }       
+        }
     </table>
 </section>
-}
