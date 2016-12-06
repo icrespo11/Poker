@@ -46,21 +46,21 @@ namespace Capstone.Web.Controllers
             Table output = dal.FindTable(tableID);
             int handID = 1; // dal.GetHandID(tableID);
 
-            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
+            List<Seat> seats = dal.GetAllPlayersAtTable(tableID);
 
-            for (int i = 0; i < players.Count; i++)
+            for (int i = 0; i < seats.Count; i++)
             {
-                Seat s = new Seat();
-                s.Username = players[i].Username;
-                s.TableBalance = players[i].CurrentMoney;
+                //Seat s = new Seat();
+                //s.Username = players[i].Username;
+                //s.TableBalance = players[i].CurrentMoney;
 
-                if (s.Username != "Available")
+                if (seats[i].Username != "Available")
                 {
-                    s.Hand = new Hand();
+                    seats[i].Hand = new Hand();
 
-                    s.Hand.MyHand = dal.GetAllCardsForPlayer(s.Username, handID);
+                    seats[i].Hand.MyHand = dal.GetAllCardsForPlayer(seats[i].Username, handID);
                 }
-                output.Seats.Add(s);
+                output.Seats.Add(seats[i]);
             }
 
             for (int i = output.Seats.Count; i < 5; i++)
@@ -378,6 +378,58 @@ namespace Capstone.Web.Controllers
             //card comparison 
 
             return View("determineWinner", model);
+        }
+
+        public ActionResult playerCalled (int tableID, int myBet, int betToCall)
+        {
+            TableSqlDal tdal = new TableSqlDal();
+
+            int additionalMoney = betToCall - myBet;
+
+            int handID = tdal.GetHandID(tableID);
+
+            string userName = (string)Session["username"];
+
+            tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
+
+            tdal.SetPlayerToHasChecked(tableID, handID, userName);
+
+            return RedirectToAction("HandSetup",tableID);
+        }
+
+        public ActionResult playerBet (int tableID, int myBet, int betToCall, int newBet)
+        {
+            TableSqlDal tdal = new TableSqlDal();
+
+            int additionalMoney = betToCall - myBet + newBet;
+
+            int handID = tdal.GetHandID(tableID);
+
+            string userName = (string)Session["username"];
+
+            tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
+
+            tdal.SetPlayerCheckedAndAllOthersNot(tableID, handID, userName);
+
+            tdal.UpdateCurrentMinBet(tableID, newBet);
+
+            return RedirectToAction("HandSetup", tableID);
+        }
+
+        public ActionResult playerFolded (int tableID)
+        {
+            TableSqlDal tdal = new TableSqlDal();
+
+            int handID = tdal.GetHandID(tableID);
+
+            string userName = (string)Session["username"];
+
+            tdal.SetPlayerAsFolded(tableID, handID, userName);
+
+            //maybe set active to false
+
+            return RedirectToAction("HandSetup", tableID);
+
         }
     }
 }

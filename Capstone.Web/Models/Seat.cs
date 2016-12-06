@@ -25,5 +25,11 @@ namespace Capstone.Web.Models
         public List<Card> Discards { get; set; }
 
         public bool IsTurn { get; set; }
+
+        public bool HasFolded { get; set; }
+
+        public bool HasChecked { get; set; }
+
+        public bool HasDiscarded { get; set; }
     }
 }
