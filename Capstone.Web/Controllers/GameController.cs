@@ -155,31 +155,7 @@ namespace Capstone.Web.Controllers
                     seat.Occupied = true;
                 }
             }
-            return View("HandSetup", model);
-        }
-
-        public ActionResult HandSetupDupe(int tableID)
-        {
-            TableSqlDal dal = new TableSqlDal();
-            //model = HttpContext.Cache["Table"] as Table;
-
-            Table model = GetTableInfo(tableID);
-
-            string playerTurn = dal.GetActivePlayer(model.TableID);
-            foreach (var seat in model.Seats)
-            {
-                if (seat.Username == playerTurn)
-                {
-                    seat.IsTurn = true;
-                }
-                //not longtime solution
-                if (seat.Username != "Available")
-                {
-                    seat.Active = true;
-                    seat.Occupied = true;
-                }
-            }
-            return View("HandSetup", model);
+            return PartialView("HandSetup", model);
         }
 
         public ActionResult updatePlayerTurn(Table model)
@@ -344,7 +320,7 @@ namespace Capstone.Web.Controllers
                 //model.Seats.Add(s);
             //}
 
-            return RedirectToAction("HandSetupDupe", new { tableID = model.TableId });
+            return RedirectToAction("HandSetup", new { tableID = model.TableId });
         }
 
         public ActionResult FinalHand(Table model)

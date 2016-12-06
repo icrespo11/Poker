@@ -206,6 +206,7 @@
     <Content Include="Views\Table\TableSearch.cshtml" />
     <Content Include="Views\Game\Ante.cshtml" />
     <Content Include="Views\Game\BettingRound.cshtml" />
+    <Content Include="Views\Game\GameDisplay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
