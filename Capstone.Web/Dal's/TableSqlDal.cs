@@ -117,6 +117,7 @@ namespace Capstone.Web.Dal_s
                         handID = Convert.ToInt32(reader["hand_id"]);
 
                         output.Add(s);
+                        //set hand values in a seperate method? we may be calling this when we don't have any
                     }
                 }
             }
