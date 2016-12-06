@@ -91,6 +91,7 @@
     <Compile Include="DALTest\PokerTableDALTests.cs" />
     <Compile Include="DALTest\UserSqlDALDTest.cs" />
     <Compile Include="DeckOfCardsTesting\DeckTest.cs" />
+    <Compile Include="Evaluators\PokerHandEvaluatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -144,12 +144,12 @@ namespace Capstone.Web.Tests.DALTest
 
             int tableID = t.TableID;
 
-            List<UserModel> output = dal.GetAllPlayersAtTable(tableID);
+            //List<UserModel> output = dal.GetAllPlayersAtTable(tableID);
 
 
-            Assert.AreEqual(2, output.Count);
-            Assert.AreEqual(output[0].Username, "Bob");
-            Assert.AreEqual(output[1].Username, "Boo");
+            //Assert.AreEqual(2, output.Count);
+            //Assert.AreEqual(output[0].Username, "Bob");
+            //Assert.AreEqual(output[1].Username, "Boo");
             //CollectionAssert.Contains(output[0]., "Bob");
 
         }
@@ -212,43 +212,43 @@ namespace Capstone.Web.Tests.DALTest
         [TestMethod]
         public void TestAddingAPlayerToATable()
         {
-            TableSqlDal dal = new TableSqlDal();
-            string playerToAdd = "Brian";
-            int tableID = 0;
-            Table t = new Table();
+            //TableSqlDal dal = new TableSqlDal();
+            //string playerToAdd = "Brian";
+            //int tableID = 0;
+            //Table t = new Table();
 
 
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
+            //using (SqlConnection conn = new SqlConnection(connectionString))
+            //{
+            //    conn.Open();
 
-                SqlCommand cmd = new SqlCommand("SELECT table_id FROM poker_table WHERE host = 'Bob'", conn);
-                tableID = (int)cmd.ExecuteScalar();
-            }
-            dal.AddPlayerToTable(tableID, playerToAdd);
+            //    SqlCommand cmd = new SqlCommand("SELECT table_id FROM poker_table WHERE host = 'Bob'", conn);
+            //    tableID = (int)cmd.ExecuteScalar();
+            //}
+            //dal.AddPlayerToTable(tableID, playerToAdd);
 
-            //player added to table, now need to get all information out of table_players
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                conn.Open();
+            ////player added to table, now need to get all information out of table_players
+            //using (SqlConnection conn = new SqlConnection(connectionString))
+            //{
+            //    conn.Open();
 
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM table_players WHERE table_id = {tableID}", conn);
+            //    SqlCommand cmd = new SqlCommand($"SELECT * FROM table_players WHERE table_id = {tableID}", conn);
 
-                SqlDataReader reader = cmd.ExecuteReader();
+            //    SqlDataReader reader = cmd.ExecuteReader();
 
-                while (reader.Read())
-                {
-                    t.TableID = Convert.ToInt32(reader["table_id"]);
-                    Seat s = new Seat();
-                    s.Username = Convert.ToString(reader["player"]);
-                    s.IsTurn =  Convert.ToBoolean(reader["isTurn"]);
-                    t.Seats.Add(s);
-                }
+            //    while (reader.Read())
+            //    {
+            //        t.TableID = Convert.ToInt32(reader["table_id"]);
+            //        Seat s = new Seat();
+            //        s.Username = Convert.ToString(reader["player"]);
+            //        s.IsTurn =  Convert.ToBoolean(reader["isTurn"]);
+            //        t.Seats.Add(s);
+            //    }
 
-            }
-            Assert.IsNotNull(t.Seats);
-            Assert.AreEqual(3, t.Seats.Count);
-            Assert.AreEqual("Brian", t.Seats[2].Username);
+            //}
+            //Assert.IsNotNull(t.Seats);
+            //Assert.AreEqual(3, t.Seats.Count);
+            //Assert.AreEqual("Brian", t.Seats[2].Username);
 
         }
 

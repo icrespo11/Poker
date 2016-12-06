@@ -215,7 +215,7 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", playerName);
                     cmd.Parameters.AddWithValue("@table_balance", tableBalance);
-                    cmd.Parameters.AddWithValue("seat_number",(dict.ContainsKey(tableID)? dict[tableID]: 0);
+                    cmd.Parameters.AddWithValue("seat_number",(dict.ContainsKey(tableID))? dict[tableID]: 0);
 
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
