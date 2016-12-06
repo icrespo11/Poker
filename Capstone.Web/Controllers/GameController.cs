@@ -131,7 +131,7 @@ namespace Capstone.Web.Controllers
                 }
             }
 
-            return RedirectToAction("HandSetup", tableID);
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult HandSetup(int tableID)
