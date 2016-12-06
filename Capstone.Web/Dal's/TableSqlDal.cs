@@ -431,7 +431,7 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {                                                                           //hand id is hardcoded and
                     conn.Open();                                                            //needs to be fixed later
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = 1 AND dealt = 0;", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = 1 AND dealt = 0 ORDER BY deck_position ASC;", conn);
                     cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -475,7 +475,7 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO hand_card_deck VALUES (@hand_id, @card_number, @card_suit, 0, 0);", conn);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO hand_card_deck VALUES (@hand_id, @card_number, @card_suit, 0, 0, @i);", conn);
 
                     for (int i = 0; i < 52; i++)
                     {
@@ -483,6 +483,7 @@ namespace Capstone.Web.Dal_s
                         cmd.Parameters.AddWithValue("@hand_id", handID);
                         cmd.Parameters.AddWithValue("@card_number", cards[i].Number);
                         cmd.Parameters.AddWithValue("@card_suit", cards[i].Suit);
+                        cmd.Parameters.AddWithValue("@i", i);
                         cmd.ExecuteNonQuery();
                     }
                 }
