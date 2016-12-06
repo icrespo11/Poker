@@ -79,28 +79,20 @@ namespace Capstone.Web.Dal_s
                     conn.Open();
 
                     //"FROM table_players INNER JOIN users ON users.username = table_players.player " +
+                    // AND hand_seat.hand_id = @handID
                     SqlCommand cmd = new SqlCommand("SELECT table_players.player, seat_number, table_balance, active, occupied, hand_id, current_bet, is_turn, discard_count, has_discarded, has_checked, has_folded " +                  
                         "FROM table_players " +
                         "INNER JOIN hand_seat on (table_players.player = hand_seat.player AND table_players.table_id = hand_seat.table_id)  " +
-                        "WHERE table_players.table_id = @tableID AND hand_seat.hand_id = @handID;", conn);
+                        "WHERE table_players.table_id = @tableID;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
-                    cmd.Parameters.AddWithValue("@handID", handID);
+                    //cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        //UserModel u = new UserModel();
-
-                        //u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
-                        //u.Username = Convert.ToString(reader["player"]);
-                        //u.
-
-                        //output.Add(u);
                         Seat s = new Seat();
-                        //pulled from hand_cards                       
-                        //s.Hand = ;
-                        //s.Discards = ;
+
                         //pulled from table_players
                         s.Active = Convert.ToBoolean(reader["active"]);                        
                         s.Occupied = Convert.ToBoolean(reader["occupied"]);
@@ -114,12 +106,10 @@ namespace Capstone.Web.Dal_s
                         s.HasDiscarded = Convert.ToBoolean(reader["has_discarded"]); ;
                         s.HasChecked = Convert.ToBoolean(reader["has_checked"]); ;
 
-                        //handID = Convert.ToInt32(reader["hand_id"]);
                         s.Hand = new Hand();
                         s.Hand.MyHand = GetCardsForPlayer(handID, s.Username);
 
                         output.Add(s);
-                        //set hand values in a separate method? we may be calling this when we don't have any
                     }
                 }
             }
@@ -498,9 +488,9 @@ namespace Capstone.Web.Dal_s
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
-                {                                                                           //hand id is hardcoded and
-                    conn.Open();                                                            //needs to be fixed later
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = 1 AND dealt = 0 ORDER BY deck_position ASC;", conn);
+                {                                                                           
+                    conn.Open();                                                            
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP {numberToDraw} * FROM hand_card_deck WHERE hand_id = @handID AND dealt = 0 ORDER BY deck_position ASC;", conn);
                     cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -518,6 +508,14 @@ namespace Capstone.Web.Dal_s
                     foreach (Card card in output)
                     {
                         cmd = new SqlCommand("INSERT INTO hand_cards VALUES (@handID, @player, @number, @suit, 1, 0);", conn);
+                        cmd.Parameters.Clear();
+                        cmd.Parameters.AddWithValue("@handID", handID);
+                        cmd.Parameters.AddWithValue("@player", player);
+                        cmd.Parameters.AddWithValue("@number", card.Number);
+                        cmd.Parameters.AddWithValue("@suit", card.Suit);
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = "UPDATE hand_card_deck SET dealt = 1 WHERE hand_id = @handID AND card_number = @number AND card_suit = @suit";
                         cmd.Parameters.Clear();
                         cmd.Parameters.AddWithValue("@handID", handID);
                         cmd.Parameters.AddWithValue("@player", player);
