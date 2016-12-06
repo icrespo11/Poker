@@ -66,13 +66,12 @@ namespace Capstone.Web.Dal_s
             {
                 throw;
             }
-
         }
 
         public List<Seat> GetAllPlayersAtTable(int tableID)
         {
             List<Seat> output = new List<Seat>();
-            int handID = 0;
+            int handID = GetHandID(tableID);
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -83,8 +82,9 @@ namespace Capstone.Web.Dal_s
                     SqlCommand cmd = new SqlCommand("SELECT table_players.player, seat_number, table_balance, active, occupied, hand_id, current_bet, is_turn, discard_count, has_discarded, has_checked, has_folded " +                  
                         "FROM table_players " +
                         "INNER JOIN hand_seat on (table_players.player = hand_seat.player AND table_players.table_id = hand_seat.table_id)  " +
-                        "WHERE table_players.table_id = @tableID;", conn);
+                        "WHERE table_players.table_id = @tableID AND hand_seat.hand_id = @handID;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -114,10 +114,12 @@ namespace Capstone.Web.Dal_s
                         s.HasDiscarded = Convert.ToBoolean(reader["has_discarded"]); ;
                         s.HasChecked = Convert.ToBoolean(reader["has_checked"]); ;
 
-                        handID = Convert.ToInt32(reader["hand_id"]);
+                        //handID = Convert.ToInt32(reader["hand_id"]);
+                        s.Hand = new Hand();
+                        s.Hand.MyHand = GetCardsForPlayer(handID, s.Username);
 
                         output.Add(s);
-                        //set hand values in a seperate method? we may be calling this when we don't have any
+                        //set hand values in a separate method? we may be calling this when we don't have any
                     }
                 }
             }
@@ -127,6 +129,43 @@ namespace Capstone.Web.Dal_s
             }
 
             return output;
+        }
+
+        public List<Card> GetCardsForPlayer(int handID, string username)
+        {
+            List<Card> output = new List<Card>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM hand_cards WHERE player = @username AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@handID", handID);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        Card c = new Card();
+
+                        c.Number = Convert.ToInt32(reader["card_number"]);
+                        c.Suit = Convert.ToString(reader["card_suit"]);
+                        c.Dealt = Convert.ToBoolean(reader["dealt"]);
+                        c.Discard = Convert.ToBoolean(reader["discarded"]);
+
+                        output.Add(c);
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return DeckOfCards.GetSuitAndLetterValues(output);
         }
 
         public int CreateTable(Table table)

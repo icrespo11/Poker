@@ -103,16 +103,27 @@ namespace Capstone.Web.Controllers
             return View("ConfirmAnte", model);
         }
 
-        public void CreateDeck(int tableID)
+        public int CreateDeck(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
 
-            int handID = 1; //dal.CreateHand(tableID);
+            int handID = dal.CreateHand(tableID);
 
             DeckOfCards deck = new DeckOfCards();
             deck.Shuffle();
 
             dal.StoreCards(deck.cardList, handID);
+
+            return handID;
+        }
+
+        public ActionResult CreateHands(int tableID)
+        {
+            TableSqlDal dal = new TableSqlDal();
+            Table model = GetTableInfo(tableID);
+            int handID = CreateDeck(tableID);
+
+            return RedirectToAction("HandSetup", tableID);
         }
 
         public ActionResult HandSetup(int tableID)
@@ -121,8 +132,7 @@ namespace Capstone.Web.Controllers
             //model = HttpContext.Cache["Table"] as Table;
 
             Table model = GetTableInfo(tableID);
-            CreateDeck(tableID);
-            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
+            
 
             string playerTurn = dal.GetActivePlayer(model.TableID);
             foreach (var seat in model.Seats)
@@ -147,7 +157,6 @@ namespace Capstone.Web.Controllers
             //model = HttpContext.Cache["Table"] as Table;
 
             Table model = GetTableInfo(tableID);
-            List<UserModel> players = dal.GetAllPlayersAtTable(tableID);
 
             string playerTurn = dal.GetActivePlayer(model.TableID);
             foreach (var seat in model.Seats)
