@@ -82,7 +82,7 @@ namespace Capstone.Web.Dal_s
                     // AND hand_seat.hand_id = @handID
                     SqlCommand cmd = new SqlCommand("SELECT table_players.player, seat_number, table_balance, active, occupied, hand_id, current_bet, is_turn, discard_count, has_discarded, has_checked, has_folded " +                  
                         "FROM table_players " +
-                        "INNER JOIN hand_seat on (table_players.player = hand_seat.player AND table_players.table_id = hand_seat.table_id)  " +
+                        "LEFT JOIN hand_seat on (table_players.player = hand_seat.player AND table_players.table_id = hand_seat.table_id)  " +
                         "WHERE table_players.table_id = @tableID;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     //cmd.Parameters.AddWithValue("@handID", handID);
@@ -100,11 +100,11 @@ namespace Capstone.Web.Dal_s
                         s.TableBalance = Convert.ToInt32(reader["table_balance"]);
                         s.Username = Convert.ToString(reader["player"]);
                         //pulled from hand_seat
-                        s.IsTurn = Convert.ToBoolean(reader["is_turn"]);
-                        s.CurrentBet = Convert.ToInt32(reader["current_bet"]); ;
-                        s.HasFolded = Convert.ToBoolean(reader["has_folded"]); ;
-                        s.HasDiscarded = Convert.ToBoolean(reader["has_discarded"]); ;
-                        s.HasChecked = Convert.ToBoolean(reader["has_checked"]); ;
+                        s.IsTurn = (reader["is_turn"] != DBNull.Value)?Convert.ToBoolean(reader["is_turn"]):false;
+                        s.CurrentBet = (reader["current_bet"] != DBNull.Value) ? Convert.ToInt32(reader["current_bet"]): 0; 
+                        s.HasFolded = (reader["has_folded"] != DBNull.Value) ? Convert.ToBoolean(reader["has_folded"]): true; 
+                        s.HasDiscarded = (reader["has_discarded"] != DBNull.Value) ? Convert.ToBoolean(reader["has_discarded"]): false; 
+                        s.HasChecked = (reader["has_checked"] != DBNull.Value) ? Convert.ToBoolean(reader["has_checked"]): false; 
 
                         s.Hand = new Hand();
                         s.Hand.MyHand = GetCardsForPlayer(handID, s.Username);
@@ -200,6 +200,8 @@ namespace Capstone.Web.Dal_s
 
         public bool AddPlayerToTable(int tableID, string playerName, int tableBalance)
         {
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            dict = GetNumberOfSittingPlayers();
             int rowsAffected = 0;
             try
             {
@@ -207,12 +209,13 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, table_balance, isTurn) VALUES " +
-                        "(@tableID, @playerName, @table_balance, 0);"
+                    SqlCommand cmd = new SqlCommand("INSERT INTO table_players (table_id, player, table_balance, occupied, seat_number, active) VALUES " +
+                        "(@tableID, @playerName, @table_balance, 1, @seat_number, 1);"
                         , conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", playerName);
                     cmd.Parameters.AddWithValue("@table_balance", tableBalance);
+                    cmd.Parameters.AddWithValue("seat_number", dict[tableID]);
 
                     rowsAffected = cmd.ExecuteNonQuery();
                 }
@@ -684,6 +687,53 @@ namespace Capstone.Web.Dal_s
             {
                 throw;
             }
+        }
+        //public void SetPlayerAsFolded(int tableID, int handID, string userName)
+        //{
+        //    try
+        //    {
+        //        using (SqlConnection conn = new SqlConnection(connectionString))
+        //        {
+        //            conn.Open();
+
+        //            SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_folded = 1 " +
+        //                "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
+        //            cmd.Parameters.AddWithValue("@handID", handID);
+        //            cmd.Parameters.AddWithValue("@tableID", tableID);
+        //            cmd.Parameters.AddWithValue("@userName", userName);
+        //            cmd.ExecuteNonQuery();
+        //        }
+        //    }
+        //    catch (SqlException)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public Dictionary<int,int> GetNumberOfSittingPlayers()
+        {
+            Dictionary<int, int> output = new Dictionary<int, int>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT table_id, COUNT(player) as player_count from table_players group by table_id order by table_id;", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        output.Add(Convert.ToInt32(reader["table_id"]), Convert.ToInt32(reader["player_count"]));
+                    }
+           
+                    
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return output;
         }
     }
 }
