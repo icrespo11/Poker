@@ -12,7 +12,7 @@ namespace Capstone.Web.Controllers
     {
         // GET: Table
 
-            //D-Von... get the tables.
+        //D-Von... get the tables.
         //public ActionResult Index()
         //{
 
@@ -24,7 +24,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             tables = dal.GetAllTables();
 
-            Dictionary<int,int> sittingPlayers = dal.GetNumberOfSittingPlayers();
+            Dictionary<int, int> sittingPlayers = dal.GetNumberOfSittingPlayers();
             ViewBag.Dictionary = sittingPlayers;
             return View("TableSearch", tables);
         }
@@ -46,7 +46,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             int newID = dal.CreateTable(model);
 
-            
+
 
             //need to get table ID out of the table we just created 
             Table output = dal.FindTable(newID);
@@ -86,11 +86,34 @@ namespace Capstone.Web.Controllers
             string userName = model.User.Username;
             int MoneyAdded = model.MoneyToTheTable;
 
-            TableSqlDal dal = new TableSqlDal();
-            bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
+            int MaxBuyIn = model.Table.MaxBuyIn;
 
-            dal.InsertIntoHandSeat(tableID, dal.GetHandID(tableID), userName);
-            return RedirectToAction("JoinedTable", "Game", new { id = tableID });
+            UserSqlDal uDal = new UserSqlDal();
+            UserModel user = uDal.GetUserByUserName(userName);
+            int UserMoney = user.CurrentMoney;
+
+            TableSqlDal dal = new TableSqlDal();
+
+            if (MoneyAdded <= UserMoney && MoneyAdded <= MaxBuyIn && MoneyAdded > 0)
+            {
+
+                
+                bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
+
+                dal.InsertIntoHandSeat(tableID, dal.GetHandID(tableID), userName);
+                return RedirectToAction("JoinedTable", "Game", new { id = tableID });
+            }
+            else
+            {
+                Table table = dal.FindTable(tableID);
+                UserAndTable ut = new UserAndTable();
+                ut.Table = table;
+                ut.User = user;
+                ut.WasFailure = true;
+
+                return View("TakeSeat", ut);
+            }
+
         }
     }
 }

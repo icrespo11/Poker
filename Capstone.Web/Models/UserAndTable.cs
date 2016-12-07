@@ -10,5 +10,6 @@ namespace Capstone.Web.Models
         public UserModel User { get; set; }
         public Table Table { get; set; }
         public int MoneyToTheTable { get; set; }
+        public bool WasFailure { get; set; }
     }
 }

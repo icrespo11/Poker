@@ -122,7 +122,7 @@ namespace Capstone.Web.Dal_s
                             IsOnline = true,
                             Privilege = Convert.ToString(reader["privilege"]),
                             Salt = Convert.ToString(reader["salt"]),
-                            Password  = Convert.ToString(reader["password"]),
+                            Password = Convert.ToString(reader["password"]),
                         };
                     }
                 }
@@ -158,6 +158,40 @@ namespace Capstone.Web.Dal_s
             }
 
             return (rowsEffected > 0);
+
+        }
+
+        public UserModel GetUserByUserName(string username)
+        {
+            UserModel u = new UserModel();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM users WHERE username = @username;", conn);
+                    cmd.Parameters.AddWithValue("@username", username);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        u.Username = Convert.ToString(reader["username"]);
+                        u.CurrentMoney = Convert.ToInt32(reader["current_money"]);
+                        u.IsOnline = true;
+                        u.Privilege = Convert.ToString(reader["privilege"]);
+                        //u.Salt = Convert.ToString(reader["salt"]);
+                        //u.Password = Convert.ToString(reader["password"]);
+                    }
+                }
+            }
+            catch
+            {
+                throw;
+            }
+
+            return u;
 
         }
     }
