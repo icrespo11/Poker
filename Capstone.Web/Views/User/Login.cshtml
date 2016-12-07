@@ -22,7 +22,7 @@
 
             <div class="inputBox">
                 @Html.LabelFor(m => m.Username)
-                @Html.TextBoxFor(m => m.Username, new {@class = "inputField", placeHolder = "Username" })
+                @Html.TextBoxFor(m => m.Username, new { @class = "inputField", placeHolder = "Username" })
             </div>
             <div class="inputBox">
                 @Html.LabelFor(m => m.LoginPassword, "Password")
@@ -31,6 +31,6 @@
             <div id="inputButton">
                 <button>Login</button>
             </div>
-                    }
+        }
     </div>
 </section>

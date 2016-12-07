@@ -42,17 +42,14 @@ namespace Capstone.Web.Controllers
         public Table GetTableInfo(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
-
             Table output = dal.FindTable(tableID);
+
             int handID = dal.GetHandID(tableID);
 
             List<Seat> seats = dal.GetAllPlayersAtTable(tableID);
 
             for (int i = 0; i < seats.Count; i++)
             {
-                //Seat s = new Seat();
-                //s.Username = players[i].Username;
-                //s.TableBalance = players[i].CurrentMoney;
 
                 if (seats[i].Username != "Available")
                 {
@@ -130,15 +127,12 @@ namespace Capstone.Web.Controllers
                     dal.DrawCards(handID, 5, s.Username);
                 }
             }
-
             return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult HandSetup(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
-            //model = HttpContext.Cache["Table"] as Table;
-
             Table model = GetTableInfo(tableID);            
 
             string playerTurn = dal.GetActivePlayer(model.TableID);
@@ -160,7 +154,6 @@ namespace Capstone.Web.Controllers
 
         public ActionResult updatePlayerTurn(int tableID)
         {
-
             TableSqlDal dal = new TableSqlDal();
             Table model = GetTableInfo(tableID);
 
@@ -173,16 +166,14 @@ namespace Capstone.Web.Controllers
                 if (seat.Username.ToLower() == playerTurn.ToLower())
                 {
                     break;
-                }
-                
+                }               
             }
 
             bool updatedPlayer = false;
             foreach (var seat in model.Seats)
             {
                 if (seat.Username.ToLower() == playerTurn.ToLower())
-                {
-                    
+                {                    
                     for (int i = seatChecking; i < model.Seats.Count; i++)
                     {
                         if(model.Seats[i].Occupied && model.Seats[i].Active)
@@ -224,7 +215,6 @@ namespace Capstone.Web.Controllers
                     seat.IsTurn = true;
                 }
             }
-
             return RedirectToAction("HandSetup", new { tableID = tableID });   
         }
 
@@ -331,13 +321,10 @@ namespace Capstone.Web.Controllers
             TableSqlDal tdal = new TableSqlDal();
 
             int additionalMoney = betToCall - myBet;
-
             int handID = tdal.GetHandID(tableID);
-
             string userName = (string)Session["username"];
 
             tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
-
             tdal.SetPlayerToHasChecked(tableID, handID, userName);
 
             return RedirectToAction("HandSetup",tableID);
@@ -348,15 +335,11 @@ namespace Capstone.Web.Controllers
             TableSqlDal tdal = new TableSqlDal();
 
             int additionalMoney = betToCall - myBet + newBet;
-
             int handID = tdal.GetHandID(tableID);
-
             string userName = (string)Session["username"];
 
             tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
-
             tdal.SetPlayerCheckedAndAllOthersNot(tableID, handID, userName);
-
             tdal.UpdateCurrentMinBet(tableID, newBet);
 
             return RedirectToAction("HandSetup", tableID);
@@ -367,7 +350,6 @@ namespace Capstone.Web.Controllers
             TableSqlDal tdal = new TableSqlDal();
 
             int handID = tdal.GetHandID(tableID);
-
             string userName = (string)Session["username"];
 
             tdal.SetPlayerAsFolded(tableID, handID, userName);

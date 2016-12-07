@@ -67,11 +67,9 @@
                         }
 
                         seated++;
-
                         player = "player" + seated;
 
                         break;
-
                     }
                     i++;
                 }
@@ -79,7 +77,6 @@
                 @Html.HiddenFor(m => m.TableID );
                 
                 <button id="advance">Advance</button>
-
             }
 
             @for (int j = i + 1; j < 5; j++)
@@ -95,8 +92,6 @@
                         <p>@Model.Seats[j].Username</p>
                     }
                     <p>@Model.Seats[j].TableBalance.ToString("C")</p>
-
-
                 </div>
 
                 seated++;
@@ -122,9 +117,7 @@
                 </div>
 
                 seated++;
-
                 player = "player" + seated;
-
             }
 
             @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))

@@ -77,15 +77,12 @@ namespace Capstone.Web.Dal_s
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-
-                    //"FROM table_players INNER JOIN users ON users.username = table_players.player " +
-                    // AND hand_seat.hand_id = @handID
+                    
                     SqlCommand cmd = new SqlCommand("SELECT table_players.player, seat_number, table_balance, active, occupied, hand_id, current_bet, is_turn, discard_count, has_discarded, has_checked, has_folded " +                  
                         "FROM table_players " +
                         "LEFT JOIN hand_seat on (table_players.player = hand_seat.player AND table_players.table_id = hand_seat.table_id)  " +
                         "WHERE table_players.table_id = @tableID;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
-                    //cmd.Parameters.AddWithValue("@handID", handID);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -99,7 +96,8 @@ namespace Capstone.Web.Dal_s
                         s.SeatNumber = Convert.ToInt32(reader["seat_number"]);
                         s.TableBalance = Convert.ToInt32(reader["table_balance"]);
                         s.Username = Convert.ToString(reader["player"]);
-                        //pulled from hand_seat
+                        
+
                         s.IsTurn = (reader["is_turn"] != DBNull.Value)?Convert.ToBoolean(reader["is_turn"]):false;
                         s.CurrentBet = (reader["current_bet"] != DBNull.Value) ? Convert.ToInt32(reader["current_bet"]): 0; 
                         s.HasFolded = (reader["has_folded"] != DBNull.Value) ? Convert.ToBoolean(reader["has_folded"]): true; 
@@ -181,8 +179,6 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@current_min_bet", table.MinBet);
                     cmd.Parameters.AddWithValue("@state_counter", 0);
 
-
-                    //rowsAffected = cmd.ExecuteNonQuery();
                     cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("SELECT table_id FROM poker_table WHERE name = @name ORDER BY table_id DESC;", conn);
@@ -236,8 +232,7 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("DELETE FROM table_players WHERE table_id = @tableID AND player = @playerName;"
-                        , conn);
+                    SqlCommand cmd = new SqlCommand("DELETE FROM table_players WHERE table_id = @tableID AND player = @playerName;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", playerName);
 
@@ -356,7 +351,6 @@ namespace Capstone.Web.Dal_s
             {
                 throw;
             }
-
         }
 
         //not tested
@@ -371,8 +365,6 @@ namespace Capstone.Web.Dal_s
                     SqlCommand cmd = new SqlCommand("Select player from hand_seat where is_turn = 1 and table_id = @table_id;", conn);
                     cmd.Parameters.AddWithValue("@table_id", tableId);
                     output = cmd.ExecuteScalar().ToString();
-
-
                 }
             }
             catch (SqlException)
@@ -703,9 +695,7 @@ namespace Capstone.Web.Dal_s
                     while (reader.Read())
                     {
                         output.Add(Convert.ToInt32(reader["table_id"]), Convert.ToInt32(reader["player_count"]));
-                    }
-           
-                    
+                    }                  
                 }
             }
             catch (SqlException)
@@ -729,7 +719,6 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@hand_id", handID);
                     cmd.Parameters.AddWithValue("@player", username);
                     cmd.ExecuteNonQuery();
-
                 }
             }
             catch (Exception)
@@ -737,6 +726,5 @@ namespace Capstone.Web.Dal_s
                 throw;
             }
         }
-
     }
 }

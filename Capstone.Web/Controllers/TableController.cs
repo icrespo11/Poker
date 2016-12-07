@@ -21,7 +21,6 @@ namespace Capstone.Web.Controllers
         //}
         public ActionResult TableSearch(List<Table> tables)
         {
-
             TableSqlDal dal = new TableSqlDal();
             tables = dal.GetAllTables();
 
@@ -85,10 +84,9 @@ namespace Capstone.Web.Controllers
             string userName = model.User.Username;
             int MoneyAdded = model.MoneyToTheTable;
 
-            
-
             TableSqlDal dal = new TableSqlDal();
             bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
+
             dal.InsertIntoHandSeat(tableID, dal.GetHandID(tableID), userName);
             return RedirectToAction("JoinedTable", "Game", new { id = tableID });
         }

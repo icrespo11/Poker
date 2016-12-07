@@ -19,7 +19,6 @@
 
             @foreach (var seat in Model.Seats)
             {
-
                 if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
                 {
                     <div id="@player">
@@ -28,7 +27,6 @@
                     </div>
 
                     seated++;
-
                     player = "player" + seated;
 
                     break;
@@ -43,9 +41,7 @@
                 </div>
 
                 seated++;
-
                 player = "player" + seated;
-
             }
 
             @for (int j = 0; j < i; j++)
@@ -56,7 +52,6 @@
                 </div>
 
                 seated++;
-
                 player = "player" + seated;
             }
 

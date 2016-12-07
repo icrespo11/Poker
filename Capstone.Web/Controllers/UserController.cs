@@ -21,7 +21,6 @@ namespace Capstone.Web.Controllers
         public ActionResult Register()
         {
             return View("Register", new UserModel());
-
         }
 
         [HttpPost]
