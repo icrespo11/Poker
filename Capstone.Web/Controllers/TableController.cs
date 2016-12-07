@@ -96,7 +96,9 @@ namespace Capstone.Web.Controllers
 
             if (MoneyAdded <= UserMoney && MoneyAdded <= MaxBuyIn && MoneyAdded > 0)
             {
+                int newMoneyValue = UserMoney - MoneyAdded;
 
+                uDal.UpdateMoney(userName, newMoneyValue);
                 
                 bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
 
