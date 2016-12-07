@@ -77,7 +77,12 @@ nav a {
     nav a:hover {
         text-shadow: 0 0 3px white;
     }
-
+nav #homeLink{
+    float: left;
+    margin-top: 1em;
+    margin-left: 1em;
+    font-size: 1.2em;
+}
 
 section {
     background-image: url('img/felt.png');

@@ -3,7 +3,7 @@
 
 @if (Model == null)
 {
-    
+    @Html.ActionLink("Home", "Index", "Home", new { @id = "homeLink"})
     <ul id="nav-login">
         <li>@Html.ActionLink("Register", "Register", "User") </li>
         <li>@Html.ActionLink("Log In", "Login", "User")</li>
@@ -11,6 +11,7 @@
 }
 else
 {
+    @Html.ActionLink("Home", "LoggedInLanding", "Home", new { @id = "homeLink" })
     <div id="userInfo">
         <ul id="userInfoList">
             <li>@Model.Username</li>
