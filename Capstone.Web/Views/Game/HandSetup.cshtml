@@ -36,7 +36,7 @@
                             {
                             <p>@Model.Seats[i].Username</p>
                             }
-                            <p>@Model.Seats[i].TableBalance.ToString("C")</p>
+                            <p>@Model.Seats[i].TableBalance.ToString("C0")</p>
                         </div>
 
                         <div id="userCards">
@@ -91,7 +91,7 @@
                     {
                         <p>@Model.Seats[j].Username</p>
                     }
-                    <p>@Model.Seats[j].TableBalance.ToString("C")</p>
+                    <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
                 </div>
 
                 seated++;
@@ -112,7 +112,7 @@
                     {
                         <p>@Model.Seats[j].Username</p>
                     }
-                    <p>@Model.Seats[j].TableBalance.ToString("C")</p>
+                    <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
 
                 </div>
 
