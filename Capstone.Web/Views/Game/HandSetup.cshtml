@@ -61,9 +61,23 @@
                             }
                         </div>
 
-                            if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
+                        if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn && !Model.Seats[i].HasFolded)
+                        {
+                            if (Model.StateCounter == 2)
                             {
-                            <p>Gonna Do Stuff Here</p>
+                                using (Html.BeginForm("ConfirmAnte", "Game", FormMethod.Post))
+                                {
+                                    @Html.HiddenFor(m => m.TableID)
+
+                                    <button>Ante</button>
+                                }
+                                using (Html.BeginForm("playerFolded", "Game", FormMethod.Post))
+                                {
+                                    @Html.HiddenFor(m => m.TableID)
+
+                                    <button>Fold</button>
+                                }
+                            }
                         }
 
                         seated++;
