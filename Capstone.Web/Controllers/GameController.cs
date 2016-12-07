@@ -360,6 +360,10 @@ namespace Capstone.Web.Controllers
 
         public ActionResult BettingRound(int tableID)
         {
+            TableSqlDal dal = new TableSqlDal();
+
+            dal.ResetMinBet(tableID);
+
             return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 

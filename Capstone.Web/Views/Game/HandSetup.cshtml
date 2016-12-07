@@ -91,13 +91,22 @@
                             }
                             else if (Model.StateCounter == 4 || Model.StateCounter == 6)
                             {
-                                if (Model.currentMinBet == 0)
+                                int maxCurrentBet = 0;
+                                foreach (var s in Model.Seats)
+                                {
+                                    if (s.CurrentBet > maxCurrentBet)
+                                    {
+                                        maxCurrentBet = s.CurrentBet;
+                                    }
+                                }
+
+                                if (maxCurrentBet == 0)
                                 {
                                     using (Html.BeginForm("PlayerCalled", "Game", FormMethod.Post))
                                     {
                                         @Html.HiddenFor(m => m.TableID)
                                         @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
-                                        @Html.Hidden("betToCall", Model.currentMinBet)
+                                        @Html.Hidden("betToCall", maxCurrentBet)
 
                                         <button>Check</button>
                                     }
@@ -105,7 +114,7 @@
                                     {
                                         @Html.HiddenFor(m => m.TableID)
                                         @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
-                                        @Html.Hidden("betToCall", Model.currentMinBet)
+                                        @Html.Hidden("betToCall", maxCurrentBet)
                                         @Html.TextBox("newBet")
                                         <button>Bet</button>
                                     }
@@ -116,13 +125,13 @@
                                         <button>Fold</button>
                                     }
                                 }
-                                else if (Model.currentMinBet > 0)
+                                else if (maxCurrentBet > 0)
                                 {
                                     using (Html.BeginForm("PlayerCalled", "Game", FormMethod.Post))
                                     {
                                         @Html.HiddenFor(m => m.TableID)
                                         @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
-                                        @Html.Hidden("betToCall", Model.currentMinBet)
+                                        @Html.Hidden("betToCall", maxCurrentBet)
 
                                         <button>Call</button>
                                     }
@@ -130,7 +139,7 @@
                                     {
                                         @Html.HiddenFor(m => m.TableID)
                                         @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
-                                        @Html.Hidden("betToCall", Model.currentMinBet)
+                                        @Html.Hidden("betToCall", maxCurrentBet)
                                         @Html.TextBox("newBet")
                                         <button>Raise</button>
                                     }

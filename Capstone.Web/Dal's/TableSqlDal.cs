@@ -292,6 +292,24 @@ namespace Capstone.Web.Dal_s
             }
         }
 
+        public void ResetMinBet(int tableID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE poker_table SET current_min_bet = min_bet;", conn);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
         //not tested/used yet
         public List<Table> GetAllTables()
         {
