@@ -398,3 +398,26 @@ button{
     width: 60em;
     height:auto;
 }
+
+/*Search Table Styling*/
+#tableSearch{
+    text-align: center;
+}
+
+#tableSearch h2{
+    margin-bottom: 1em;
+}
+
+#tableInfo{
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+#tableInfo tr:not(:first-child){
+    border-top: 2px solid #FF0000;
+}
+
+#tableInfo button{
+    margin-top: 0.85em;
+}

@@ -5,11 +5,11 @@
 
 }
 
-<section>
+<section id="tableSearch">
     <h2>Active Tables</h2>
 
 
-    <table>
+    <table id="tableInfo">
         <tr>
             <th>Table Name</th>
             <th>Table Host</th>
@@ -25,14 +25,9 @@
             <tr>
                 <td>@table.Name</td>
                 <td>@table.TableHost</td>
-                <td>@table.MaxBuyIn</td>
-
-                
-                
-                
-                
-                
+                <td>@table.MaxBuyIn.ToString("C0")</td>               
                 <td>@openSeats</td>
+
                 @using (Html.BeginForm("SitAtTable", "Table", FormMethod.Post))
                 {
                     @Html.Hidden("TableID", table.TableID)

@@ -11,15 +11,15 @@
     @* get username from session
         need amount of money they're bringing *@
 
-    <p>Ante: @Model.Table.Ante</p>
+    <p>Ante: @Model.Table.Ante.ToString("C0")</p>
     <br />
-    <p>Minimum Bet: @Model.Table.MinBet</p>
+    <p>Minimum Bet: @Model.Table.MinBet.ToString("C0")</p>
     <br />
-    <p>Maximun Bet: @Model.Table.MaxBet</p>
+    <p>Maximun Bet: @Model.Table.MaxBet.ToString("C0")</p>
     <br />
-    <p>Maximum Buy-in: @Model.Table.MaxBuyIn</p>
+    <p>Maximum Buy-in: @Model.Table.MaxBuyIn.ToString("C0")</p>
     <br />
-    <p>Current Money: @Model.User.CurrentMoney.ToString("C")</p>
+    <p>Current Money: @Model.User.CurrentMoney.ToString("C0")</p>
     <br />
 
     @using (Html.BeginForm("TakeSeat", "Table", FormMethod.Post))
