@@ -185,6 +185,11 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@name", table.Name);
 
                     output = (int)cmd.ExecuteScalar();
+
+                    cmd = new SqlCommand("INSERT INTO hand VALUES (@output)", conn);
+                    cmd.Parameters.AddWithValue("@output", output);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
             catch (SqlException)

@@ -46,6 +46,8 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             int newID = dal.CreateTable(model);
 
+            
+
             //need to get table ID out of the table we just created 
             Table output = dal.FindTable(newID);
 
