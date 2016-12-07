@@ -122,11 +122,11 @@ insert into hand (table_id) values (1);
 insert into hand (table_id) values (2);
 
 delete from hand_cards;
-insert into hand_cards values 
-(1, 'Dan', 2, 'hearts', 1, 0), (1, 'Dan', 11, 'diamonds',1, 0), (1, 'Dan', 6, 'hearts',1, 0), 
-(1, 'Dan', 8, 'clubs',1, 0), (1, 'Dan', 5, 'diamonds',1, 0), (1, 'Isaac', 9, 'hearts',1, 0),
-(1, 'Isaac', 2, 'spades',1, 0), (1, 'Isaac', 10, 'diamonds', 1,0), (1, 'Isaac', 13, 'diamonds', 1, 0),
-(1, 'Isaac', 4, 'diamonds',1, 0);
+--insert into hand_cards values 
+--(1, 'Dan', 2, 'hearts', 1, 0), (1, 'Dan', 11, 'diamonds',1, 0), (1, 'Dan', 6, 'hearts',1, 0), 
+--(1, 'Dan', 8, 'clubs',1, 0), (1, 'Dan', 5, 'diamonds',1, 0), (1, 'Isaac', 9, 'hearts',1, 0),
+--(1, 'Isaac', 2, 'spades',1, 0), (1, 'Isaac', 10, 'diamonds', 1,0), (1, 'Isaac', 13, 'diamonds', 1, 0),
+--(1, 'Isaac', 4, 'diamonds',1, 0);
 
 insert into hand_seat VALUES(1, 1, 'dan', 20, 1, 0, 0, 0, 0);
 insert into hand_seat VALUES(1, 1, 'isaac', 20, 0, 0, 0, 0, 0)
