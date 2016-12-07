@@ -4,39 +4,51 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section>
-    <h2>@Model.Table.Name</h2>
+    <div id="takeSeat">
+        <div id="takeSeatHead">
+            <h2>@Model.Table.Name</h2>
 
-    <h3>@Model.Table.TableHost</h3>
+            <h3>@Model.Table.TableHost</h3>
+        </div>
+        @* get username from session
+            need amount of money they're bringing *@
 
-    @* get username from session
-        need amount of money they're bringing *@
+        <table>
+            <tr>
+                <td>Ante</td>
+                <td>@Model.Table.Ante.ToString("C0")</td>
+                <td>Minimum Bet</td>
+                <td>@Model.Table.MinBet.ToString("C0")</td>
+            </tr>
+            <tr>
+                <td>Maximum Buy-In</td>
+                <td>@Model.Table.MaxBuyIn.ToString("C0")</td>
+                <td>Maximum Bet</td>
+                <td>@Model.Table.MaxBet.ToString("C0")</td>
+            </tr>
+            <tr>
+                <td> Your Current Money</td>
+                <td></td>
+                <td></td>
+                <td>@Model.User.CurrentMoney.ToString("C0")</td>
+            </tr>
+        </table>
 
-    <p>Ante: @Model.Table.Ante.ToString("C0")</p>
-    <br />
-    <p>Minimum Bet: @Model.Table.MinBet.ToString("C0")</p>
-    <br />
-    <p>Maximun Bet: @Model.Table.MaxBet.ToString("C0")</p>
-    <br />
-    <p>Maximum Buy-in: @Model.Table.MaxBuyIn.ToString("C0")</p>
-    <br />
-    <p>Current Money: @Model.User.CurrentMoney.ToString("C0")</p>
-    <br />
-
-    @using (Html.BeginForm("TakeSeat", "Table", FormMethod.Post))
-    {
-        <div>
-            <div class="inputBox">
-                @Html.LabelFor(m => m.MoneyToTheTable, "How Much Money Will You Bring?")
-                @Html.TextBoxFor(m => m.MoneyToTheTable,  new { @class = "inputField", placeHolder = "Maximum Buy-In" })
-                @* validation? *@
+        @using (Html.BeginForm("TakeSeat", "Table", FormMethod.Post))
+        {
+            <div>
+                <div class="inputBox">
+                    @Html.LabelFor(m => m.MoneyToTheTable, "How Much Money Will You Bring?", new { @class = "seatLabel" })
+                    @Html.TextBoxFor(m => m.MoneyToTheTable, new { @class = "seatInputField", placeHolder = "Maximum Buy-In" })
+                    @* validation? *@
+                </div>
+                @Html.HiddenFor(m => m.Table.TableID, Model.Table.TableID)
+                @Html.HiddenFor(m => m.User.Username, Model.User.Username)
             </div>
-            @Html.HiddenFor(m => m.Table.TableID, Model.Table.TableID)
-            @Html.HiddenFor(m => m.User.Username, Model.User.Username)
-        </div>
-        <div>
-            <button>Join</button>
-        </div>
+            <div id="inputButton">
+                <button>Join</button>
+            </div>
 
-    }
-
+        }
+    </div>
 </section>
