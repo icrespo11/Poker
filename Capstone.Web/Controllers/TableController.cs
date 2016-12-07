@@ -118,7 +118,7 @@ namespace Capstone.Web.Controllers
 
         }
 
-        public ActionResult LeaveTable()
+        public ActionResult LeaveTable(int tableID)
         {
             string userName = (string)Session["Username"];
 
@@ -126,14 +126,19 @@ namespace Capstone.Web.Controllers
             //need to add that table_money to users current_money
             //if users current_money < 100, set users current_money = 1000            
 
+            TableSqlDal tDal = new TableSqlDal();
+            Table t = tDal.FindTable(tableID);
+
+            foreach(Seat s in t.Seats)
+            {
+                //if s.
+            }
+
+
             //need to see if there is a hand_seat associated with the userName
             //if there is a hand_seat associated with the userName, 
             //need to set has_folded to true
             //possibly need to set current_bet to 0 and increment poker_table pot by that amount
-
-            //TableSqlDal tDal = new TableSqlDal();
-
-            //Table t = tDal.
 
             return RedirectToAction("LoggedInLanding", "Home");
 
