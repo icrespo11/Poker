@@ -40,6 +40,7 @@ namespace Capstone.Web.Dal_s
                         t.Pot = Convert.ToInt32(reader["pot"]);
                         t.DealerPosition = Convert.ToInt32(reader["dealer_position"]);
                         t.StateCounter = Convert.ToInt32(reader["state_counter"]);
+                        t.Winner = Convert.ToString(reader["winner"]);
                     }
                 }
             }
@@ -63,6 +64,28 @@ namespace Capstone.Web.Dal_s
                 }
             }
             catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        internal void SetNotFolded(int tableID, string username)
+        {    
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_folded = 0 " +
+                        "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@handID", GetHandID(tableID));
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", username);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
             {
                 throw;
             }
@@ -249,6 +272,24 @@ namespace Capstone.Web.Dal_s
                 throw;
             }
             return (rowsAffected > 0);
+        }
+
+        internal void ResetStateCounter(int tableID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("Update poker_table Set state_counter = 2 where table_id = @table_id;", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //not tested/used yet
@@ -601,7 +642,7 @@ namespace Capstone.Web.Dal_s
 
             try
             {
-                using (SqlConnection conn = new SqlConnection())
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
@@ -615,7 +656,7 @@ namespace Capstone.Web.Dal_s
                     cmd.CommandText = "UPDATE poker_table SET pot = pot + @amount WHERE table_id = @tableID";
                     cmd.ExecuteNonQuery();
 
-                    cmd.CommandText = "UPDATE hand_seat SET has_checked = 1 WHERE table_id = hand_id = @handID AND player = @username";
+                    cmd.CommandText = "UPDATE hand_seat SET has_checked = 1 WHERE hand_id = @handID AND player = @username";
                     cmd.Parameters.AddWithValue("@handID", handID);
                     cmd.ExecuteNonQuery();
                 }
@@ -630,7 +671,7 @@ namespace Capstone.Web.Dal_s
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection())
+                using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
 
@@ -780,6 +821,82 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@table_id", tableID);
                     cmd.Parameters.AddWithValue("@hand_id", handID);
                     cmd.Parameters.AddWithValue("@player", username);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void SaveWinner(int tableID, IList<string> winners)
+        {
+            string winner = winners[0];
+            if (winners.Count > 1)
+            {
+                for (int i = 1; i < winners.Count; i++)
+                {
+                    winner = winner + " and " + winners[i];
+                }
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE poker_table SET winner = @winner WHERE table_id = @table_id;", conn);
+
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
+                    cmd.Parameters.AddWithValue("@winner", winner);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public string GetWinner(int tableID)
+        {
+            string winner = "";
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT winner from poker_table where table_id = @table_id;", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
+                    winner = (string)cmd.ExecuteScalar();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return winner;
+        }
+
+        public void SaveWiningMoney(int table_id, string username, int amount)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET table_balance = table_balance + @amount WHERE table_id = @table_id and player = @username;", conn);
+
+                    cmd.Parameters.AddWithValue("@table_id", table_id);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@amount", amount);
+
                     cmd.ExecuteNonQuery();
                 }
             }

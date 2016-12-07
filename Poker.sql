@@ -32,6 +32,7 @@ pot integer Not Null,
 dealer_position integer Not Null,
 state_counter integer Not Null,
 current_min_bet integer Not Null,
+winner varchar(200) Null,
 
 constraint pk_poker_table_table_id Primary Key(table_ID),
 constraint fk_poker_table_users_host_username Foreign Key(host) References users(username),

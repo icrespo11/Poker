@@ -2,8 +2,7 @@
 
 @{
     ViewBag.Title = "Table";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-    <script src="/Scripts/HandSetupJavaScript.js"></script>
+    
 
     int i = 0;
 
@@ -20,7 +19,19 @@
 
         <div id="populatedGameArea">
             <img src="~/Content/img/ovalpokertable.png" />
-
+            @if (Model.StateCounter == 7)
+            {
+                <div id="tableCenter">
+                    <p>@Model.Winner</p>
+                </div>
+            }
+            else
+            {
+                <div id="tableCenter">
+                    <p>Current Pot</p>
+                    <p>@Model.Pot.ToString("C0")</p>
+                </div>
+            }
             @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn
             {
                 foreach (var seat in Model.Seats)
@@ -30,11 +41,11 @@
                         <div id="@player">
                             @if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn)
                             {
-                            <p id="currentPlayer">@seat.Username</p>
+                                <p id="currentPlayer">@seat.Username</p>
                             }
                             else
                             {
-                            <p>@Model.Seats[i].Username</p>
+                                <p>@Model.Seats[i].Username</p>
                             }
                             <p>@Model.Seats[i].TableBalance.ToString("C0")</p>
                         </div>
@@ -42,20 +53,20 @@
                         <div id="userCards">
                             @if (!seat.HasFolded)
                             {
-                                for (int j = 0; j < 5; j++)
+                                for (int j = 0; j < Model.Seats[i].Hand.MyHand.Count; j++)
                                 {
 
                                     if (Model.Seats[i].Hand.MyHand[j].Suit.ToLower() == "diamonds" || Model.Seats[i].Hand.MyHand[j].Suit.ToLower() == "hearts")
                                     {
-                                <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">
-                                    <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
-                                </div>
+                                        <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard red">
+                                            <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
+                                        </div>
                                     }
                                     else
                                     {
-                                <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard black">
-                                    <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
-                                </div>
+                                        <div data-suit="@Model.Seats[i].Hand.MyHand[j].Suit" data-number="@Model.Seats[i].Hand.MyHand[j].Number" class="playingCard black">
+                                            <p>@Model.Seats[i].Hand.MyHand[j].ConvertedNumber @Model.Seats[i].Hand.MyHand[j].SuitLetter</p>
+                                        </div>
                                     }
                                 }
                             }
@@ -71,15 +82,90 @@
 
                                     <button>Ante</button>
                                 }
-                                using (Html.BeginForm("playerFolded", "Game", FormMethod.Post))
+                                using (Html.BeginForm("PlayerFolded", "Game", FormMethod.Post))
                                 {
                                     @Html.HiddenFor(m => m.TableID)
 
                                     <button>Fold</button>
                                 }
                             }
-                        }
+                            else if (Model.StateCounter == 4 || Model.StateCounter == 6)
+                            {
+                                if (Model.currentMinBet == 0)
+                                {
+                                    using (Html.BeginForm("PlayerCalled", "Game", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.TableID)
+                                        @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
+                                        @Html.Hidden("betToCall", Model.currentMinBet)
 
+                                        <button>Check</button>
+                                    }
+                                    using (Html.BeginForm("PlayerBet", "Game", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.TableID)
+                                        @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
+                                        @Html.Hidden("betToCall", Model.currentMinBet)
+                                        @Html.TextBox("newBet")
+                                        <button>Bet</button>
+                                    }
+                                    using (Html.BeginForm("PlayerFolded", "Game", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.TableID)
+
+                                        <button>Fold</button>
+                                    }
+                                }
+                                else if (Model.currentMinBet > 0)
+                                {
+                                    using (Html.BeginForm("PlayerCalled", "Game", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.TableID)
+                                        @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
+                                        @Html.Hidden("betToCall", Model.currentMinBet)
+
+                                        <button>Call</button>
+                                    }
+                                    using (Html.BeginForm("PlayerBet", "Game", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.TableID)
+                                        @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
+                                        @Html.Hidden("betToCall", Model.currentMinBet)
+                                        @Html.TextBox("newBet")
+                                        <button>Raise</button>
+                                    }
+                                    using (Html.BeginForm("PlayerFolded", "Game", FormMethod.Post))
+                                    {
+                                        @Html.HiddenFor(m => m.TableID)
+
+                                        <button>Fold</button>
+                                    }
+                                }
+                            }
+                            else if (Model.StateCounter == 5)
+                            {
+                                using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))
+                                {
+                                    @Html.HiddenFor(m => m.TableID)
+                                    @Html.Hidden("Username", (string)Session["Username"])
+
+                                    <div id="discardList">
+
+                                    </div>
+
+                                    <button id="discardButton">Discard</button>
+                                }
+                            }
+                        }
+                        if (Model.StateCounter == 7)
+                        {
+                            using (Html.BeginForm("NextHand", "Game", FormMethod.Post, new { id = "discardForm" }))
+                            {
+                            @Html.HiddenFor(m => m.TableID)
+
+                            <button>Ready to Continue</button>
+                            }
+                        }
                         seated++;
                         player = "player" + seated;
 
@@ -88,8 +174,8 @@
                     i++;
                 }
 
-                @Html.HiddenFor(m => m.TableID );
-                
+                @Html.HiddenFor(m => m.TableID);
+
                 <button id="advance">Advance</button>
             }
 
@@ -134,47 +220,7 @@
                 player = "player" + seated;
             }
 
-            @using (Html.BeginForm("ReplaceCards", "Game", FormMethod.Post, new { id = "discardForm" }))
-                    {
 
-                //Capstone.Web.Models.Card c = new Capstone.Web.Models.Card();
-                //Capstone.Web.Models.Card c2 = new Capstone.Web.Models.Card();
-                //c.Discard = "true";
-                //c2.Discard = "false";
-
-                //Capstone.Web.Models.Hand h = new Capstone.Web.Models.Hand();
-                //h.MyHand = new List<Capstone.Web.Models.Card>();
-                //h.MyHand.Add(c);
-                //h.MyHand.Add(c2);
-
-                //Capstone.Web.Models.Seat s = new Capstone.Web.Models.Seat();
-                ////s.Hand = new Capstone.Web.Models.Hand();
-                //s.Hand = h;
-
-                //List<Capstone.Web.Models.Seat> ls = new List<Capstone.Web.Models.Seat>();
-
-                //ls.Add(s);
-
-                @Html.HiddenFor(m => m.TableID)
-                        @Html.Hidden("Username", (string)Session["Username"])
-
-                        <div id="discardList">
-
-                        </div>
-
-                        @*
-                            foreach (var seat in Model.Seats)
-                            {
-                                if (seat.Username == Session["username"].ToString())
-                                {
-                                    <div>
-                                        @Html.HiddenFor(m => m.Seats[0], s);
-                                    </div>
-                                }
-                            }
-                        *@
-                        <button id="discardButton">Discard</button>
-                    }
-                </div>
-            </div>
-        </section>
+        </div>
+    </div>
+</section>

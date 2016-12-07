@@ -14,6 +14,9 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var serviceUrl = "@HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content("~/")";
+    </script>
     <title>Poker Night</title>
 </head>
 <body>

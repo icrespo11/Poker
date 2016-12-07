@@ -39,6 +39,8 @@ namespace Capstone.Web.Models
 
         public string Name { get; set; }
 
+        public string Winner { get; set; }
+
         public void changeDealer()
         {
             do
