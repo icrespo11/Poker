@@ -13,5 +13,7 @@ namespace Capstone.Web.Dal_s
         List<string> GetAllUsernames();
         UserModel Login(string username);
 
+        //Hi Dan! 
+        //bEt YoU dIdN'T eXpEcT tO fInD mOrE cOmMeNtS hErE dId YoU?
     }
 }

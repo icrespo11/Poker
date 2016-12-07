@@ -619,7 +619,7 @@ namespace Capstone.Web.Dal_s
                     cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("UPDATE hand_seat SET current_bet = current_bet + @amount " +
-                        "WHERE table_id - @tableID AND hand_id = @handID AND player = @userName;", conn);
+                        "WHERE table_id = @tableID AND hand_id = @handID AND player = @userName;", conn);
                     cmd.Parameters.AddWithValue("@amount", amount);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@userName", userName);
@@ -627,6 +627,8 @@ namespace Capstone.Web.Dal_s
                     cmd.ExecuteNonQuery();
 
                     cmd.CommandText = "UPDATE poker_table SET pot = pot + @amount WHERE table_id = @tableID";
+                    //cmd.Parameters.AddWithValue("@tableID", tableID);
+                    //cmd.Parameters.AddWithValue("@amount", amount);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -896,6 +898,29 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.AddWithValue("@table_id", table_id);
                     cmd.Parameters.AddWithValue("@username", username);
                     cmd.Parameters.AddWithValue("@amount", amount);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UncheckAllPlayer(int tableID)
+        {
+            TableSqlDal tDal = new TableSqlDal();
+            int handID = tDal.GetHandID(tableID);
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_checked = 0 WHERE table_id = @tableID AND hand_id = @handID;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@handID", handID);
 
                     cmd.ExecuteNonQuery();
                 }

@@ -56,6 +56,7 @@ namespace Capstone.Web.Controllers
 
             if (currentTable.StateCounter == 0 || currentTable.StateCounter == 1)
             {
+                currentTable.StateCounter = 2;
                 dal.ResetStateCounter(tableID);
             }
 
@@ -79,9 +80,15 @@ namespace Capstone.Web.Controllers
             Table model = GetTableInfo(id);
 
             model.Seats[0].IsTurn = true;
-            dal.SetActivePlayer(model.Seats[0].Username);
+
+            if ((string)Session["username"] == model.TableHost)
+            {
+                dal.SetActivePlayer(model.Seats[0].Username);
+            }
+         
             dal.SetNotFolded(id, (string)Session["username"]);
             //dal.UpdateStateCounter(model.TableID);
+            //dal.UncheckAllPlayer(model.TableID);
             return View("JoinedTable", model);
         }
 
@@ -128,6 +135,8 @@ namespace Capstone.Web.Controllers
 
             dal.PlayerAnte(tableID, username, table.Ante);
 
+            
+
             int i = 0;
             foreach (Seat s in table.Seats)
             {
@@ -145,10 +154,12 @@ namespace Capstone.Web.Controllers
             {
                 table.StateCounter++;
                 dal.UpdateStateCounter(tableID);
-                return RedirectToAction("AdvanceGame", tableID);
+                dal.UncheckAllPlayer(tableID);
+                return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
+            UpdatePlayerTurn(tableID);
 
-            return RedirectToAction("HandSetup", table.TableID);
+            return RedirectToAction("HandSetup", new { tableID = table.TableID });
         }
 
         public int CreateDeck(int tableID)
@@ -179,10 +190,11 @@ namespace Capstone.Web.Controllers
                 }
             }
             dal.UpdateStateCounter(tableID);
+            dal.UncheckAllPlayer(tableID);
             return RedirectToAction("AdvanceGame", new { tableID = tableID });
         }
 
-        public ActionResult UpdatePlayerTurn(int tableID)
+        public void UpdatePlayerTurn(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
             Table model = GetTableInfo(tableID);
@@ -245,12 +257,12 @@ namespace Capstone.Web.Controllers
                     seat.IsTurn = true;
                 }
             }
-            return RedirectToAction("HandSetup", new { tableID = tableID });
+            //return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult CardExchange(int tableID)
         {
-            return RedirectToAction("HandSetup", tableID);
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult ReplaceCards(ReplaceCardModel model)
@@ -280,7 +292,8 @@ namespace Capstone.Web.Controllers
             {
                 table.StateCounter++;
                 dal.UpdateStateCounter(model.TableId);
-                return RedirectToAction("AdvanceGame", model.TableId);
+                dal.UncheckAllPlayer(model.TableId);
+                return RedirectToAction("AdvanceGame", new { tableID = model.TableId });
             }
 
             return RedirectToAction("HandSetup", new { tableID = model.TableId });
@@ -339,10 +352,10 @@ namespace Capstone.Web.Controllers
                 table.StateCounter++;
                 dal.ResetStateCounter(tableID);
 
-                return RedirectToAction("AdvanceGame", tableID);
+                return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
-            return RedirectToAction("UpdatePlayerTurn", tableID);
+            return RedirectToAction("UpdatePlayerTurn", new { tableID = tableID });
         }
 
         public ActionResult BettingRound(int tableID)
@@ -374,7 +387,7 @@ namespace Capstone.Web.Controllers
                 dal.SaveWiningMoney(tableID, person, (table.Pot / winner.Count));
             }
 
-            return RedirectToAction("HandSetup", tableID);
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult PlayerCalled(int tableID, int myBet, int betToCall)
@@ -406,10 +419,13 @@ namespace Capstone.Web.Controllers
             {
                 table.StateCounter++;
                 tdal.UpdateStateCounter(tableID);
-                return RedirectToAction("AdvanceGame", tableID);
+                tdal.UncheckAllPlayer(tableID);
+                return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
-            return RedirectToAction("UpdatePlayerTurn", tableID);
+            UpdatePlayerTurn(tableID);
+
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult PlayerBet(int tableID, int myBet, int betToCall, int newBet)
@@ -424,7 +440,9 @@ namespace Capstone.Web.Controllers
             tdal.SetPlayerCheckedAndAllOthersNot(tableID, handID, userName);
             tdal.UpdateCurrentMinBet(tableID, newBet);
 
-            return RedirectToAction("UpdatePlayerTurn", tableID);
+            UpdatePlayerTurn(tableID);
+
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult PlayerFolded(int tableID)
@@ -454,10 +472,12 @@ namespace Capstone.Web.Controllers
             {
                 table.StateCounter++;
                 tdal.UpdateStateCounter(tableID);
-                return RedirectToAction("AdvanceGame", tableID);
+                tdal.UncheckAllPlayer(tableID);
+                return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
+            UpdatePlayerTurn(tableID);
 
-            return RedirectToAction("UpdatePlayerTurn", tableID);
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult Rules()

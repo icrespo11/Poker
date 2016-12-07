@@ -32,9 +32,9 @@
                     <p>@Model.Pot.ToString("C0")</p>
                 </div>
             }
-            @using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn
-            {
-                foreach (var seat in Model.Seats)
+            @*@using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn*@
+            
+                @foreach (var seat in Model.Seats)
                 {
                     if (seat.Username.ToLower() == Session["username"].ToString().ToLower())
                     {
@@ -174,10 +174,10 @@
                     i++;
                 }
 
-                @Html.HiddenFor(m => m.TableID);
+                @*@Html.HiddenFor(m => m.TableID);
 
-                <button id="advance">Advance</button>
-            }
+                <button id="advance">Advance</button>*@
+            
 
             @for (int j = i + 1; j < 5; j++)
             {
