@@ -34,6 +34,11 @@
             </tr>
         </table>
 
+        @if (Model.WasFailure)
+        {
+            <p class="validationError">Please bring a valid amount of money to the table.</p>
+        }
+
         @using (Html.BeginForm("TakeSeat", "Table", FormMethod.Post))
         {
             <div>
@@ -44,6 +49,7 @@
                 </div>
                 @Html.HiddenFor(m => m.Table.TableID, Model.Table.TableID)
                 @Html.HiddenFor(m => m.User.Username, Model.User.Username)
+                @Html.HiddenFor(m => m.Table.MaxBuyIn, Model.Table.MaxBuyIn)
             </div>
             <div id="inputButton">
                 <button>Join</button>

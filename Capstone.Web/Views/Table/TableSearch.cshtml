@@ -19,22 +19,26 @@
 
         @foreach (var table in Model)
         {
-            int openSeats = 5 - ViewBag.Dictionary[table.TableID]; 
+            int openSeats = 5 - ViewBag.Dictionary[table.TableID];
 
-            <tr>
-                <td>@table.Name</td>
-                <td>@table.TableHost</td>
-                <td>@table.MaxBuyIn.ToString("C0")</td>               
-                <td>@openSeats</td>
+            if (openSeats > 0)
+            {
 
-                @using (Html.BeginForm("SitAtTable", "Table", FormMethod.Post))
-                {
-                    @Html.Hidden("TableID", table.TableID)
-                <td>
-                    <button>Join Table</button>
-                </td>
-                }
-            </tr>
+                <tr>
+                    <td>@table.Name</td>
+                    <td>@table.TableHost</td>
+                    <td>@table.MaxBuyIn.ToString("C0")</td>
+                    <td>@openSeats</td>
+
+                    @using (Html.BeginForm("SitAtTable", "Table", FormMethod.Post))
+                    {
+                        @Html.Hidden("TableID", table.TableID)
+                        <td>
+                            <button>Join Table</button>
+                        </td>
+                    }
+                </tr>
+            }
         }
     </table>
 </section>

@@ -23,7 +23,7 @@
                 {
                     <div id="@player">
                         <p>@seat.Username</p>
-                        <p>@seat.TableBalance.ToString("C")</p>
+                        <p>@seat.TableBalance.ToString("C0")</p>
                     </div>
 
                     seated++;
@@ -37,7 +37,7 @@
             {
                 <div id="@player">
                     <p>@Model.Seats[j].Username</p>
-                    <p>@Model.Seats[j].TableBalance.ToString("C")</p>
+                    <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
                 </div>
 
                 seated++;
@@ -48,7 +48,7 @@
             {
                 <div id="@player">
                     <p>@Model.Seats[j].Username</p>
-                    <p>@Model.Seats[j].TableBalance.ToString("C")</p>
+                    <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
                 </div>
 
                 seated++;

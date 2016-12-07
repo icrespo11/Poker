@@ -12,7 +12,7 @@ namespace Capstone.Web.Controllers
     {
         // GET: Table
 
-            //D-Von... get the tables.
+        //D-Von... get the tables.
         //public ActionResult Index()
         //{
 
@@ -24,7 +24,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             tables = dal.GetAllTables();
 
-            Dictionary<int,int> sittingPlayers = dal.GetNumberOfSittingPlayers();
+            Dictionary<int, int> sittingPlayers = dal.GetNumberOfSittingPlayers();
             ViewBag.Dictionary = sittingPlayers;
             return View("TableSearch", tables);
         }
@@ -46,7 +46,7 @@ namespace Capstone.Web.Controllers
             TableSqlDal dal = new TableSqlDal();
             int newID = dal.CreateTable(model);
 
-            
+
 
             //need to get table ID out of the table we just created 
             Table output = dal.FindTable(newID);
@@ -86,11 +86,58 @@ namespace Capstone.Web.Controllers
             string userName = model.User.Username;
             int MoneyAdded = model.MoneyToTheTable;
 
-            TableSqlDal dal = new TableSqlDal();
-            bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
+            int MaxBuyIn = model.Table.MaxBuyIn;
 
-            dal.InsertIntoHandSeat(tableID, dal.GetHandID(tableID), userName);
-            return RedirectToAction("JoinedTable", "Game", new { id = tableID });
+            UserSqlDal uDal = new UserSqlDal();
+            UserModel user = uDal.GetUserByUserName(userName);
+            int UserMoney = user.CurrentMoney;
+
+            TableSqlDal dal = new TableSqlDal();
+
+            if (MoneyAdded <= UserMoney && MoneyAdded <= MaxBuyIn && MoneyAdded > 0)
+            {
+                int newMoneyValue = UserMoney - MoneyAdded;
+
+                uDal.UpdateMoney(userName, newMoneyValue);
+                
+                bool isAdded = dal.AddPlayerToTable(tableID, userName, MoneyAdded);
+
+                dal.InsertIntoHandSeat(tableID, dal.GetHandID(tableID), userName);
+                return RedirectToAction("JoinedTable", "Game", new { id = tableID });
+            }
+            else
+            {
+                Table table = dal.FindTable(tableID);
+                UserAndTable ut = new UserAndTable();
+                ut.Table = table;
+                ut.User = user;
+                ut.WasFailure = true;
+
+                return View("TakeSeat", ut);
+            }
+
+        }
+
+        public ActionResult LeaveTable()
+        {
+            string userName = (string)Session["Username"];
+
+            //need to get table_money from  table_players
+            //need to add that table_money to users current_money
+            //if users current_money < 100, set users current_money = 1000            
+
+            //need to see if there is a hand_seat associated with the userName
+            //if there is a hand_seat associated with the userName, 
+            //need to set has_folded to true
+            //possibly need to set current_bet to 0 and increment poker_table pot by that amount
+
+            //TableSqlDal tDal = new TableSqlDal();
+
+            //Table t = tDal.
+
+            return RedirectToAction("LoggedInLanding", "Home");
+
+            //return View("LoggedInLanding");
         }
     }
 }
