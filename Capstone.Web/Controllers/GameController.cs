@@ -135,7 +135,7 @@ namespace Capstone.Web.Controllers
 
             dal.PlayerAnte(tableID, username, table.Ante);
 
-            
+            table = GetTableInfo(tableID);
 
             int i = 0;
             foreach (Seat s in table.Seats)
@@ -405,6 +405,7 @@ namespace Capstone.Web.Controllers
 
             tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
             tdal.SetPlayerToHasChecked(tableID, handID, userName);
+            table = GetTableInfo(tableID);
 
             int i = 0;
             foreach (Seat s in table.Seats)
@@ -458,6 +459,7 @@ namespace Capstone.Web.Controllers
             string userName = (string)Session["username"];
 
             tdal.SetPlayerAsFolded(tableID, handID, userName);
+            table = GetTableInfo(tableID);
 
             int i = 0;
             foreach (Seat s in table.Seats)
