@@ -110,27 +110,28 @@ insert into users values ('Dan', '1YHheZjlGm4OX6OwR6juPpk+DVA=', 1000, 1000, 'ad
 insert into users values ('Isaac', '+6ZmQLH549dDQLpRCe2gUzNJbLU=', 1000, 1000, 'admin', 0, 'PLxvjrzmYSY=');
 insert into users values ('Roberto', '8UIpfDlbW6WP0t/0Uz2P4jp6EO8=', 1000, 1000, 'admin', 0, '9STlYHzStS8='); 
 insert into users values ('ThatCrazyCow', 'LA0WSOFTrk+XK74D751oDcFe4fY=', 5000, 5000, 'admin', 0, 'd8xtGBE936c=');
+insert into users values ('Available', 'NyahYouCantFindThisWithNoHash', 200, 200, 'admin', 0, 'noHashHereHa');
 
-insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position, state_counter, current_min_bet) VALUES
-('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0, 10),
-('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0, 50);
+--insert into poker_table (host, name, min_bet, max_bet, ante, max_buy_in, pot, dealer_position, state_counter, current_min_bet) VALUES
+--('Dan', 'Bob the tester. Can we break it? Yes, we can!', 10, 20, 10, 1000, 0, 0, 0, 10),
+--('ThatCrazyCow', 'Moo, get out the way', 50, 1000, 50, 5000, 0, 0, 0, 50);
 
-insert into table_players (table_ID, player, seat_number, table_balance, active, occupied) VALUES 
-(1, 'Dan',  0, 500, 1, 1), (1, 'Isaac', 1, 400, 1, 1),
-(2, 'ThatCrazyCow', 0, 2000, 1, 1), (2, 'Brian', 1, 1000, 1, 1);
+--insert into table_players (table_ID, player, seat_number, table_balance, active, occupied) VALUES 
+--(1, 'Dan',  0, 500, 1, 1), (1, 'Isaac', 1, 400, 1, 1),
+--(2, 'ThatCrazyCow', 0, 2000, 1, 1), (2, 'Brian', 1, 1000, 1, 1);
 
-insert into hand (table_id) values (1);
-insert into hand (table_id) values (2);
+--insert into hand (table_id) values (1);
+--insert into hand (table_id) values (2);
 
-delete from hand_cards;
+--delete from hand_cards;
 --insert into hand_cards values 
 --(1, 'Dan', 2, 'hearts', 1, 0), (1, 'Dan', 11, 'diamonds',1, 0), (1, 'Dan', 6, 'hearts',1, 0), 
 --(1, 'Dan', 8, 'clubs',1, 0), (1, 'Dan', 5, 'diamonds',1, 0), (1, 'Isaac', 9, 'hearts',1, 0),
 --(1, 'Isaac', 2, 'spades',1, 0), (1, 'Isaac', 10, 'diamonds', 1,0), (1, 'Isaac', 13, 'diamonds', 1, 0),
 --(1, 'Isaac', 4, 'diamonds',1, 0);
 
-insert into hand_seat VALUES(1, 1, 'dan', 20, 1, 0, 0, 0, 0);
-insert into hand_seat VALUES(1, 1, 'isaac', 20, 0, 0, 0, 0, 0)
+--insert into hand_seat VALUES(1, 1, 'dan', 20, 1, 0, 0, 0, 0);
+--insert into hand_seat VALUES(1, 1, 'isaac', 20, 0, 0, 0, 0, 0)
 
 
 --SELECT * FROM users;
