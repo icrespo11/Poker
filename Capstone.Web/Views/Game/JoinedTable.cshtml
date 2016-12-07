@@ -55,7 +55,7 @@
                 player = "player" + seated;
             }
 
-            @using (Html.BeginForm("CreateHands", "Game", FormMethod.Get))
+            @using (Html.BeginForm("AdvanceGame", "Game", FormMethod.Get))
             {
                 @Html.Hidden("tableID", Model.TableID);
                 <button id="advance">Advance</button>

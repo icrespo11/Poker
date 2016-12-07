@@ -562,7 +562,7 @@ namespace Capstone.Web.Dal_s
             }
         }
 
-        public void LowerTableBalanceRaiseBet(int tableID, int handID, string userName, int money)
+        public void LowerTableBalanceRaiseBet(int tableID, int handID, string userName, int amount)
         {
             try
             {
@@ -570,19 +570,76 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET table_balance = table_balance - @money " +
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET table_balance = table_balance - @amount " +
                         "WHERE table_id = @tableID AND player = @userName;", conn);
-                    cmd.Parameters.AddWithValue("@money", money);
+                    cmd.Parameters.AddWithValue("@amount", amount);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@userName", userName);
                     cmd.ExecuteNonQuery();
 
-                    cmd = new SqlCommand("UPDATE hand_seat SET current_bet = current_bet + @money " +
+                    cmd = new SqlCommand("UPDATE hand_seat SET current_bet = current_bet + @amount " +
                         "WHERE table_id - @tableID AND hand_id = @handID AND player = @userName;", conn);
-                    cmd.Parameters.AddWithValue("@money", money);
+                    cmd.Parameters.AddWithValue("@amount", amount);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@userName", userName);
                     cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "UPDATE poker_table SET pot = pot + @amount WHERE table_id = @tableID";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void PlayerAnte(int tableID, string username, int amount)
+        {
+            int handID = GetHandID(tableID);
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection())
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE table_players SET table_balance = table_balance - @amount " +
+                        "WHERE table_id = @tableID AND player = @userName;", conn);
+                    cmd.Parameters.AddWithValue("@amount", amount);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", username);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "UPDATE poker_table SET pot = pot + @amount WHERE table_id = @tableID";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "UPDATE hand_seat SET has_checked = 1 WHERE table_id = hand_id = @handID AND player = @username";
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
+        public void GoToNextRound(int handID, int tableID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection())
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET has_checked = 0, current_bet = 0 WHERE hand_id = @handID");
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "UPDATE poker_table SET current_min_bet = min_bet WHERE table_id = @tableID";
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.ExecuteNonQuery();
                 }
             }

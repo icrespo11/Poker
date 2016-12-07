@@ -135,7 +135,7 @@ namespace Capstone.Web.Controllers
         public ActionResult TopScores()
         {
             UserSqlDal dal = new UserSqlDal();
-            Dictionary<String, int> TopScores = dal.GetAllUsernamesWithChipsSortedByChipCount();
+            Dictionary<string, int> TopScores = dal.GetAllUsernamesWithChipsSortedByChipCount();
 
             return View("TopScores", TopScores);
         }
