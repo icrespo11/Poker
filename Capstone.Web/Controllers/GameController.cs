@@ -352,6 +352,7 @@ namespace Capstone.Web.Controllers
             {
                 dal.ResetStateCounter(tableID);
                 dal.UncheckAllPlayer(tableID);
+                dal.NewHand(tableID);
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 

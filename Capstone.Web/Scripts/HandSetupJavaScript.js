@@ -5,7 +5,7 @@ var interval = 0;
 $(document).ready(function () {
 
     interval = setInterval(function () {
-        var tableId = $("#TableID").val();
+        var tableId = $("#gameArea").attr("data-tableID");
 
         $.ajax({
             url: serviceUrl + "Game/RefreshTable",
@@ -22,5 +22,5 @@ $(document).ready(function () {
             console.log(statusCode);
             console.log(statusMessage);
         });
-    }, 5000);
+    }, 500);
 })
