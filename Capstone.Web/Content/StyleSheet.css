@@ -525,8 +525,12 @@ button{
 .raiseDuringHand {
     position: absolute;
     top: 24em;
-    left: 2em;
+    left: -2.3em;
 
+}
+
+.raiseForm {
+    width:5em;
 }
 .discardDuringHand {
     position: absolute;
