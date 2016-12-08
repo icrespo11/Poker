@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Table";
-    
+
 
     int i = 0;
 
@@ -19,12 +19,19 @@
     <div id="gameArea">
         <h2>@Model.Name</h2>
 
+        @using (Html.BeginForm("LeaveTable", "Table", FormMethod.Post))
+        {
+            <div id="leaveButton"><button>Leave Table</button></div>
+        }
+
+
         <div id="populatedGameArea">
             <img src="~/Content/img/ovalpokertable.png" />
             @if (Model.StateCounter == 7)
             {
                 <div id="tableCenter">
-                    <p>@Model.Winner</p>
+                    <p>@Model.Winner Won!</p>
+                    <p>@Model.Pot.ToString("C0")</p>
                 </div>
             }
             else
@@ -73,6 +80,7 @@
                         }
                     </div>
 
+
                     if (Model.Seats[i].Occupied && Model.Seats[i].IsTurn && !Model.Seats[i].HasFolded)
                     {
                         if (Model.StateCounter == 2)
@@ -80,14 +88,16 @@
                             using (Html.BeginForm("ConfirmAnte", "Game", FormMethod.Post))
                             {
                                 @Html.HiddenFor(m => m.TableID)
-
-                                <button>Ante</button>
+                                <div class="anteDuringHand">
+                                    <button>Ante</button>
+                                </div>
                             }
                             using (Html.BeginForm("PlayerFolded", "Game", FormMethod.Post))
                             {
                                 @Html.HiddenFor(m => m.TableID)
-
-                                <button>Fold</button>
+                                <div class="foldDuringHand">
+                                    <button>Fold</button>
+                                </div>
                             }
                         }
                         else if (Model.StateCounter == 4 || Model.StateCounter == 6)
@@ -108,22 +118,27 @@
                                     @Html.HiddenFor(m => m.TableID)
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
+                                    <div class="checkDuringHand">
+                                        <button>Check</button>
+                                    </div>
 
-                                    <button>Check</button>
                                 }
                                 using (Html.BeginForm("PlayerBet", "Game", FormMethod.Post))
                                 {
                                     @Html.HiddenFor(m => m.TableID)
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
-                                    @Html.TextBox("newBet")
-                                    <button>Bet</button>
+                                    <div class="betDuringHand">
+                                        @Html.TextBox("newBet")
+                                        <button>Bet</button>
+                                    </div>
                                 }
                                 using (Html.BeginForm("PlayerFolded", "Game", FormMethod.Post))
                                 {
                                     @Html.HiddenFor(m => m.TableID)
-
-                                    <button>Fold</button>
+                                    <div class="foldDuringHand">
+                                        <button>Fold</button>
+                                    </div>
                                 }
                             }
                             else if (maxCurrentBet > 0)
@@ -133,8 +148,9 @@
                                     @Html.HiddenFor(m => m.TableID)
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
-
-                                    <button>Call</button>
+                                    <div class="callDuringHand">
+                                        <button>Call</button>
+                                    </div>
                                 }
                                 using (Html.BeginForm("PlayerBet", "Game", FormMethod.Post))
                                 {
@@ -142,13 +158,17 @@
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
                                     @Html.TextBox("newBet")
-                                    <button>Raise</button>
+
+                                    <div class="raiseDuringHand">
+                                        <button>Raise</button>
+                                    </div>
                                 }
                                 using (Html.BeginForm("PlayerFolded", "Game", FormMethod.Post))
                                 {
                                     @Html.HiddenFor(m => m.TableID)
-
-                                    <button>Fold</button>
+                                    <div class="foldDuringHand">
+                                        <button>Fold</button>
+                                    </div>
                                 }
                             }
                         }
@@ -161,8 +181,10 @@
 
                                 <div id="discardList">
                                 </div>
+                                <div class="discardDuringHand">
+                                    <button id="discardButton">Discard</button>
+                                </div>
 
-                                <button id="discardButton">Discard</button>
                             }
                         }
                     }
@@ -171,8 +193,9 @@
                         using (Html.BeginForm("NextHand", "Game", FormMethod.Post, new { id = "discardForm" }))
                         {
                             @Html.HiddenFor(m => m.TableID)
-
-                            <button>Ready to Continue</button>
+                            <div class="continueDuringHand">
+                                <button>Ready to Continue</button>
+                            </div>
                         }
                     }
                     seated++;
@@ -284,8 +307,11 @@
                 seated++;
                 player = "player" + seated;
             }
-        </div>
+    
+            </div>
+     
     </div>
+    
 </section>
 <script type="text/javascript">
     @if(Model.IsTurn(Session["username"].ToString().ToLower()))

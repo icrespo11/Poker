@@ -480,6 +480,86 @@ button{
     width: 47%;
 }
 
+/* Hand Button Position*/
+
+.continueDuringHand {
+    position: absolute;
+    top: 20em;
+    left: 2em;
+
+}
+
+.anteDuringHand {
+    position: absolute;
+    top: 20em;
+    left: 2em;
+
+}
+
+.foldDuringHand {
+    position: absolute;
+    top: 22em;
+    left: 2em;
+
+}
+
+.checkDuringHand {
+    position: absolute;
+    top: 20em;
+    left: 2em;
+
+}
+
+.betDuringHand {
+    position: absolute;
+    top: 24em;
+    left: -7.5em;
+
+}
+.callDuringHand {
+    position: absolute;
+    top: 20em;
+    left: 2em;
+
+}
+.raiseDuringHand {
+    position: absolute;
+    top: 24em;
+    left: 2em;
+
+}
+.discardDuringHand {
+    position: absolute;
+    top: 20em;
+    left: 2em;
+
+}
+
+#tableCenter {
+    position:absolute;
+    top:11em;
+    left: 19.5em;
+    
+}
+#tableCenter p {
+    font-size:1.7em;
+    font-weight: bold;
+    color:gold;
+    text-shadow: 1px 3px 2px black;
+}
+#leaveButton {
+    position:absolute;
+    top:23em;
+    right:14em;
+}
+
+
+
+
+
+
+
+
 /* Funky */
 
 .funkydiv1 {
