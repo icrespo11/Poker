@@ -190,7 +190,7 @@
                             }
                         }
                     }
-                    if (Model.StateCounter == 7)
+                    if(Model.StateCounter == 7 && Model.Seats[i].IsTurn)
                     {
                         using (Html.BeginForm("NextHand", "Game", FormMethod.Post, new { id = "discardForm" }))
                         {

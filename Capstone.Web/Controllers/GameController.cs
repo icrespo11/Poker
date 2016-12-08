@@ -136,6 +136,8 @@ namespace Capstone.Web.Controllers
 
             table = GetTableInfo(tableID);
 
+            UpdatePlayerTurn(tableID);
+
             int i = 0;
             foreach (Seat s in table.Seats)
             {
@@ -156,7 +158,7 @@ namespace Capstone.Web.Controllers
                 dal.UncheckAllPlayer(tableID);
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
-            UpdatePlayerTurn(tableID);
+            
 
             return RedirectToAction("HandSetup", new { tableID = table.TableID });
         }
@@ -275,6 +277,8 @@ namespace Capstone.Web.Controllers
             dal.DrawCards(handID, model.Discards.Count, model.Username);
             table = GetTableInfo(model.TableId);
 
+            UpdatePlayerTurn(model.TableId);
+
             int i = 0;
             foreach (Seat s in table.Seats)
             {
@@ -295,7 +299,7 @@ namespace Capstone.Web.Controllers
                 dal.UncheckAllPlayer(model.TableId);
                 return RedirectToAction("AdvanceGame", new { tableID = model.TableId });
             }
-            UpdatePlayerTurn(model.TableId);
+            
 
             return RedirectToAction("HandSetup", new { tableID = model.TableId });
         }
@@ -335,6 +339,10 @@ namespace Capstone.Web.Controllers
 
             dal.SetPlayerToHasChecked(tableID, dal.GetHandID(tableID), (string)Session["username"]);
 
+            table = GetTableInfo(tableID);
+
+            UpdatePlayerTurn(tableID);
+
             int i = 0;
             foreach (Seat s in table.Seats)
             {
@@ -356,7 +364,7 @@ namespace Capstone.Web.Controllers
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
-            UpdatePlayerTurn(tableID);
+            
             return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
@@ -376,24 +384,42 @@ namespace Capstone.Web.Controllers
 
             Dictionary<string, Hand> handsToCompare = new Dictionary<string, Hand>();
 
-            foreach (var seat in table.Seats)
+            IList<string> winnerByFold = new List<string>();
+            foreach (Seat s in table.Seats)
             {
-                if (!seat.HasFolded && seat.Username != "Available")
+                if (!s.HasFolded)
                 {
-                    handsToCompare.Add(seat.Username, seat.Hand);
+                    winnerByFold.Add(s.Username);
                 }
             }
 
-            IList<string> winner = FiveCardDrawEvaluator.Evaluate(handsToCompare);
-
-            dal.SaveWinner(tableID, winner);
-
-            foreach (var person in winner)
+            if (winnerByFold.Count == 1)
             {
-                dal.SaveWiningMoney(tableID, person, (table.Pot / winner.Count));
-            }
+                dal.SaveWinner(tableID, winnerByFold);
 
-            return RedirectToAction("HandSetup", new { tableID = tableID });
+                dal.SaveWiningMoney(tableID, winnerByFold[0], table.Pot);
+
+            }
+            else
+            {
+                foreach (var seat in table.Seats)
+                {
+                    if (!seat.HasFolded && seat.Username != "Available")
+                    {
+                        handsToCompare.Add(seat.Username, seat.Hand);
+                    }
+                }
+
+                IList<string> winner = FiveCardDrawEvaluator.Evaluate(handsToCompare);
+
+                dal.SaveWinner(tableID, winner);
+
+                foreach (var person in winner)
+                {
+                    dal.SaveWiningMoney(tableID, person, (table.Pot / winner.Count));
+                }
+            }
+                return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult PlayerCalled(int tableID, int myBet, int betToCall)
@@ -409,7 +435,10 @@ namespace Capstone.Web.Controllers
             tdal.SetPlayerToHasChecked(tableID, handID, userName);
             table = GetTableInfo(tableID);
 
+            UpdatePlayerTurn(tableID);
+
             int i = 0;
+            int j = 0;
             foreach (Seat s in table.Seats)
             {
                 if (s.Username == "Available")
@@ -420,6 +449,22 @@ namespace Capstone.Web.Controllers
                 {
                     i++;
                 }
+
+                if (s.Username == "Available")
+                {
+                    j++;
+                }
+                else if (s.HasFolded)
+                {
+                    j++;
+                }
+            }
+
+            if (j == 4)
+            {
+                tdal.StateCounterSeven(tableID);
+                tdal.UncheckAllPlayer(tableID);
+                return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
             if (i == 5)
@@ -430,7 +475,7 @@ namespace Capstone.Web.Controllers
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
-            UpdatePlayerTurn(tableID);
+            
 
             return RedirectToAction("HandSetup", new { tableID = tableID });
         }
@@ -463,7 +508,10 @@ namespace Capstone.Web.Controllers
             tdal.SetPlayerAsFolded(tableID, handID, userName);
             table = GetTableInfo(tableID);
 
+            UpdatePlayerTurn(tableID);
+
             int i = 0;
+            int j = 0;
             foreach (Seat s in table.Seats)
             {
                 if (s.Username == "Available")
@@ -474,6 +522,22 @@ namespace Capstone.Web.Controllers
                 {
                     i++;
                 }
+
+                if (s.Username == "Available")
+                {
+                    j++;
+                }
+                 else if(s.HasFolded)
+                {
+                    j++;
+                }
+            }
+
+            if (j == 4)
+            {
+                tdal.StateCounterSeven(tableID);
+                tdal.UncheckAllPlayer(tableID);
+                return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
             if (i == 5)
@@ -483,7 +547,7 @@ namespace Capstone.Web.Controllers
                 tdal.UncheckAllPlayer(tableID);
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
-            UpdatePlayerTurn(tableID);
+            
 
             return RedirectToAction("HandSetup", new { tableID = tableID });
         }

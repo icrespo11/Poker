@@ -276,6 +276,9 @@ namespace Capstone.Web.Dal_s
 
         public void NewHand(int tableID)
         {
+
+            int handID = GetHandID(tableID);
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -284,6 +287,10 @@ namespace Capstone.Web.Dal_s
 
                     SqlCommand cmd = new SqlCommand("UPDATE poker_table SET pot = 0 WHERE table_id = @tableID;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand("DELETE FROM hand_cards WHERE hand_id = @handID", conn);
+                    cmd.Parameters.AddWithValue("@handID", tableID);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -377,6 +384,24 @@ namespace Capstone.Web.Dal_s
                 throw;
             }
             return output;
+        }
+
+        public void StateCounterSeven(int tableID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("Update poker_table Set state_counter= 7 where table_id = @table_id;", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         //not tested/used yet
@@ -980,6 +1005,9 @@ namespace Capstone.Web.Dal_s
 
         public void LeaveTable(string username, int tableID)
         {
+
+            int handID = GetHandID(tableID);
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
