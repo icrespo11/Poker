@@ -116,6 +116,7 @@
     <Content Include="Content\img\download %283%29.jpg" />
     <Content Include="Content\img\felt.png" />
     <Content Include="Content\img\free-vector-red-poker-background.jpg" />
+    <Content Include="Content\img\funkyjack.png" />
     <Content Include="Content\img\images %281%29.jpg" />
     <Content Include="Content\img\img-noise-361x370 %281%29.png" />
     <Content Include="Content\img\ovalpokertable.png" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\FunkyController.cs" />
     <Compile Include="Evaluators\FiveCardDrawEvaluator.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -211,7 +213,11 @@
     <Content Include="Views\Game\Ante.cshtml" />
     <Content Include="Views\Game\BettingRound.cshtml" />
     <Content Include="Views\Game\GameDisplay.cshtml" />
+
     <Content Include="Views\User\MoneyReset.cshtml" />
+
+    <Content Include="Views\Funky\Funky.cshtml" />
+
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
