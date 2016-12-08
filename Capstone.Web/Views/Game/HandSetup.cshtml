@@ -203,7 +203,7 @@
                     <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
                     @if (Model.StateCounter == 7)
                     {
-                        if (!Model.Seats[j].HasFolded)
+                        if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
                         {
                             for (int k = 0; k < Model.Seats[i].Hand.MyHand.Count; k++)
                             {
@@ -225,9 +225,9 @@
                     }
                     else
                     {
-                        if (!Model.Seats[j].HasFolded)
+                        if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied )
                         {
-                            for (int k = 0; k < Model.Seats[i].Hand.MyHand.Count; k++)
+                            for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
                             {
                                 <div class="cardBack"></div>
 
@@ -244,25 +244,61 @@
 
             }
 
-            @for (int j = 0; j < i; j++)
+                        @for (int j = 0; j < i; j++)
             {
-                <div id="@player">
+                            <div id="@player">
 
-                    @if (Model.Seats[j].Occupied && Model.Seats[j].IsTurn)
-                    {
-                        <p id="currentPlayer">@Model.Seats[j].Username</p>
-                    }
-                    else
-                    {
-                        <p>@Model.Seats[j].Username</p>
-                    }
-                    <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
+                                @if (Model.Seats[j].Occupied && Model.Seats[j].IsTurn)
+                                {
+                                    <p id="currentPlayer">@Model.Seats[j].Username</p>
+                                }
+                                else
+                                {
+                                    <p>@Model.Seats[j].Username</p>
+                                }
+                                <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
+                                @if (Model.StateCounter == 7)
+                                {
+                                    if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
+                                    {
+                                        for (int k = 0; k < Model.Seats[i].Hand.MyHand.Count; k++)
+                                        {
 
-                </div>
+                                            if (Model.Seats[j].Hand.MyHand[k].Suit.ToLower() == "diamonds" || Model.Seats[j].Hand.MyHand[k].Suit.ToLower() == "hearts")
+                                            {
+                                                <div class="playingCard red">
+                                                    <p>@Model.Seats[j].Hand.MyHand[k].ConvertedNumber @Model.Seats[j].Hand.MyHand[k].SuitLetter</p>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="playingCard black">
+                                                    <p>@Model.Seats[j].Hand.MyHand[k].ConvertedNumber @Model.Seats[j].Hand.MyHand[k].SuitLetter</p>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
+                                    {
+                                        for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
+                                        {
+                                            <div class="cardBack"></div>
 
-                seated++;
-                player = "player" + seated;
-            }
+
+                                        }
+                                    }
+
+                                }
+                            </div>
+
+                            seated++;
+
+                            player = "player" + seated;
+
+                        }
 
 
         </div>

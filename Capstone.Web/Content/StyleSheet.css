@@ -374,25 +374,25 @@ button{
 #player2 {
     position: absolute;
     top: 11em;
-    left: 8em;
+    left: -1em;
 }
 
 #player3 {
     position: absolute;
-    top: 3em;
-    left: 15em;
+    top: 2em;
+    left: 12em;
 }
 
 #player4 {
     position: absolute;
-    top: 3em;
-    left: 29.5em;
+    top: 2em;
+    left: 32.5em;
 }
 
 #player5 {
     position: absolute;
     top: 11em;
-    left: 36em;
+    left: 39em;
 }
 
 #advance{
