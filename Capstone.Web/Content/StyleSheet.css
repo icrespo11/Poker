@@ -306,7 +306,7 @@ button{
 }
 
 .selectedToDiscard {
-    box-shadow: 0 0 0.2em yellow, 0 0 0.6em white;
+    box-shadow: 0 0 0.2em orange, 0 0 0.6em yellow;
 }
 .cardBack {
     display: inline-block;
@@ -557,7 +557,9 @@ button{
     right:14em;
 }
 
-
+#moneyReset{
+    text-align: center;
+}
 
 
 
