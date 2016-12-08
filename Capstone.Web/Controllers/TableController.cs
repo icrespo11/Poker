@@ -132,6 +132,8 @@ namespace Capstone.Web.Controllers
 
             tDal.LeaveTable(userName, tableID);
 
+            user = uDal.Login(userName);
+
             if (user.CurrentMoney < 100)
             {
                 return RedirectToAction("MoneyReset", "User");
