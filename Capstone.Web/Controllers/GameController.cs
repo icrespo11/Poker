@@ -355,7 +355,8 @@ namespace Capstone.Web.Controllers
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
-            return RedirectToAction("UpdatePlayerTurn", new { tableID = tableID });
+            UpdatePlayerTurn(tableID);
+            return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
         public ActionResult BettingRound(int tableID)
