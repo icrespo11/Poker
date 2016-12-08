@@ -51,8 +51,7 @@ namespace Capstone.Web.Controllers
         public ActionResult AdvanceGame(int tableID)
         {
             TableSqlDal dal = new TableSqlDal();
-            Table currentTable = new Table();
-            currentTable = GetTableInfo(tableID);
+            Table currentTable = GetTableInfo(tableID);
 
             if (currentTable.StateCounter == 0 || currentTable.StateCounter == 1)
             {
@@ -351,9 +350,8 @@ namespace Capstone.Web.Controllers
 
             if (i == 5)
             {
-                table.StateCounter++;
                 dal.ResetStateCounter(tableID);
-
+                dal.UncheckAllPlayer(tableID);
                 return RedirectToAction("AdvanceGame", new { tableID = tableID });
             }
 
