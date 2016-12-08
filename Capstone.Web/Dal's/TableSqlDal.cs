@@ -292,7 +292,7 @@ namespace Capstone.Web.Dal_s
                     cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("DELETE FROM hand_cards WHERE hand_id = @handID", conn);
-                    cmd.Parameters.AddWithValue("@handID", tableID);
+                    cmd.Parameters.AddWithValue("@handID", handID);
                     cmd.ExecuteNonQuery();
                 }
             }
