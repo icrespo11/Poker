@@ -274,6 +274,26 @@ namespace Capstone.Web.Dal_s
             return (rowsAffected > 0);
         }
 
+        public void NewHand(int tableID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE poker_table SET pot = 0 WHERE table_id = @tableID;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+
+                throw;
+            }
+        }
+
         internal void ResetStateCounter(int tableID)
         {
             try
@@ -966,20 +986,19 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("UPDATE users SET current_money = current money + (SELECT table_balance FROM table_players WHERE player = @player AND table_id = @table_id) WHERE username = @player", conn);
+                    SqlCommand cmd = new SqlCommand("UPDATE users SET current_money = current_money + (SELECT table_balance FROM table_players WHERE player = @player AND table_id = @table_id) WHERE username = @player", conn);
                     cmd.Parameters.AddWithValue("@table_id", tableID);
                     cmd.Parameters.AddWithValue("@player", username);
+                    cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("DELETE FROM hand_seat WHERE table_id = @tableID AND player = @playerName", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", username);
-
                     cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("DELETE FROM table_players WHERE table_id = @tableID AND player = @playerName;", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", username);
-
                     cmd.ExecuteNonQuery();
                 }
             }
