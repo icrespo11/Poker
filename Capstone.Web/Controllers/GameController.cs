@@ -493,20 +493,40 @@ namespace Capstone.Web.Controllers
         }
 
         public ActionResult PlayerBet(int tableID, int myBet, int betToCall, int newBet)
-        {
+        {           
             TableSqlDal tdal = new TableSqlDal();
+            Table t1 = tdal.FindTable(tableID);
+            t1.Seats = tdal.GetAllPlayersAtTable(tableID);
+            int currentTableBalance = 0;
+            foreach(Seat s in t1.Seats)
+            {
+                if (s.Username == (string)Session["username"])
+                {
+                    currentTableBalance = s.TableBalance;
+                }
+            }
 
-            int additionalMoney = betToCall - myBet + newBet;
-            int handID = tdal.GetHandID(tableID);
-            string userName = (string)Session["username"];
+            if(newBet >= betToCall && newBet > 0 && newBet >= t1.MinBet && newBet <= t1.MaxBet && newBet <= currentTableBalance )
+            {
+                int additionalMoney = betToCall - myBet + newBet;
+                int handID = tdal.GetHandID(tableID);
+                string userName = (string)Session["username"];
 
-            tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
-            tdal.SetPlayerCheckedAndAllOthersNot(tableID, handID, userName);
-            tdal.UpdateCurrentMinBet(tableID, newBet);
+                tdal.LowerTableBalanceRaiseBet(tableID, handID, userName, additionalMoney);
+                tdal.SetPlayerCheckedAndAllOthersNot(tableID, handID, userName);
+                tdal.UpdateCurrentMinBet(tableID, newBet);
 
-            UpdatePlayerTurn(tableID);
+                UpdatePlayerTurn(tableID);
 
-            return RedirectToAction("HandSetup", new { tableID = tableID });
+                return RedirectToAction("HandSetup", new { tableID = tableID });
+            }
+            else
+            {
+
+                return RedirectToAction("HandSetup", new { tableID = tableID });
+            }
+
+
         }
 
         public ActionResult PlayerFolded(int tableID)
