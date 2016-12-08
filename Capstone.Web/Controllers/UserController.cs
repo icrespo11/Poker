@@ -62,7 +62,6 @@ namespace Capstone.Web.Controllers
             }
         }
 
-
         public ActionResult Login()
         {
             return View("Login", new UserModel());

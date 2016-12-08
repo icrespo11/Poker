@@ -32,7 +32,6 @@
                     <p>@Model.Pot.ToString("C0")</p>
                 </div>
             }
-            @*@using (Html.BeginForm("updatePlayerTurn", "Game", FormMethod.Post)) //updatePlayerTurn*@
 
             @foreach (var seat in Model.Seats)
             {
@@ -159,7 +158,6 @@
                                 @Html.Hidden("Username", (string)Session["Username"])
 
                                 <div id="discardList">
-
                                 </div>
 
                                 <button id="discardButton">Discard</button>
@@ -182,11 +180,6 @@
                 }
                 i++;
             }
-
-            @*@Html.HiddenFor(m => m.TableID);
-
-                <button id="advance">Advance</button>*@
-
 
             @for (int j = i + 1; j < 5; j++)
             {
@@ -230,20 +223,15 @@
                             for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
                             {
                                 <div class="cardBack"></div>
-
-
                             }
                         }
-
                     }
                 </div>
 
                 seated++;
-
                 player = "player" + seated;
 
             }
-
                         @for (int j = 0; j < i; j++)
             {
                             <div id="@player">
@@ -286,21 +274,14 @@
                                         for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
                                         {
                                             <div class="cardBack"></div>
-
-
                                         }
                                     }
-
                                 }
                             </div>
 
                             seated++;
-
                             player = "player" + seated;
-
                         }
-
-
         </div>
     </div>
 </section>
