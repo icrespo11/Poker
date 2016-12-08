@@ -91,6 +91,8 @@ namespace Capstone.Web.Dal_s
             }
         }
 
+
+
         public List<Seat> GetAllPlayersAtTable(int tableID)
         {
             List<Seat> output = new List<Seat>();
@@ -827,6 +829,11 @@ namespace Capstone.Web.Dal_s
                         "WHERE table_id = @tableID AND player = @userName AND hand_id = @handID;", conn);
                     cmd.Parameters.AddWithValue("@handID", handID);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@userName", userName);
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand("DELETE FROM hand_cards WHERE hand_id = @handID and player=@userName", conn);
+                    cmd.Parameters.AddWithValue("@handID", tableID);
                     cmd.Parameters.AddWithValue("@userName", userName);
                     cmd.ExecuteNonQuery();
                 }

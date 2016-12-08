@@ -59,6 +59,7 @@ namespace Capstone.Web.Controllers
                 dal.ResetStateCounter(tableID);
             }
 
+
             Dictionary<int, string> gameStates = new Dictionary<int, string>()
             {
                 {1, "JoinedTable" },
@@ -417,6 +418,13 @@ namespace Capstone.Web.Controllers
                 foreach (var person in winner)
                 {
                     dal.SaveWiningMoney(tableID, person, (table.Pot / winner.Count));
+                }
+            }
+            foreach (var seat in table.Seats)
+            {
+                if (seat.Username != "Available")
+                {
+                    dal.SetNotFolded(table.TableID, seat.Username);
                 }
             }
                 return RedirectToAction("HandSetup", new { tableID = tableID });
