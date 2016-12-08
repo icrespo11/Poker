@@ -126,7 +126,8 @@ section {
 
 
 #jackHead {
-    height: auto;
+    height: 20em;
+    width: auto;
     display: inline-block;
     max-width: 26em;
     margin: 1em;
