@@ -479,3 +479,124 @@ button{
 .seatInputField{
     width: 47%;
 }
+
+/* Funky */
+
+.funkydiv1 {
+    font-weight: bolder;
+    background-color: #ffff33;
+    opacity: 0.68;
+    border-radius: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 24em;
+    border: solid 2px;
+    border-color: #B90101;
+    margin-top: 1em;
+    text-align: center;
+}
+
+.funkydiv2 {
+    font-weight: bolder;
+    background-color: #d24dff;
+    opacity: 0.68;
+    border-radius: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 24em;
+    border: solid 2px;
+    border-color: #B90101;
+    margin-top: 1em;
+    text-align: center;
+}
+.funkydiv3 {
+    font-weight: bolder;
+    background-color: #0000ff;
+    opacity: 0.68;
+    border-radius: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 24em;
+    border: solid 2px;
+    border-color: #B90101;
+    margin-top: 1em;
+    text-align: center;
+}
+
+.funkydiv4 {
+    font-weight: bolder;
+    background-color:  #00ff00;
+    opacity: 0.68;
+    border-radius: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 24em;
+    border: solid 2px;
+    border-color: #B90101;
+    margin-top: 1em;
+    text-align: center;
+}
+
+#f1 {
+    color: #00ff00;
+}
+
+#f2 {
+    color:#ff1a1a;
+}
+#f3 {
+    color:#0000ff;
+}
+#f4 {
+    color:#ff80ff;
+}
+#f5 {
+    color:#ffff00;
+}
+#f6 {
+    color:#1aff1a;
+}
+#f7 {
+    color:#ff3300;
+}
+#f8 {
+    color:#ffe6e6;
+}
+#f9 {
+    color:#ac00e6;
+}
+#f10 {
+    color:#00ffff;
+}
+#f11 {
+    color:#bfff00;
+}
+#f12 {
+    color: #ff0000;
+}
+#f13 {
+    color:#1a53ff;
+}
+#f14 {
+    color:#ff661a;
+}
+#f15 {
+    color:#00ff00;
+}
+#f16 {
+    color:#ff0055;
+}
+#f17 {
+    color:#99ffcc;
+}
+#f18 {
+    color:#e6ac00;
+}
+#f19 {
+    color:#005c99;
+}
+#f20 {
+    color:#cc2900
+}
+
+

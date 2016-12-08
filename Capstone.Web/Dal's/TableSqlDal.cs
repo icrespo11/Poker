@@ -10,8 +10,8 @@ namespace Capstone.Web.Dal_s
 {
     public class TableSqlDal
     {
-        static string connectionString = "Data Source=.\\SQLEXPRESS;Initial Catalog=poker;Persist Security Info=True;User ID=te_student;Password=techelevator";
-
+        //static string connectionString = ;
+        static string connectionString = ConfigurationManager.ConnectionStrings["db"].ConnectionString;
         public Table FindTable(int tableID)
         {
             //bool foundTable = false;
