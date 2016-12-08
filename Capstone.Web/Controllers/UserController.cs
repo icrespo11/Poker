@@ -99,9 +99,12 @@ namespace Capstone.Web.Controllers
             UserModel user = new UserModel();
             user = (UserModel)Session["user"];
 
-            TableSqlDal dal = new TableSqlDal();
-            //see if player is in game
-            if (/*player in game*/false)
+            string username = (string)Session["username"];
+
+            UserSqlDal dal = new UserSqlDal();
+            bool inGame = dal.CheckStatus(username);
+
+            if (inGame)
             {
                 return RedirectToAction("LeaveTable", "Table");
             }
@@ -144,6 +147,16 @@ namespace Capstone.Web.Controllers
             Dictionary<string, int> TopScores = dal.GetAllUsernamesWithChipsSortedByChipCount();
 
             return View("TopScores", TopScores);
+        }
+
+        public ActionResult MoneyReset()
+        {
+            string username = (string)Session["username"];
+
+            UserSqlDal dal = new UserSqlDal();
+            dal.UpdateMoney(username, 1000);
+
+            return View("MoneyReset");
         }
     }
 }
