@@ -388,6 +388,26 @@ namespace Capstone.Web.Dal_s
             return output;
         }
 
+        public void SetCurrentBet(int tableID, string username)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("UPDATE hand_seat SET current_bet = 0 WHERE table_id = @tableID AND player = @username;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+        }
+
         public void StateCounterSeven(int tableID)
         {
             try

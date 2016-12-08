@@ -273,7 +273,7 @@ namespace Capstone.Web.Controllers
             int handID = dal.GetHandID(model.TableId);
             Table table = GetTableInfo(model.TableId);
             dal.SetPlayerToHasChecked(model.TableId, handID, model.Username);
-
+            dal.SetCurrentBet(model.TableId, model.Username);
             dal.DiscardCards(model);
             dal.DrawCards(handID, model.Discards.Count, model.Username);
             table = GetTableInfo(model.TableId);
@@ -420,13 +420,17 @@ namespace Capstone.Web.Controllers
                     dal.SaveWiningMoney(tableID, person, (table.Pot / winner.Count));
                 }
             }
+
             foreach (var seat in table.Seats)
             {
                 if (seat.Username != "Available")
                 {
                     dal.SetNotFolded(table.TableID, seat.Username);
+
+                    dal.SetCurrentBet(table.TableID, seat.Username);
                 }
             }
+
                 return RedirectToAction("HandSetup", new { tableID = tableID });
         }
 
