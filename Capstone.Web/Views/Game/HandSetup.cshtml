@@ -287,3 +287,10 @@
         </div>
     </div>
 </section>
+<script type="text/javascript">
+    @if(Model.IsTurn(Session["username"].ToString().ToLower()))
+    {
+        @Html.Raw("clearInterval(interval);");
+    }
+
+</script>

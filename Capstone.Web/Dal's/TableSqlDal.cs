@@ -966,7 +966,11 @@ namespace Capstone.Web.Dal_s
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("DELETE FROM hand_seat WHERE table_id = @tableID AND player = @playerName", conn);
+                    SqlCommand cmd = new SqlCommand("UPDATE users SET current_money = current money + (SELECT table_balance FROM table_players WHERE player = @player AND table_id = @table_id) WHERE username = @player", conn);
+                    cmd.Parameters.AddWithValue("@table_id", tableID);
+                    cmd.Parameters.AddWithValue("@player", username);
+
+                    cmd = new SqlCommand("DELETE FROM hand_seat WHERE table_id = @tableID AND player = @playerName", conn);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@playerName", username);
 
