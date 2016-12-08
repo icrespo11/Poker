@@ -17,7 +17,7 @@ body {
     z-index: -2;
 }
 
-    #background img {
+#background img {
         top: 0;
         left: 0;
         right: 0;
@@ -102,7 +102,7 @@ section {
     width: 12px;
 }
 
-    ::-webkit-scrollbar:horizontal {
+::-webkit-scrollbar:horizontal {
         overflow: hidden;
     }
 
