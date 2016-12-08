@@ -43,6 +43,39 @@ namespace Capstone.Web.Dal_s
             }
         }
 
+        public bool CheckStatus(string username)
+        {
+            List<int> check = new List<int>();
+            bool found = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("SELECT table_id from table_players WHERE player = @username;", conn);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        check.Add(Convert.ToInt32(reader["table_id"]));
+                    }
+                }
+
+                if (check.Count > 0)
+                {
+                    found = true;
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return found;
+        }
+
         public List<string> GetAllUsernames()
         {
             List<string> output = new List<string>();
@@ -193,6 +226,34 @@ namespace Capstone.Web.Dal_s
 
             return u;
 
+        }
+
+        public int GetTableByPlayer(string username)
+        {
+            int tableID = 0;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                conn.Open();
+
+                try
+                {
+                    SqlCommand cmd = new SqlCommand("SELECT TOP 1 (table_id) from table_players WHERE player = @username", conn);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        tableID = Convert.ToInt32(reader["table_id"]);
+                    }
+                }
+                catch (SqlException)
+                {
+                    throw;
+                }
+
+                return tableID;
+            }
         }
     }
 }

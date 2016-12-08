@@ -1,4 +1,5 @@
 ﻿using Capstone.Web.Dal_s;
+using Capstone.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,9 +19,11 @@ namespace Capstone.Web.Controllers
 
         public ActionResult LoggedInLanding()
         {
-            TableSqlDal dal = new TableSqlDal();
-            //see if player is in game
-            if (/*player in game*/false)
+            string username = (string)Session["username"];
+            UserSqlDal dal = new UserSqlDal();
+            bool inGame = dal.CheckStatus(username);
+
+            if (inGame)
             {
                 return RedirectToAction("LeaveTable", "Table");
             }
