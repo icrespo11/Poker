@@ -100,6 +100,13 @@ namespace Capstone.Web.Controllers
             UserModel user = new UserModel();
             user = (UserModel)Session["user"];
 
+            TableSqlDal dal = new TableSqlDal();
+            //see if player is in game
+            if (/*player in game*/false)
+            {
+                return RedirectToAction("LeaveTable", "Table");
+            }
+
             if (user != null)
             {
                 user.IsOnline = false;
