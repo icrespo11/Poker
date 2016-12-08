@@ -481,6 +481,10 @@ namespace Capstone.Web.Dal_s
                     cmd.Parameters.Clear();
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     handID = (int)cmd.ExecuteScalar();
+
+                    cmd.CommandText = "UPDATE hand_seat SET hand_id = @handID WHERE table_id = @tableID AND hand_id = (SELECT MAX(hand_id) FROM hand_seat WHERE table_id = @tableID);";
+                    cmd.Parameters.AddWithValue("@handID", handID);
+                    cmd.ExecuteNonQuery();
                 }
             }
             catch (SqlException)
@@ -637,7 +641,7 @@ namespace Capstone.Web.Dal_s
                     cmd.ExecuteNonQuery();
 
                     cmd = new SqlCommand("UPDATE hand_seat SET current_bet = current_bet + @amount " +
-                        "WHERE table_id = @tableID AND hand_id = @handID AND player = @userName;", conn);
+                        "WHERE hand_id = @handID AND player = @userName;", conn);
                     cmd.Parameters.AddWithValue("@amount", amount);
                     cmd.Parameters.AddWithValue("@tableID", tableID);
                     cmd.Parameters.AddWithValue("@userName", userName);
