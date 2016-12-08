@@ -22,30 +22,45 @@ namespace Capstone.Web.Controllers
 
         public ActionResult CreateTable()
         {
-            return View("CreateTable");
+            Table t = new Table();
+            t.Ante = 0;
+
+            return View("CreateTable", t);
         }
 
         [HttpPost]
         public ActionResult CreateTable(Table model)
         {
-            model.TableHost = (string)Session["UserName"];
 
-            model.Pot = 0;
+            if (model.Ante >= 0 && model.MinBet > 0 && model.MaxBet >= model.MinBet && model.MaxBuyIn >= model.MinBet)
+            {
+                model.TableHost = (string)Session["UserName"];
 
-            TableSqlDal dal = new TableSqlDal();
-            int newID = dal.CreateTable(model);
+                model.Pot = 0;
 
-            Table output = dal.FindTable(newID);
+                TableSqlDal dal = new TableSqlDal();
+                int newID = dal.CreateTable(model);
 
-            UserSqlDal userDal = new UserSqlDal();
-            UserModel currentUser = userDal.Login(model.TableHost);
+                Table output = dal.FindTable(newID);
 
-            UserAndTable ut = new UserAndTable();
-            ut.Table = output;
-            ut.User = currentUser;
-            
-            return View("TakeSeat", ut);
+                UserSqlDal userDal = new UserSqlDal();
+                UserModel currentUser = userDal.Login(model.TableHost);
+
+                UserAndTable ut = new UserAndTable();
+                ut.Table = output;
+                ut.User = currentUser;
+
+                return View("TakeSeat", ut);
+            }
+            else
+            {
+                Table t = new Table();
+                t.Ante = 5;
+                return View("CreateTable", t);
+            }
+
         }
+
 
         public ActionResult SitAtTable(int TableID)
         {

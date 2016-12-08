@@ -7,6 +7,12 @@
     <div id="allInputs">
         <h2>Create a New Table</h2>
 
+        @if (Model.Ante == 5)
+        {
+            <p class="validationError">Please create a valid Poker Table</p>
+        }
+
+
         @using (Html.BeginForm("CreateTable", "Table", FormMethod.Post))
         {
             <div class="inputBox">
