@@ -17,7 +17,7 @@
 <section>
 
     <script src="~/Scripts/CardSelectionJavaScript.js"></script>
-    <div id="gameArea" data-tableID ="@Model.TableID">
+    <div id="gameArea" data-tableID="@Model.TableID">
         <h2>@Model.Name</h2>
 
         @using (Html.BeginForm("LeaveTable", "Table", FormMethod.Post))
@@ -104,6 +104,7 @@
                         else if (Model.StateCounter == 4 || Model.StateCounter == 6)
                         {
                             int maxCurrentBet = 0;
+                            int whatINeedToCall = 0;
                             foreach (var s in Model.Seats)
                             {
                                 if (s.CurrentBet > maxCurrentBet)
@@ -111,6 +112,15 @@
                                     maxCurrentBet = s.CurrentBet;
                                 }
                             }
+                            foreach (var s in Model.Seats)
+                            {
+                                if (s.Username == (string)Session["username"])
+                                {
+                                    whatINeedToCall = maxCurrentBet - s.CurrentBet;
+                                }
+                            }
+
+
 
                             if (maxCurrentBet == 0)
                             {
@@ -150,7 +160,7 @@
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
                                     <div class="callDuringHand">
-                                        <button>Call ($@maxCurrentBet)</button>
+                                        <button>Call ($@whatINeedToCall)</button>
                                     </div>
                                 }
                                 using (Html.BeginForm("PlayerBet", "Game", FormMethod.Post))
@@ -158,10 +168,10 @@
                                     @Html.HiddenFor(m => m.TableID)
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
-                                    
+
 
                                     <div class="raiseDuringHand">
-                                        @Html.TextBox("newBet", null, new { @class = "raiseForm" } )
+                                        @Html.TextBox("newBet", null, new { @class = "raiseForm" })
                                         <button>Raise</button>
                                     </div>
                                 }
@@ -190,7 +200,7 @@
                             }
                         }
                     }
-                    if(Model.StateCounter == 7 && Model.Seats[i].IsTurn)
+                    if (Model.StateCounter == 7 && Model.Seats[i].IsTurn)
                     {
                         using (Html.BeginForm("NextHand", "Game", FormMethod.Post, new { id = "discardForm" }))
                         {
@@ -309,11 +319,11 @@
                 seated++;
                 player = "player" + seated;
             }
-    
-            </div>
-     
+
+        </div>
+
     </div>
-    
+
 </section>
 <script type="text/javascript">
     @if(Model.IsTurn(Session["username"].ToString().ToLower()))
