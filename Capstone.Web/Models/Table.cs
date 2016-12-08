@@ -7,7 +7,7 @@ namespace Capstone.Web.Models
 {
     public class Table
     {
-        public List<Seat> Seats =  new List<Seat>();
+        public List<Seat> Seats = new List<Seat>();
 
         public int DealerPosition { get; set; }
 
@@ -40,6 +40,18 @@ namespace Capstone.Web.Models
         public string Name { get; set; }
 
         public string Winner { get; set; }
+
+        public bool IsTurn(string name)
+        {
+            foreach (Seat s in Seats)
+            {
+                if (s.Username.ToLower() == name && s.IsTurn)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public void changeDealer()
         {
