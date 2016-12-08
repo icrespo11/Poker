@@ -150,7 +150,7 @@
                                     @Html.Hidden("myBet", Model.Seats[i].CurrentBet)
                                     @Html.Hidden("betToCall", maxCurrentBet)
                                     <div class="callDuringHand">
-                                        <button>Call</button>
+                                        <button>Call ($@maxCurrentBet)</button>
                                     </div>
                                 }
                                 using (Html.BeginForm("PlayerBet", "Game", FormMethod.Post))
