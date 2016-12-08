@@ -307,6 +307,15 @@ button{
 .selectedToDiscard {
     box-shadow: 0 0 0.2em yellow, 0 0 0.6em white;
 }
+.cardBack {
+    display: inline-block;
+    border-radius: 3%;
+    background-image: url('img/download (3).jpg');
+    height: 2.5em;
+    width: 2.5em;
+    vertical-align: top;
+    text-align: center;
+}
 
 /*TopScoresStyling*/
 .topScoresHeading {
