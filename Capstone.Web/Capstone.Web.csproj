@@ -155,7 +155,9 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -213,11 +215,8 @@
     <Content Include="Views\Game\Ante.cshtml" />
     <Content Include="Views\Game\BettingRound.cshtml" />
     <Content Include="Views\Game\GameDisplay.cshtml" />
-
     <Content Include="Views\User\MoneyReset.cshtml" />
-
     <Content Include="Views\Funky\Funky.cshtml" />
-
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
