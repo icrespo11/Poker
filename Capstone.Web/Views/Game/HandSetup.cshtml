@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Table";
-
+    
 
     int i = 0;
 
@@ -11,9 +11,11 @@
     string player = "player" + seated;
 
     List<bool> discardList = new List<bool>() { false, false, false, false, false };
+
 }
 
 <section>
+    <script src="~/Scripts/CardSelectionJavaScript.js"></script>
     <div id="gameArea">
         <h2>@Model.Name</h2>
 
@@ -218,7 +220,7 @@
                     }
                     else
                     {
-                        if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied )
+                        if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
                         {
                             for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
                             {
@@ -232,56 +234,56 @@
                 player = "player" + seated;
 
             }
-                        @for (int j = 0; j < i; j++)
+            @for (int j = 0; j < i; j++)
             {
-                            <div id="@player">
+                <div id="@player">
 
-                                @if (Model.Seats[j].Occupied && Model.Seats[j].IsTurn)
+                    @if (Model.Seats[j].Occupied && Model.Seats[j].IsTurn)
+                    {
+                        <p id="currentPlayer">@Model.Seats[j].Username</p>
+                    }
+                    else
+                    {
+                        <p>@Model.Seats[j].Username</p>
+                    }
+                    <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
+                    @if (Model.StateCounter == 7)
+                    {
+                        if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
+                        {
+                            for (int k = 0; k < Model.Seats[i].Hand.MyHand.Count; k++)
+                            {
+
+                                if (Model.Seats[j].Hand.MyHand[k].Suit.ToLower() == "diamonds" || Model.Seats[j].Hand.MyHand[k].Suit.ToLower() == "hearts")
                                 {
-                                    <p id="currentPlayer">@Model.Seats[j].Username</p>
+                                    <div class="playingCard red">
+                                        <p>@Model.Seats[j].Hand.MyHand[k].ConvertedNumber @Model.Seats[j].Hand.MyHand[k].SuitLetter</p>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <p>@Model.Seats[j].Username</p>
+                                    <div class="playingCard black">
+                                        <p>@Model.Seats[j].Hand.MyHand[k].ConvertedNumber @Model.Seats[j].Hand.MyHand[k].SuitLetter</p>
+                                    </div>
                                 }
-                                <p>@Model.Seats[j].TableBalance.ToString("C0")</p>
-                                @if (Model.StateCounter == 7)
-                                {
-                                    if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
-                                    {
-                                        for (int k = 0; k < Model.Seats[i].Hand.MyHand.Count; k++)
-                                        {
-
-                                            if (Model.Seats[j].Hand.MyHand[k].Suit.ToLower() == "diamonds" || Model.Seats[j].Hand.MyHand[k].Suit.ToLower() == "hearts")
-                                            {
-                                                <div class="playingCard red">
-                                                    <p>@Model.Seats[j].Hand.MyHand[k].ConvertedNumber @Model.Seats[j].Hand.MyHand[k].SuitLetter</p>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="playingCard black">
-                                                    <p>@Model.Seats[j].Hand.MyHand[k].ConvertedNumber @Model.Seats[j].Hand.MyHand[k].SuitLetter</p>
-                                                </div>
-                                            }
-                                        }
-                                    }
-                                }
-                                else
-                                {
-                                    if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
-                                    {
-                                        for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
-                                        {
-                                            <div class="cardBack"></div>
-                                        }
-                                    }
-                                }
-                            </div>
-
-                            seated++;
-                            player = "player" + seated;
+                            }
                         }
+                    }
+                    else
+                    {
+                        if (!Model.Seats[j].HasFolded && Model.Seats[j].Occupied)
+                        {
+                            for (int k = 0; k < Model.Seats[j].Hand.MyHand.Count; k++)
+                            {
+                                <div class="cardBack"></div>
+                            }
+                        }
+                    }
+                </div>
+
+                seated++;
+                player = "player" + seated;
+            }
         </div>
     </div>
 </section>

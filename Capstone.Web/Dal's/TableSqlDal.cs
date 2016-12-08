@@ -522,6 +522,11 @@ namespace Capstone.Web.Dal_s
         {
             int handID = GetHandID(cards.TableId);
 
+            if (cards.Discards == null)
+            {
+                cards.Discards = new List<Card>();
+            }
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
