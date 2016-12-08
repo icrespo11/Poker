@@ -274,6 +274,7 @@ namespace Capstone.Web.Controllers
 
             dal.DiscardCards(model);
             dal.DrawCards(handID, model.Discards.Count, model.Username);
+            table = GetTableInfo(model.TableId);
 
             int i = 0;
             foreach (Seat s in table.Seats)
@@ -295,6 +296,7 @@ namespace Capstone.Web.Controllers
                 dal.UncheckAllPlayer(model.TableId);
                 return RedirectToAction("AdvanceGame", new { tableID = model.TableId });
             }
+            UpdatePlayerTurn(model.TableId);
 
             return RedirectToAction("HandSetup", new { tableID = model.TableId });
         }
@@ -376,7 +378,7 @@ namespace Capstone.Web.Controllers
 
             foreach (var seat in table.Seats)
             {
-                if (!seat.HasFolded)
+                if (!seat.HasFolded && seat.Username != "Available")
                 {
                     handsToCompare.Add(seat.Username, seat.Hand);
                 }
