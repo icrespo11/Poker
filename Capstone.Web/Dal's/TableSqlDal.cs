@@ -952,5 +952,32 @@ namespace Capstone.Web.Dal_s
                 throw;
             }
         }
+
+        public void LeaveTable(string username, int tableID)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand("DELETE FROM hand_seat WHERE table_id = @tableID AND player = @playerName", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@playerName", username);
+
+                    cmd.ExecuteNonQuery();
+
+                    cmd = new SqlCommand("DELETE FROM table_players WHERE table_id = @tableID AND player = @playerName;", conn);
+                    cmd.Parameters.AddWithValue("@tableID", tableID);
+                    cmd.Parameters.AddWithValue("@playerName", username);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                throw;
+            }
+        }
     }
 }
